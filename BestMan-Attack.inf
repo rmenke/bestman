@@ -317,7 +317,7 @@ Object  -> "workbench"
  has    scenery supporter;
  
 Bottle DeveloperBottle "bottle of developing fluid"
- with   name "of" "developing" "developer" "chemical" "cyanide" "solution"
+ with   name "developing" "developer" "chemical" "cyanide" "solution"
              "fluid",
         capacity 500,
         description
@@ -334,7 +334,7 @@ Bottle DeveloperBottle "bottle of developing fluid"
 Liquid -> with quantity 400, acidity 0, has toxic;
 
 Bottle	AcidBottle "bottle of acid"
- with   name "of" "hydrochloric" "acid" "hcl" "chemical" "solution",
+ with   name "hydrochloric" "acid" "hcl" "chemical" "solution",
         capacity 500,
         description
             "A dark glass bottle with a screw cap. The label on the
@@ -347,7 +347,7 @@ Bottle	AcidBottle "bottle of acid"
 Liquid -> with quantity 200, acidity 200, short_name "acid";
 
 Bottle	BaseBottle "bottle of hydroxide"
- with 	name "of" "sodium" "hydroxide" "naoh" "chemical" "solution",
+ with 	name "sodium" "hydroxide" "naoh" "chemical" "solution",
 	capacity 500,
 	description
 	    "A clear bottle with a glass stopper. The label on the
@@ -734,8 +734,7 @@ Object  -> "tool chest"
  has    container openable;
 
 Bottle -> -> "squirt bottle"
-    with name "squirt" "squeeze" "blue" "liquid" "window" "cleaner"
-            "ammonia",
+    with name "squirt" "squeeze" "window" "cleaner" "ammonia",
         capacity 1000,
         description
             "It's a squirt bottle. The label is so faded as to make it
@@ -787,8 +786,8 @@ Bottle -> -> "squirt bottle"
         ],
  has    transparent openable container;
 
-Liquid  -> -> ->
- with   quantity 500, acidity -200, color "pale blue"; 
+Liquid  -> -> -> CleaningFluid
+ with   quantity 500, acidity -200;
 
 Object  -> -> OilCan "can of lubricant"
  with   name "can" "lubricant" "lube" "oil" "grease" "wd-40" "tube",

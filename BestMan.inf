@@ -357,7 +357,23 @@ Class   LightBulbSocketClass
  has    static open switchable container;
 
 Class   Bottle
- with   name "bottle" "flask" "bottles//p" "flasks//p",
+ with   name "bottle" "flask" "bottles" "flasks" "of",
+        parse_name [ w wc;
+            while (WordInProperty((w = NextWordStopped()), self, name)) {
+                if (w == 'bottles' or 'flasks')
+                    parser_action = ##PluralFound;
+                wc++;
+            }
+
+            if (w == 0 or -1) return wc;
+
+            if (child(self)) do {
+                if (WordInProperty(w, child(self), color)) wc++;
+                else return wc;
+            } until ((w = NextWordStopped()) == 0 or -1);
+
+            return wc;
+        ],
         before [;
          Drink:
             "It might not be potable, so you decide against it.";
@@ -378,18 +394,15 @@ Class   Bottle
 
 Constant LIQUID_NAME = "liquid";
 
-Constant BASE_COLOR  = "dark blue";
-Constant ACID_COLOR  = "bright red";
-Constant NEUT_COLOR  = "deep purple";
-
 Class   Liquid (5)
- with   quantity 0, acidity 0, color 0,
+ with   quantity 0, acidity 0, color 0 0 'liquid',
         create [ q a; self.quantity = q; self.acidity = a; ],
         article [;
             if (parent(self) has measured)
                 print "about ", self.quantity, "mL of";
             else print "a quantity of";
-            if (self.color) print " ", (string) self.color;
+            if (self.&color-->0) print " ", (address) self.&color-->0;
+            if (self.&color-->1) print " ", (address) self.&color-->1;
             rtrue;
         ],
         short_name LIQUID_NAME,
@@ -485,22 +498,36 @@ Class   Liquid (5)
             else     "You pour some liquid into ", (the) second, ".";
         ],
         
-        each_turn [ old_color;
+        each_turn [ oc0 oc1;
             if (self has toxic && self.acidity > 0) StartDaemon(self);
 
             if (self hasnt general) rtrue;
             
-            old_color = self.color;
+            oc0 = self.&color-->0;
+            oc1 = self.&color-->1;
+                        
+            if (self.acidity > 0) {
+                 self.&color-->0 = 'bright';
+                 self.&color-->1 = 'red';
+            }
+            else if (self.acidity < 0) {
+                 self.&color-->0 = 'dark';
+                 self.&color-->1 = 'blue';
+            }
+            else {
+                 self.&color-->0 = 'deep';
+                 self.&color-->1 = 'purple';
+            }
             
-            if (self.acidity > 0)
-                 self.color = ACID_COLOR;
-            else if (self.acidity < 0)
-                 self.color = BASE_COLOR;
-            else self.color = NEUT_COLOR;
-            
-            if (old_color ~= self.color)
-                "^The ", (name) self, " in ", (the) parent(self),
-                    " turns ", (string) self.color, ".";
+            if (oc0 ~= self.&color-->0 || oc1 ~= self.&color-->1) {
+                print "^The ", (name) self, " in ", (the) parent(self),
+                    " turns";
+                if (self.&color-->0 == 0 && self.&color-->1 == 0)
+                    " clear.";
+                if (self.&color-->0) print " ", (address) self.&color-->0;
+                if (self.&color-->1) print " ", (address) self.&color-->1;
+                print_ret ".";
+            }
         ],
         daemon [ i p v;
             if (self hasnt toxic || self.acidity <= 0 ||
@@ -1602,6 +1629,11 @@ Statusline time;
 
     for (obj = 0 : obj < 14 : obj++)
 	Passes-->obj = Passes-->obj * 60 / TRAIN_SPEED + 720;
+    
+    ! The cleaning fluid is the only liquid that starts with a color.
+    
+    CleaningFluid.&color-->0 = 'pale';
+    CleaningFluid.&color-->1 = 'blue';
 
     print "^^Amazing! After all these years some girl finally got Jack
         to propose. All you need to do is hop on a commuter plane, get
