@@ -310,9 +310,8 @@ Hints   -> -> -> -> DarkroomHints "What can I do in the darkroom?"
 Hints   -> -> -> -> ChemicalHints "What can I do with the chemicals?"
  has    concealed
  with   hint
-            "The hydroxide bottle is there just so you can read the label."
-            "The acid and developer are much more useful."
-            "Mixed, they produce deadly vapors."
+            "The acid and developer bottles are quite useful."
+            "When the chemicals are mixed, they produce deadly vapors."
             "So be sure to mix them where there is a lot of ventilation."
             "Speaking of ventilation, have you found the air vents yet?"
             "You might want to delay mixing the acid and developer until you
@@ -460,8 +459,7 @@ Hints   -> -> -> -> GlassBoxHints "The Plexiglas box is locked, and I
             "You need to balance weight AND acidity."
             "You need to use the litmus powder."
             "It's hidden in the darkroom, if you haven't found it."
-            "The litmus changes color depending on the acidity, and
-            the meter tells you what the difference in acidity is."
+            "The litmus changes color depending on the acidity."
             "Add small amounts of the window cleaner (a base) to the
             beaker with hydrochloric acid until it turns purple."
             "Add small amounts of the acid to the beaker with sodium
