@@ -32,6 +32,68 @@ Menu    MainMenu "Instructions and Hints for ~The Best Man~";
 
 Menu    -> "How to play";
 
+Option  -> -> "General introduction to Interative Fiction"
+ with   description [;
+            print "With Interactive Fiction you type in English commands
+                each time you see a prompt. Commands allow your
+                character to move around the setting and manipulate
+                objects within the game.^^",
+
+		(strong) "Moving Around^^",
+		
+		"You can move your character by typing in the direction
+	        that you wish to go.  Directions may be abbreviated:  N
+	        for NORTH, SW for SOUTHWEST, D for DOWN.  (",
+	        (emphasis) "The Best Man", " has support for alternative
+	        directions FORE (F), AFT (A), STARBOARD (SB), and PORT
+	        (P) which can be activated with the TECHNICAL
+	        command.)^^";
+	        
+	    font off;
+	    print ">STAND^
+	           >NORTH^
+	           >S^^";
+	    font on;
+	        
+            print (strong) "Handling Objects^^",
+	        
+	        "Objects encountered in the game may be examined, taken,
+	        dropped, and so on by typing in the appropriate verb
+	        followed by the name of the object. Objects that the
+	        player is currently carrying may be listed with the
+	        INVENTORY (I) command.^^
+	        
+	        Objects may also be referenced in groups by either
+	        separating their names using commas or using the word
+	        ALL. TAKE ALL, for instance, will cause the character
+	        to try and pick up every object in sight. DROP ALL will
+	        transfer the player's inventory to the current
+	        location.^^";
+	    
+	    font off;
+	    print ">EXAMINE SEAT BELT^
+	           >OPEN IT^
+	           >TAKE ALL^^";
+	    font on;
+	    
+	    print (strong) "Interacting with Other Characters^^",
+	    
+	        "The player's character, over time, will come to
+	        encounter other characters. Special commands such as
+	        ASK, TELL, and SHOW may be used with these characters,
+	        as well as a special order syntax.^^";
+	    
+	    font off;
+	    print ">SHOW PILOT THE TICKET^
+	           >GIVE RING TO COPILOT^
+	           >ASK CONDUCTOR ABOUT THE TRAIN^
+	           >STEWARDESS, GIVE ME THE GOLD WATCH";
+	    font on;
+	    
+	    new_line; rtrue;
+	];
+	        
+
 Option  -> -> "Special commands used in ~The Best Man.~"
  with   description
             "There are two ways of describing the world: with fixed
@@ -48,8 +110,9 @@ Option  -> -> "Special commands used in ~The Best Man.~"
             
             You can POUR or EMPTY containers of liquids. Under
             certain conditions, you can even pour specific quantities:
-            POUR 100ML OF MILK INTO THE BATTER. If no quantity is
-            specified, the maximum amount possible will be used.^^
+            POUR 100ML FROM THE MILK JUG INTO THE BATTER. If no
+            quantity is specified, the maximum amount possible will
+            be used.^^
 
 	    Comparisons between two items are done automatically.
 	    Examining the items in sequence, with no intervening
@@ -62,209 +125,30 @@ SwitchOption -> -> TechnicalDirectionsOption
             rtrue;
         ];
 
-Ifdef	DEBUG;
-
-Menu    -> "Game Package";
-
-Option  -> -> "Article #1 of ~All Aboard!~"
- with   description [;
-            print_ret (strong) "The Race for The White House", "^^
-
-            In only a few months, your mommy and daddy are going to vote for
-            a new President. Even though you can't vote, it's important to
-            understand what is going on because it could affect you.^^
-
-            The President is the most important person in government. He is
-            the head of the ", (emphasis) "executive", " branch, which is
-            responsible for the enforcement of laws in the country. He can
-            also ", (emphasis) "veto", " bills; that is, he can prevent the
-            bills from becoming laws. Because of this, he has some influence
-            over Congress (the people that make the laws).^^
-
-            When people run for President (there's no real race--~running~ is
-            a word meaning oneself a candidate for election) they must do a lot
-            of things. One is to establish a ", (emphasis) "platform", " on
-            the ", (emphasis) "issues", ". A platform is what the candidate
-            plans to do once he or she is elected. An issue is a problem that
-            concerns the voters.^^
-
-            One issue that comes up each election is education--school. While
-            this is probably not your favorite thing, it is ", (emphasis)
-            "very", " important.^^
-
-            How do the candidates stand (that is, what is their platform) on
-            education? President Williams (our current President) wants tighter
-            standards for education before the states receive federal aid.
-            Senator Gray (the President's opponent) prefers that the states are
-            given the money without conditions. Both candidates make good
-            arguments for their positions. Ask your mommy or daddy to show you
-            newspaper articles that explain their positions in detail. Discuss
-            the issues with your parents. Make sure you are not forgotten!";
-        ];
-
-Option  -> -> "Article #2 of ~All Aboard!~"
- with   description [;
-            print_ret (strong) "Science Corner: Acids & Bases", "^^
-            
-            Another issue surrounding the President is how to handle
-            acid rain. Acid rain is the result of raindrops mixing with
-            smog to produce a rain that is harmful to plants and animals
-            as well as damaging to buildings.^^
-
-            All chemicals (even those around your house) can be divided
-            into three groups: ", (emphasis) "acids", ", ", (emphasis)
-            "bases", ", and ", (emphasis) "neutrals", ". Everyday acids
-            include things like lemonade and vinegar; everyday bases
-            include soap and window cleaner (ammonia). Both acids and
-            bases are ", (emphasis) "corrosive", " (that is, they
-            dissolve things). For cleaning fluid, that's good; for rain,
-            that's very bad.^^",
-
-            (strong) "Experiment", ": See how corrosive vinegar is! Next
-            time you eat chicken, clean some of the bones and leave them
-            in a dish of vinegar overnight. See how rubbery those bones
-            became?^^
-
-            Scientists use chemicals called ", (emphasis) "indicators",
-            " to detect acids and bases. Indicators change color when
-            the acidity of the sample changes. ", (emphasis) "Litmus", "
-            is probably the most popular indicator. It turns red in the
-            presence of an acid, blue in the presence of a base, and
-            purple when the chemical is neither.^^
-
-            Another curious thing about acids and bases is that they can
-            neutralize each other. For instance, ", (emphasis)
-            "hydrochloric acid", " is a powerful industrial acid used to
-            etch metals. ", (emphasis) "Sodium hydroxide", " is a strong
-            industrial base used to unclog drains. Mixed together, they
-            react and change into salt water (a neutral).^^",
-
-            (strong) "Experiment", ": Ask your parents for some litmus
-            paper. Try to see how much soapy water (a base) is needed to
-            neutralize some lemon juice (an acid). And while you're at
-            it, collect some rain water and see if you too are a victim
-            of acid rain.";
-        ];
-
-Option  -> -> "Article #3 of ~All Aboard!~"
- with   description [;
-            print_ret (strong) "The Fox vs. The Farmer", "^^
-
-            Did you think it was possible for a small woodland animal to affect
-            the Presidency? It has happened before, and it looks like it is
-            happening again.^^
-
-            Late last century, the Park Service ordered the reintroduction of
-            wolves into national parks. Some livestock owners complained, as
-            they feared the wolves would attack their animals. Since everyone
-            felt strongly about this decision, and not everybody agreed that it
-            was right, the decision was considered ", (emphasis)
-            "controversial", ".^^
-
-            The controversy this time is not about wolves but about foxes;
-            specifically, the Pacific Gray Fox. As more and more houses are
-            built in California and Oregon, more and more Pacific Grays are ",
-            (emphasis) "displaced", " (moved out of their homes). The Park
-            Service wants to release the captured foxes into national parks,
-            but the local poultry (egg & chicken) farmers fear the aggressive
-            foxes will hurt their animals. Who is right?";
-        ];
-
-Option  -> -> "Newspaper clipping"
- with   description [;
-            print_ret (strong) "~Energy President~ to Visit, Reactivate Nuclear
-                Facility", "^^",
-            (emphasis) "Politics", ": Some view it as a coup for the reelection
-                campaign; others a serious threat to the environment.^^
-            From Times Staff and Wire Reporters^^
-
-            SAN JOSE-- Four years ago, President Williams announced to Congress
-            that this administration's goal was complete independence from
-            foreign oil by the end of his term of office. To accomplish this,
-            he set forth eight points, of which was a stronger reliance of
-            industry on electric rather than petroleum-based machinery.^^
-
-            Unfortunately, electricity requires power to generate, and power
-            plants are already overtaxed, as anyone who has experienced the
-            city's all-too-frequent brownouts knows.^^
-
-            Enter nuclear power.^^
-
-            The Escondido Nuclear Facility has been idle for the last five
-            years, following public outcry after a series of accidents at
-            facilities all across the country. Escondido was infamous for lax
-            security policies and inaccurate reporting of accidents. Following
-            the release of radioactive waste water into the ocean, the NRC
-            report suggested that operations at the Escondido facility be
-            halted.^^
-
-            Enter the ~Energy President.~^^
-
-            As the need for electrical power in Southern California hits a new
-            high--a combination of an unprecedented immigration combined with a
-            resurgence in the native aerospace industry--the desire for
-            additional generating plants became overwhelming, to the point that
-            Congress, at the urging of President Williams, authorized the
-            reactivation of Escondido.^^
-
-            Williams will be present at the reactivation ceremony, as the
-            launch point for his reelection campaign. From Escondido, a special
-            train carrying the President, Mrs. Williams, and the campaign staff
-            will take a two week tour across the country. Emphasis will be on
-            establishing a rapport with voters in the South, which have been
-            critical of Williams' concentration on the support of existing
-            industry at the expense of establishing new industrial centers.^^
-
-            Not everybody is pleased with the plans for Escondido. Mark Wilson,
-            head of the Nuclear Free Zone Coalition in Orange County, has filed
-            a class action lawsuit attempting to block the reactivation, with
-            the hopes that a sympathetic court would issue an injunction before
-            Friday.^^
-
-            ~Escondido is both a blight on the landscape and on the history of
-            this country,~ Wilson said in a press release. ~We cannot allow
-            such a poorly-maintained facility to be reactivated. One nuclear
-            accident could result in the deaths of tens of thousands that make
-            South Orange County their home.~ Wilson then proceeded to describe
-            graphically the aftereffects on the local citizens near the failed
-            nuclear reactors in Chernobyl and Three Mile Island.^^
-
-            Unfortunately for Wilson, South Orange County is hailed by many as
-            ~the new Silicon Valley.~ Technology leaders, strong supporters of
-            Williams, have been quick to rally behind the President in his
-            effort to bring nuclear power back to Southern California.^^
-
-            In the wake of the US intervention in ongoing Russian/Georgian
-            conflict, issues of domestic vulnerability has been raised. In a
-            public statement, the FBI warned that ~any and all suspicious
-            activities near the President~ will be met with immediate
-            response.";
-        ];
-
-Endif;	! DEBUG
-
 Option  -> "Credits"
  with   description [;
             "Rob Menke (author) -- Rob has been interested in adventure games
             ever since he played ~Zork I~ on an old Apple ][ back in the early
             '80s. He is often tempted to add ~Finished 'Stationfall' in a
             four-day marathon session~ to his resume. ~The Best Man~ is his
-            first interactive fiction game for use by the general public.^^
-            
+            first interactive fiction game for use by the general public. At
+            the time of this release, his web site can be found at:^",
+            (strong) "http://www.best.com/~rgm/", "^^
+
             Christopher Livingston (playability, details) -- That you can use
             ~lube~ as a verb and propose to the conductor are both thanks to
             Chris. All IF authors should be as lucky to have a tester as
-            disturbed as he is. You are encouraged to visit his web site:^
-            ", (strong) "http://www.notmydesk.com/", "^^
-            
+            disturbed as he is. You are encouraged to visit his web site:^",
+            (strong) "http://www.notmydesk.com/", "^^
+
             Mark Rosenfelder (continuity, structure) -- The closing sequence
             was completely rewritten at the request of Mark, who felt its silly
             tone conflicted with the rather graphic endgame. The task-oriented
             nature of the hints are his brainchild; they assume less and
-            provide more. More info about Mark can be found at:^
-            ", (strong) "http://www.zompist.com/", "^^
+            provide more. More info about Mark can be found at:^",
+            (strong) "http://www.zompist.com/", "^^
 
-            Other testing performed by: Greg Galcik and Heather Garvey.";
+            Other testing performed by: Greg Galcik, Heather Garvey.";
         ];
 
 Menu    -> HintMenu "Hints"
@@ -404,7 +288,10 @@ Hints   -> -> -> -> JunctionHints "What can I do in the junction?"
             "That metal railing looks interesting."
             "CLIMB ON THE METAL RAILING."
             "There's something disturbing about the floor, too."
-            "EXAMINE FLOOR.";
+            "EXAMINE FLOOR."
+            "Note also that there are doors that keep the wind out of
+            the cars."
+            "You can knock on the doors, but be ready to run...";
 
 Hints   -> -> -> -> DarkroomHints "What can I do in the darkroom?"
  has    concealed
@@ -419,6 +306,17 @@ Hints   -> -> -> -> DarkroomHints "What can I do in the darkroom?"
             light cord."
             "Oh, and be sure to read the containers of any chemicals
             you find... nasty accidents might happen otherwise.";
+
+Hints   -> -> -> -> ChemicalHints "What can I do with the chemicals?"
+ has    concealed
+ with   hint
+            "The hydroxide bottle is there just so you can read the label."
+            "The acid and developer are much more useful."
+            "Mixed, they produce deadly vapors."
+            "So be sure to mix them where there is a lot of ventilation."
+            "Speaking of ventilation, have you found the air vents yet?"
+            "You might want to delay mixing the acid and developer until you
+            have found where else you may need the acid.";
 
 Hints   -> -> -> -> PassengerHints "What can I do with the passengers?"
  has    concealed
@@ -483,7 +381,9 @@ Hints   -> -> -> -> "What can I do up here?"
             "If you've done certain tasks, you can also get to the
             engine."
             "Best of all, you can kill the terrorists."
-            "But you need some things from the darkroom.";
+            "Examine the air vents."
+            "They draw air (or other gasses) into the cars."
+            "You need some things from the darkroom.";
 
 Menu    -> -> -> MailCarMenu "The Mail Car"
  has    concealed;
@@ -554,8 +454,8 @@ Hints   -> -> -> -> GlassBoxHints "The Plexiglas box is locked, and I
             "The hint is that they're attached to a scale."
             "You need to balance them."
             "Did you read the labels? If you know a little chemistry
-            (try reading the children's magazine) that may offer a
-            clue..."
+            (try reading the children's magazine and the bottles in the
+            darkroom) that may offer a clue..."
             "One is an acid, the other a base."
             "You need to balance weight AND acidity."
             "You need to use the litmus powder."
@@ -573,7 +473,7 @@ Hints   -> -> -> -> GlassBoxHints "The Plexiglas box is locked, and I
             "Or, if you're clever, just pour 75ml from the right beaker
             into the left one."
             "Don't mix the neutral solution with the acid or cleaner!
-            That will unbalance the acidity again!";
+            That will unbalance the acidity again.";
 
 Hints   -> -> -> -> BlackSphereHints "What's with the black sphere?"
  has    concealed
@@ -632,8 +532,7 @@ Hints   -> -> -> -> ControlHints "How do I get to the train controls?"
              conductor."
             "Listen carefully to what he says."
             "One name sounds important."
-            "If you need another clue, show him either the ring or
-             the photograph."
+            "If you need another clue, show him the ring."
             "ASK CONDUCTOR ABOUT LILY."
             "You can also prey on his arachnophobia."
             "SHOW WOLFIE TO THE CONDUCTOR.";
