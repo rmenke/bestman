@@ -696,7 +696,7 @@ Object  Boxes "boxes"
             move WhiteBox.con_t to self;
             StopDaemon(self);
         ],
- has    transparent;
+ has    transparent pluralname;
 
 Box     BlackBox "black box"
  with   name "black", con_f WhiteBox,
@@ -720,70 +720,77 @@ Box     WhiteBox "white box"
             "Nestled in the undercarriage is a white plastic box.";
 
 [   Explode     the_car sphere_car pass_car;
-    the_car = FindCar(WhiteBox); if (the_car == nothing) rfalse;
-    the_car = the_car.car;
+
+    if (BlackBox.con_f == nothing) rfalse;
     
+    the_car = FindCar(WhiteBox);
+    if (the_car) the_car = the_car.car;
+    
+    if (TestScope(BlackBox))
+        print "^The wire attached to ", (the) BlackBox, " breaks!^";
+
     if (TestScope(WhiteBox)) {
         deadflag = 1;
         print_ret "^", (The) WhiteBox, " explodes!";
     }
 
-    if (TestScope(BlackBox))
-        print "^The wire attached to ", (the) BlackBox, " breaks!^";
-    
-    if (the_car == location.car) {
-        deadflag = 1;
-        "^Suddenly the entire world is flame and noise as an explosion
-        rips through the car. Your pain is, thankfully, brief.";
-    }
-    
-    if (the_car < location.car) {
-        deadflag = 1;
-        "^One of the cars closer to the front of the train explodes in
-        a ball of fire and shrapnel. Unfortunately, your car plows
-        into the flaming wreckage and derails. Between the fire and
-        the flying debris, there's very little left of you.";
-    }
-    
-    print "^One of the cars behind you explodes!^";
-    
-    sphere_car = FindCar(BlackSphere);
-    if (sphere_car) sphere_car = sphere_car.car; else sphere_car = 0;
-    
-    if (the_car == sphere_car) {
-        deadflag = 1;
-        "^A second explosion, a million times more powerful than
-        the first, quickly follows.";
-    }
-    else if (the_car < sphere_car) {
-        deadflag = 1;
-        "^Another car plows into the flaming wreckage. It too
-        explodes, but with a force a million times greater than
-        the first.";
-    }
-    
-    pass_car = FindCar(Passengers);
-    if (pass_car) pass_car = pass_car.car; else pass_car = 0;
-    
-    if (the_car == pass_car) {
-        remove Passengers;
-        give ExplosiveHints ~concealed;
-        print "^Unfortunately, the hostage passengers were in that
-            car.^";
-    }
-    else if (the_car < pass_car) {
-        remove Passengers;
-        give ExplosiveHints ~concealed;
-        print "^The car carrying the passengers plows into the flaming
-            wreckage. You wince when you realize that there's no
-            chance for survivors...^";
-    }
+    if (the_car) {
+    	if (the_car == location.car) {
+            deadflag = 1;
+            "^Suddenly the entire world is flame and noise as an explosion
+            rips through the car. Your pain is, thankfully, brief.";
+    	}
+    	
+    	if (the_car < location.car) {
+            deadflag = 1;
+            "^One of the cars closer to the front of the train 
+	    explodes in a ball of fire and shrapnel. Unfortunately, 
+	    your car plows into the flaming wreckage and derails. 
+	    Between the fire and the flying debris, there's very 
+	    little left of you.";
+	}
+    	
+	print "^One of the cars behind you explodes!^";
+    	
+    	sphere_car = FindCar(BlackSphere);
+    	if (sphere_car) sphere_car = sphere_car.car;
+    	
+    	if (the_car == sphere_car) {
+            deadflag = 1;
+            "^A second explosion, a million times more powerful than
+	    the first, quickly follows.";
+	}
 
+	else if (the_car && the_car < sphere_car) {
+            deadflag = 1;
+            "^Another car plows into the flaming wreckage. It too
+            explodes, but with a force a million times greater than
+            the first.";
+    	}
+    	
+    	pass_car = FindCar(Passengers);
+    	if (pass_car) pass_car = pass_car.car;
+    	
+    	if (the_car == pass_car) {
+            remove Passengers;
+            give ExplosiveHints ~concealed;
+            print "^Unfortunately, the hostage passengers were in that
+            	car.^";
+    	}
+    	else if (the_car < pass_car) {
+            remove Passengers;
+            give ExplosiveHints ~concealed;
+            print "^The car carrying the passengers plows into the flaming
+            	wreckage. You wince when you realize that there's no
+            	chance for survivors...^";
+    	}
+    }
+	
     while (BlackBox.con_f provides con_f) {
         if (TestScope(BlackBox.con_f))
             if (BlackBox.con_f hasnt concealed)
                 print "^Before you can catch it, the end of the
-                    red wire zips through the room!^";
+                    red wire zips through your fingers!^";
             else
                 print "^Something (a wire possibly?) snakes through the
                     undercarriage, but you can't catch it in time.^";
@@ -791,8 +798,9 @@ Box     WhiteBox "white box"
     }
     
     remove WhiteBox;
-
-    BlackBox.con_f = nothing; BlackBox.react_after = NULL;
+    
+    BlackBox.con_f = nothing;
+    BlackBox.react_after = NULL;
     StopDaemon(Boxes);
 ];
 
@@ -1402,9 +1410,22 @@ Class   Outside
             if (deadflag) " off the train wasn't one of your more
                 inspired ideas. The explosion was pretty, though.";
             
-            remove noun;
-            print_ret (The) noun, " flies off the train and out of
-                your life.";
+	    remove noun;
+
+	    print (The) noun, " fall";
+	    if (noun hasnt pluralname) print "s";
+	    print " off the train and hit";
+	    if (noun hasnt pluralname) print "s";
+	    print " the ground. Within moments ";
+	    if (noun has pluralname) print "they are";
+	    else print "it is";
+	    print " out of sight.^";
+	    
+	    if (noun == WhiteBox or BlackBox or Boxes &&
+ 		Explode() && deadflag == 0)
+		"^A dull explosion can be heard in the distance.";
+	    
+	    rtrue;
 	],
  has    light;
 
