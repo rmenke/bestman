@@ -148,7 +148,7 @@ Object  -> NiceConductor "conductor"
             "The conductor shakes his head.^^
             ~I must stay here and monitor the engine,~ he says";
         ],
-        discover [ c;
+        discover [;
             held_back_mode = false;
 
             move EvilConductor to parent(self);
@@ -190,7 +190,7 @@ Object  -> NiceConductor "conductor"
             your head.  It connects, sending you to
             dreamland...^^";
             
-            @read_char 1 -> c; @erase_window -1;
+            PressSpaceToContinue();
             
             if (parent(BlackSphere)) { ! wasn't removed
                 move BlackSphere to GlassBox; give GlassBox ~open;
@@ -320,7 +320,7 @@ Control -> -> Brake "emergency brake"
         description
             "A simple apparatus: a red plastic ball on a cord. Pull it 
             and the train stops, quickly. As in derailment.",
-        before [ c;
+        before [;
             if (self.Control::before()) rtrue;
             
          Pull:
@@ -335,7 +335,7 @@ Control -> -> Brake "emergency brake"
                     flies off the tracks. You close your eyes tightly
                     as you prepare for the end...^^";
                                 
-                @read_char 1 -> c; @erase_window -1;
+                PressSpaceToContinue();
                 PlayerTo(Seat4BPlane, 1);
                 the_time = the_time - 5;
                 DisplayStatus(); DrawStatusLine();
@@ -366,7 +366,7 @@ Control -> -> Brake "emergency brake"
 
                 give EndgameMenu ~concealed;
                 
-                @read_char 1 -> c; @erase_window -1;
+                PressSpaceToContinue();
                 print "^^^^^^^^^^^^"; Quote(4); PlayerTo(CrashSite);
                 DisplayStatus(); DrawStatusLine();
 
@@ -635,7 +635,7 @@ Object CrashSite "Crash Site"
          default:
             "What? No... don't understand... too dizzy...";
         ],
-        number, daemon [ c obj;
+        number, daemon [ obj;
             switch (++self.number) {
              1,2,3,4: return;
 
@@ -662,7 +662,7 @@ Object CrashSite "Crash Site"
                 collapses, his one good eye going cloudy in death.
                 Voices approach, but oblivion approaches faster...^^";
 
-            @read_char 1 -> c; @erase_window -1;
+            PressSpaceToContinue();
             
             if (task_done->RESCUE) {
                 print "^~...when we found the passengers in the car

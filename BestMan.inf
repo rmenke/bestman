@@ -22,8 +22,25 @@ Constant TRAIN_SPEED	    = 60;
 
 ! Special Print Routines
 
-[ Emphasis str; style underline; print (string) str; style roman; ];
-[ Strong   str; style bold;      print (string) str; style roman; ];
+[   Emphasis str; style underline; print (string) str; style roman; ];
+[   Strong   str; style bold;      print (string) str; style roman; ];
+
+Constant PPSTC = "[Please press SPACE to continue]";
+
+[   PressSpaceToContinue c;
+    
+    c = 0->33; if (c == 0) c = 80;
+    
+    font off;
+    spaces((c - 32) / 2);
+    print (string) PPSTC;
+    font on;
+
+    do { @read_char 1 -> c; }
+    until (c == 10 or 13 or 32);
+    
+    @erase_window -1;
+];
 
 Global liquid_quantity;         ! Volume of liquid as determined by parser.
 
@@ -150,7 +167,7 @@ Include "Parser";
 [   Amusing c; 
 
     if (AmusingHints.select() ~= 2) {
-        #Ifdef LIB_PRE_63; print "[Please press SPACE to continue.]^";
+        #Ifdef LIB_PRE_63; print "^", (string) PPSTC, "^";
         #Ifnot; L__M(##Miscellany, 53); #endif;
         @read_char 1 -> c; @erase_window -1; new_line;
     }
@@ -1634,8 +1651,6 @@ Statusline time;
     obj = 0->33; if (obj == 0) obj = 80;
     spaces((obj - 12) / 2);
     print "THE BEST MAN^^";
-    spaces((obj - 32) / 2);
-    print "[Please press SPACE to continue]";
     font on;
         
     box "We'll try to stay serene and calm..."
@@ -1643,8 +1658,7 @@ Statusline time;
         ""
         "        -- Tom Lehrer, ~Who's Next?~";
 
-    do { @read_char 1 -> obj; } until (obj == 10 or 13 or 32);
-    @erase_window -1;
+    PressSpaceToContinue();
 
     #Ifndef DEBUG;
     give random(Computer1, Computer2, Computer3, Computer4, Computer5) on;

@@ -42,7 +42,7 @@ Object  Airplane "Airplane"
             ), ",~ but stop before you completely embarrass
             yourself.";
         ],
-        each_turn [ i;
+        each_turn [;
             self.number++;
             
             if (self.number > 6 && Player notin Seat4BPlane) {
@@ -106,7 +106,7 @@ Object  Airplane "Airplane"
                     fingers... twitching... touching you... shaking
                     you...^^";
                 
-                @read_char 1 -> i; @erase_window -1;
+                PressSpaceToContinue();
                 the_time = 720; PlayerTo(SanJoseStation, 1);
                 DisplayStatus(); DrawStatusLine();
                 
@@ -128,7 +128,7 @@ Object  Airplane "Airplane"
                 print "You take the ticket and a copy of the schedule
                     and make your way out to the platform.^^";
                 
-                @read_char 1 -> i; @erase_window 0;
+                PressSpaceToContinue();
                 
                 print (strong) "^Sole survivor syndrome.^^";
                 
