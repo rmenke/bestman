@@ -518,8 +518,8 @@ Class   Liquid (5)
                 Liquid.destroy(noun);
                 if (TestScope(LavatorySink))
                     "You pour the liquid down the drain.";
-                "Liquid splashes all over the floor, seeping through unseen
-                cracks until it is gone.";
+                "Liquid splashes all over the place, seeping through
+		unseen cracks until it is gone.";
             }
         ],
 
@@ -1983,7 +1983,7 @@ Extend 'look'
 Verb 'lubricate' 'lube' 'oil'
     * noun                              -> Lubricate;
 
-Verb 'puncture' 'poke' 'stab'
+Verb 'puncture' 'poke' 'stab' 'stick'
     * noun 'into'/'through'/'thru' noun	-> Insert
     * noun 'with' noun			-> Insert reverse;
 
