@@ -278,6 +278,7 @@ Object  -> "shelf"
                 move DeveloperBottle to self;
                 move AcidBottle to self;
 		move BaseBottle to self;
+		give ChemicalHints ~concealed;
             }
             
             if (child(self) == nothing)
