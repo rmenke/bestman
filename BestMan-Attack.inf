@@ -218,10 +218,10 @@ Object  DarkroomDoor
             anything else, has been covered with black paint.",
         found_in Car4Aft Darkroom,
         door_to [;
-            if (location == Car4Aft) return Darkroom; return Car4Aft;
+            if (real_location == Car4Aft) return Darkroom; return Car4Aft;
         ],
         door_dir [;
-            if (location == Car4Aft) return w_to; return e_to;
+            if (real_location == Car4Aft) return w_to; return e_to;
         ],
         before [;
          Listen:
@@ -441,8 +441,8 @@ Object  -> IceChest "ice chest"
                 "You haven't got a prayer of getting it down that hatch.";
             }
 
-            if (second.door_to == CarMissingMsg) {
-                <Open second>;
+            if (real_location.(second.door_dir).door_to == CarMissingMsg) {
+                <Open location.(second.door_dir)>;
                 remove self;
                 print "^", (strong) "Whump!", " ", (The) self, " falls off
                     the end of the train and out of your life";
@@ -510,7 +510,7 @@ Object  Terrorists "terrorists"
         march, daemon [ new_location obj flag;
             Achieved(EX_TERRORISTS);
             
-            if (parent(self) == location && self hasnt general) {
+            if (parent(self) == real_location && self hasnt general) {
                 StopDaemon(self); give self general;
                 give TerroristHints ~concealed;
                 "^Oh dear, it looks like you've walked right into the
@@ -897,18 +897,27 @@ Class   OilTimer (20)
 
 Class   CarDoor
  with   name "door" "to" "car" "junction",
-        parse_name [ w c;
+        parse_name [ w c d;
+            w = self.door_dir();
+            
+            objectloop (d in compass) if (d.door_dir == w) break;
+
             if (parser_action == ##TheSame) return -2;
 
-            if (location ofclass CarJunction) {
+            if (location ofclass CarJunction)
                 while ((w = NextWordStopped()) ~= -1)
-                    if (w == 'door' or 'to' or 'car') c++;
-                    else if (TryNumber(wn-1) == (self.&found_in-->0).car) c++;
+                    if (w == 'door' or 'to' or 'car' ||
+                        TryNumber(wn-1) == (self.&found_in-->0).car ||
+                        WordInProperty(w, d, name)) c++;
                     else break;
-                return c;
-            }
             
-            return -1;
+            else
+                while ((w = NextWordStopped()) ~= -1)
+                    if (w == 'door' or 'to' or 'car' or 'junction' ||
+                        WordInProperty(w, d, name)) c++;
+                    else break;
+
+            return c;
         ],
         short_name [;
             if (location ofclass CarJunction)
