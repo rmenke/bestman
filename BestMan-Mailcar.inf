@@ -1,0 +1,517 @@
+! -*- inform-project-file:"BestMan.inf" -*-
+! $Id$
+
+Object  MailCar "Mail Car"
+ with   name "mail" "bag" "bags" "letter" "letters"
+             "parcel" "parcels" "shelf" "shelves",
+        car 2,
+        initial [; Achieved(REACH_MAILCAR); ],
+        description
+            "Once inside, you realize why this car wasn't accessible
+            from the rest of the train:  it's a mail transport
+            car. Bags of letters and parcels fill the shelves around
+            you, almost completely obscuring the one light fixture in
+            the car. The sliding metal door @02 offers a possible
+            exit.",
+        e_to SlidingMetalDoor,
+        u_to MetalHatchInside;
+
+Object  -> SlidingMetalDoor "large metal door" ! A red herring
+ with   name "large" "sliding" "rolling" "metal" "door",
+        description "It looks very strong.",
+        door_dir e_to,
+        before [;
+         Open:
+            "Try as you might, you cannot open the door. It must be
+            locked from the other side.";
+            
+         Unlock:
+            "Whatever lock is on this door, it isn't on this side.";
+        ],
+ has    scenery door;
+
+Object  -> MetalHatchInside "metal hatch"
+ with   name "metal" "ventilation" "hatch" "panel" "window",
+        description
+            "The metal hatch leads up and out of this car.",
+        when_open
+            "An open metal hatch reveals the sun and sky above.",
+        when_closed
+            "A hatch in the roof of the car has been shut.",
+        door_dir u_to,
+        door_to  Car2Topside,
+        after [;
+         Open:
+            give self  light;
+         Close:
+            give self ~light;
+        ],
+ has    static open door openable light;
+
+LightBulbSocketClass -> "light socket";
+
+LightBulbClass -> -> "60-watt soft-white incandescent light bulb"
+ with   name "soft" "white" "soft-white" "60-watt" "60" "watt" "incandescent",
+        description
+            "It's your average 60-watt soft-white incandescent light
+            bulb, good for general purpose work in the home or
+            office.";
+
+Object  -> WoodenCrate "wooden crate"
+ with   name "wooden" "crate" "box" "packing" "carton",
+        initial [;
+            if (self has general)
+                print_ret (The) self, " sits at the @01 end of the car,
+                    innocently concealing its diabolical contents.";
+            if (MetalHatchInside has open)
+                "The beam of sunlight from the open metal hatch draws
+                your eyes to a large wooden crate sitting at the @01
+                end of the car.";
+            else "At the @01 end of the car sits a large wooden crate.";
+        ],
+        before [;
+         Open:
+            Quote(0);
+
+            give MailCarMenu ~concealed;
+            
+            move MetalBox to parent(self);
+            remove self;
+            
+            PronounNotice(MetalBox);
+            
+            if (self hasnt general) {
+                give self general;
+                "You pull off the front of ", (the) self, ". Horror
+                    grips your stomach as you survey the infernal
+                    contraption inside. It could be only one thing: a
+                    bomb.";
+            }
+            else "You open ", (the) self, ", once again revealing ",
+                (the) MetalBox, ".";
+        ],
+ has    static;
+
+Object  GlassPane "rose-colored glass pane"
+ with   name "rose" "colored" "rose-colored" "of" "glass" "pane" "window"
+            "sheet",
+        before [;
+         Open:
+            <<Open MetalBox>>;
+
+         Attack:
+            "Try as you might, you can't break the glass.  It's too
+            thick.";
+
+         ThrownAt:
+            print_ret (The) noun, " bounces off ", (the) self, ".";
+            
+         Take:
+            if (parent(self) == nothing)
+                <<Open MetalBox>>;
+            else "You'd cut your hands to ribbons playing with that.";
+            
+         Cut:
+            if (second ~= Ring) "That's too dull to cut glass.";
+            if (parent(self) == nothing) {
+                move self to parent(MetalBox);
+                give MetalBox open;
+                print "As you cut the glass, you hear a gentle ",
+                    (emphasis) "hiss", ", as if gas is escaping.^";
+                
+                if (WhitePowder.each_turn()) rtrue;
+                
+                Achieved(GLASS_PANE);
+                give GlassBoxHints ~concealed;
+                
+                "^Nothing else happens, so you carefully remove the
+                cut pane and set it to the side.";
+            }
+            else "No use cutting that up more.";
+        ];
+
+Object  SiliconeCaulking "silicone caulking"
+ with   name "silicone" "plastic" "caulk" "caulking" "gasket" "gel"
+ 	    "gooey" "rubbery" "goop" "sealant",
+        description
+            "The centimeter-wide gap between the edge of the metal box and the
+            glass pane has been filled with a rubbery sealant, probably
+            silicone.",
+        capacity 1,
+
+        react_before [;
+         EmptyT:
+            if (noun ofclass Bottle && second == self)
+                "It's doubtful that the contents of ", (the) noun,
+                " could damage ", (the) self, ".";
+         Transfer:
+            if (noun ofclass Liquid && second == self)
+                print_ret (The) noun, " has no effect on ",
+                (the) self, ".";
+        ],
+        before [;
+         Take:
+            <<Open MetalBox>>;
+            
+         Receive:
+            if (noun == OilCan) rfalse;
+            "Try as you might, you cannot puncture ", (the) self,
+                " with ", (the) noun, ".";
+        ],
+        after [;
+         Receive:
+            print_ret (The) noun, " easily pierces ", (the) self, ".";
+         LetGo:
+            print_ret "The hole left by ", (the) noun, " seals
+                itself.";
+        ],
+
+ has    static open container;
+
+Object  MetalBox "metal box"
+ with   name "metal" "box" "crate" "bomb",
+        add_to_scope GlassPane SiliconeCaulking,
+        initial
+            "In front of you stands a large metal box, closed on all
+            sides save the front, which is protected by a pane of
+            glass. The rose-tinting of the glass hints at rather than
+            exposes the complicated machinery held within.",
+        before [;
+         Open:
+            if (self has open) rfalse;
+            Quote(1);
+            "Try as you might, the glass is securely affixed to the
+            front of the box by some thick, gooey sealant. The sealant 
+            itself seems to be invulnerable to all of your attacks.";
+            
+         Close:
+            move WoodenCrate to parent(self); remove self;
+            PronounNotice(WoodenCrate);
+            "You close up the front of ", (the) WoodenCrate, ".";
+            
+         Search:
+            if (self hasnt open) print "The rose-colored glass hampers
+                your ability to make out details...^";
+            else print "Even with the glass removed, it's still
+                difficult to comprehend the box's contents all at
+                once...^";
+
+            if (Locale(self, "Inside the bomb you see",
+                       "Inside the bomb you also see")) ".";
+            rtrue;
+        ],
+ has    static openable transparent container;
+
+Object  -> Sensor
+ with   short_name "tube filled with gas",
+        name "glass" "tube" "of" "gas" "gold" "wire" "light" "sensor",       
+        initial
+            "A curious glass tube sticks out of a mass of electronics
+            glued to the back of the box. Inside the tube you see a
+            swirling gas. A thin gold wire spirals its way around the
+            outside of the tube.",
+        description [;
+            if (self has moved)
+                "The tube has cracked, allowing the gas to escape.";
+            else "Fluorescent gas swirls around the inside of the tube.";
+        ],
+        before [;
+         Attack:
+            if (self.each_turn == NULL)
+                "It's already broken.";
+            
+            print (emphasis) "Crack", "! The glass tube splits open";
+
+            if (BlackSphere in GlassBox) {
+                deadflag = 1;
+                ". You are engulfed in a million-degree fireball.";
+            }
+            else
+                " but nothing else happens. What a gyp.";
+
+            self.each_turn   = NULL;
+            self.short_name  = "cracked glass tube";
+            (self.&name)-->2 = 'cracked';
+            (self.&name)-->3 = 'broken';
+            give self moved;
+        ],
+        each_turn [ obj;
+            give MetalBox ~transparent;
+            
+            objectloop (obj has light && obj~=RedBulb && TestScope(obj,self)) {
+                print "^", (The) self, " cracks with a loud ",
+                    (emphasis) "pop";
+
+		give LightHints ~concealed;
+
+                if (BlackSphere in GlassBox) {
+                    deadflag = 1;
+                    ", followed by a much larger explosion.";
+                }
+                
+                else {
+                    print ", but nothing else happens.^";
+                    self.each_turn   = NULL;
+                    self.short_name  = "cracked glass tube";
+                    (self.&name)-->2 = 'cracked';
+                    (self.&name)-->3 = 'broken';
+                    give self moved;
+                    break;
+                }
+            }
+            
+            give MetalBox transparent;
+        ],
+ has    static;
+
+Object  -> GlassDish "glass dish"
+ with   name "glass" "evaporation" "concave" "dish" "lens",
+        initial
+            "A glass dish sits under a thick metal coil, which dangles
+            from another breadboard packed with electronics.",
+        before [;
+         PutOn:
+            <<Insert noun second>>;
+         LetGo:
+            if (noun == WhitePowder)
+                "It would be easier to carry that around in the dish.";
+        ],
+ has    open container;
+
+Object  -> -> WhitePowder "white powder"
+ with   name "white" "powder" "phosphorous",
+        article "some",
+        description "It's a white powder that sticks to itself in clumps, like
+            flour that has been allowed to get damp.",
+        
+        each_turn [ in_box;
+            in_box = IndirectlyContains(MetalBox, self);
+            
+            if (in_box && parent(GlassPane) == nothing) rfalse;
+            
+            StartDaemon(self);
+            
+            if (self has oiled) rfalse;
+
+	    give PowderHints ~concealed;
+            
+            print "^", (strong) "Whumpf!", " ", (The) self, " suddenly
+                bursts into flame!^";
+            
+            if (self in player) { ! Dumb, dumb, dumb
+                deadflag = 1;
+                "^Carrying around combustible substances is not a good
+                idea.";
+            }
+            
+            if (in_box && BlackSphere in GlassBox) {
+                deadflag = 1;
+                "^The resulting fire must have set off some sensor in
+                the bomb. The subsequent explosion vaporizes you, the
+                train, and a large portion of California instantaneously.";
+            }
+            
+            Achieved(PHOSPHOROUS);
+            
+            StopDaemon(self); remove self;
+            "^", (The) self, " quickly consumes itself.";
+        ],
+
+        daemon [ in_box;           
+            if (self has oiled || TestScope(self)) rfalse;
+            
+            in_box = IndirectlyContains(MetalBox, self);
+            
+            if (in_box && BlackSphere in GlassBox) {
+                deadflag = 1;
+                "^", (emphasis) "Something", " you did must have
+                triggered the bomb, because the resultant explosion
+                vaporizes you, the train, and a large portion of
+                California instantaneously.";
+            }
+            
+            Achieved(PHOSPHOROUS);
+            
+            StopDaemon(self); remove self;
+        ];
+
+Object  -> GlassBox "plexiglas box"
+ with   name "plastic" "plexiglas" "box",
+        capacity 1,
+        description [;
+            "It's made a transparent plastic.^^The thick plastic walls
+            distort the box's contents.";
+        ],
+        initial [;
+            print "In the center of the bomb is a Plexiglas box.^";
+            if (Locale(self, "Inside it you see", nothing)) ".";
+            rtrue;
+        ],
+        after [;
+         Open:
+            give BlackSphereHints ~concealed;
+            
+         LetGo:
+	    ! This achieves the phosphorous task because its possible to
+	    ! lubricate the phosphorous beyond the length of the game.
+	    
+	    Achieved(GLASS_BOX); Achieved(PHOSPHOROUS);
+	    
+            if (Photograph in BlackSphere) {
+                move Photograph to self; PronounNotice(Photograph);
+                give PhotographHints ~concealed;
+                "As you remove ", (the) BlackSphere, ", you notice something
+                else inside ", (the) self, ".";
+            }
+        ],
+ has    static openable locked transparent container;
+
+Object  -> -> BlackSphere "black sphere"
+ with   name "black" "sphere",
+        initial
+            "Sitting on a nest of electronics within the glass box is
+            an ominous black sphere.",
+        description "It's black and seamless.",
+        before [;
+         Open:
+            "You can't seem to figure out how to open ", (the) noun, ".";
+        ],
+ has    openable;
+
+Object  -> -> -> Photograph "photograph"
+ with   name "photo" "photograph" "picture",
+        initial
+            "Hidden under the sphere was an old photograph.",
+        description [;
+	    give self general;
+	    
+            if (self.last_examined == Terrorists or TerroristCorpses)
+                "None of the terrorists resemble the people in the
+                photo.";
+            if (self.last_examined == Passengers or PassengerCorpses)
+                "None of the passengers resemble the people in the
+                photo.";
+            if (self.last_examined == NiceConductor) {
+                give NiceConductor general; ! found him out
+                Achieved(MAN_IN_PHOTO);
+                "The young man in the photo bears a striking
+                resemblance to the conductor!";
+            }
+
+            "It's a photograph of a handsome young couple at the
+            beach. Judging by the man's hairstyle, you'd place it
+            sometime in the early '70s.";
+        ],
+        last_examined,
+        react_before [;
+	    if (action ~= ##Examine)
+		self.last_examined = nothing;
+            else {
+		if (noun == self) rfalse;
+ 		self.last_examined = noun;
+		if (self has general) <<Examine self>>;
+	    }
+	    give self ~general;
+        ];
+        
+Object  -> Scales "pair of scales"
+ with   name "brass" "pair" "of" "scales" "scale" "balance",
+        add_to_scope LeftBeaker RightBeaker,
+ 	description [;
+            
+            print "A pair of antique brass scales, intricately carved.^^The
+                scales are ";
+            
+            if (self.tilt > 0)
+                 "tilting to the right.";
+            else if (self.tilt < 0)
+                 "tilting to the left.";
+            else "balanced.";
+        ],
+        initial
+            "Above the glass box is an antique pair of brass scales,
+            curiously out of place when compared to the high-tech
+            components around them. The metal dishes normally
+            associated with such scales have been replaced by two
+            labeled Pyrex beakers.",
+	tilt 0, each_turn [ old_tilt not_locked;
+            if (BlackSphere in GlassBox) 
+                if (LeftBeaker.test() || RightBeaker.test()) return;
+
+	    old_tilt = self.tilt;
+            
+            if (child(LeftBeaker) == nothing && child(RightBeaker) == nothing)
+		self.tilt = 0;
+            else if (child(LeftBeaker) == nothing)
+                 self.tilt = 1;
+            else if (child(RightBeaker) == nothing)
+                 self.tilt = -1;
+            else if (child(LeftBeaker).quantity < child(RightBeaker).quantity)
+                 self.tilt = 1;
+            else if (child(LeftBeaker).quantity > child(RightBeaker).quantity)
+                 self.tilt = -1;
+            else self.tilt = 0;
+	    
+	    if (old_tilt ~= self.tilt) {
+		new_line; print (The) self;
+		switch (self.tilt) {
+	     	 -1:	print " tilt to the left.^";
+	     	 0:	print " go into balance.^";
+	     	 1:	print " tilt to the right.^";
+	    	}
+	    }
+
+	    ! We can get away with comparing the amount and not the
+	    ! concentration because we are guaranteed the volumes to
+	    ! be equal.	    
+	    
+            not_locked = (self.tilt == 0) &&
+ 		(child(LeftBeaker).acidity == child(RightBeaker).acidity);
+            
+            if (not_locked == (GlassBox hasnt locked)) return;
+            
+            if (not_locked) give GlassBox ~locked;
+            else            give GlassBox  locked;
+            
+            "^A quiet ", (emphasis) "click", " comes from ",
+                (the) GlassBox, ".";
+        ],
+ has    static pluralname;
+
+Class   Beaker class Bottle,
+ with   name "beaker" "beakers//p",
+        capacity 500,
+        description [;
+            print "A glass Pyrex beaker, maximum capacity 500ml, with
+                something scrawled on the side in grease pencil. There's
+                a glass probe fused to the bottom.^^";
+
+            if (~~ ObjectIsUntouchable(self, 1)) <<Search self>>;
+            else "You can't get close enough to see the contents, however.";
+        ],
+        before [;
+            Take,
+             Transfer:  print_ret (The) self, " is firmly attached to ",
+             (the) Scales, ".";
+        ],
+        test [;
+            if (child(self) == nothing) {
+                deadflag = 1;
+                "Emptying ", (the) self, " was not a good idea. It
+                    seems to have triggered the bomb.";
+            }
+        ],
+ has    scenery open measured;
+
+Beaker -> LeftBeaker "left beaker"
+ with   name "left",
+        label "Written on the side are the letters ~NaOH.~";
+
+Liquid -> -> with quantity 100, acidity -100;
+
+Beaker -> RightBeaker "right beaker"
+ with   name "right",
+        label "Written on the side are the letters ~HCl.~";
+
+Liquid -> -> with quantity 100, acidity  100;
+

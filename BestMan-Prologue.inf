@@ -1,0 +1,255 @@
+! -*- inform-project-file:"BestMan.inf" -*-
+! $Id$
+
+Object  Airplane "Airplane"
+ with   description [;
+            print "The airlines claim that planes are getting bigger,
+		but you don't believe a word of it. This cramped cabin
+		feels about as roomy as a culvert, and has
+		approximately the same decor.^^
+		
+            	There is a door @00 and a small kitchenette @01.^";
+
+	    if (self hasnt visited)
+ 	    	"^(First time players should type INFO for gameplaying
+		details.)";
+	],
+        in_to
+            "If you want to get in your seat, just say so.",
+        u_to
+            "You're high enough as it is.",
+        d_to
+            "Let the pilot decide when to land.",
+        n_to
+            "You wander towards the back. After hovering around the
+            galley for a bit, you return to the cabin.",
+        s_to cockpitDoor,
+        cant_go
+            "You're 10,000 meters up in the air. Where do you plan to
+            go, the wing?",
+        number 0,
+        before [;
+         Sleep:
+            "For the oddest reason, you feel that you already ",
+            (emphasis) "are", ".";
+         Wake:
+            self.number = 10; "This nightmare is all too familiar...";
+         Sing:
+            "You hum a few lines of ~", (string) random(
+                "Takin' a Ride (on Heavy Metal)",
+                "Fly Like an Eagle",
+                "Mighty Wings"
+            ), ",~ but stop before you completely embarrass
+            yourself.";
+        ],
+        each_turn [ i;
+            self.number++;
+            
+            if (self.number > 6 && Player notin Seat4BPlane) {
+                print "^A flight attendant rushes up, escorts you back
+                    to your seat, clips you in, then disappears.^";
+                PlayerTo(Seat4BPlane, 0);
+                give SeatBelt ~open;
+            }
+            
+            if (self.number > 6 && SeatBelt has open) {
+                print "^A breathless flight attendant rushes up and
+                    clips your belt closed for you, then
+                    disappears.^";
+                give SeatBelt ~open;
+            }
+            
+            switch (self.number) {
+             4: "^The plane shudders slightly.";
+                
+             6: "^", (strong) "*** PING ***", "^^~Ladies and
+                    gentlemen, we are experiencing some minor
+                    turbulence. Please return to your seat and fasten
+                    your seat belts.~";
+                
+             9: "^The plane lurches hard to the left. Your stomach
+                churns.";
+                                
+             11:
+                print "^A bright blue flash illuminates the entire
+                    @03 side of the airplane, followed by the noise of
+                    a tremendous explosion. The wing is on fire!^^";
+                
+                print "For a brief moment, everything is silent as the
+                    situation slowly sinks into the minds of the
+                    passengers. Then pandemonium breaks out in the
+                    cabin as the plane goes into a near-vertical
+                    dive.^^";
+                
+                print "~It's all your fault, you know.~^^";
+                
+                print "Your traveling companion turns to face you, and
+                    you recoil in horror. The left side of his face is
+                    horribly mutilated, the skin torn and burnt. The
+                    empty eye socket stares at you accusingly.^^";
+
+                print "~Why did you have to survive? I had a family, a
+                    child... they depended on me! You had nothing! You
+                    ", (emphasis) "were", " nothing, and you still ",
+                    (emphasis) "are", " nothing!~^^";
+                
+                print "He leans forward, and you can smell the horrid
+                    odor of burnt flesh.^^";
+                
+                print "~Nothing...~^^";
+                
+                print "Crash positions be damned! You struggle at your
+                    seat belt, but the mechanism is jammed.^^";
+                
+                print "He's moving closer... reaching out... reaching
+                    toward you... the stumps of his
+                    fingers... twitching... touching you... shaking
+                    you...^^";
+                
+                @read_char 1 -> i; @erase_window -1;
+                the_time = 720; PlayerTo(SanJoseStation, 1);
+                DisplayStatus(); DrawStatusLine();
+                
+                current_station = 0;
+                
+                print "^...and you find yourself wrestling the station
+                    attendant.^^";
+                
+                print "~Sorry about that! Didn't mean to startle you,
+                    but by the sound of it you were having a dilly of
+                    a nightmare!^^";
+                
+                print "~Anyway, you best be going. I've written a note
+                    explaining the situation to the conductor; it's on
+                    the back of your ticket. Better hurry.~^^";
+                
+                move Ticket to Jacket; move Schedule to Jacket;
+
+                print "You take the ticket and a copy of the schedule
+                    and make your way out to the platform.^^";
+                
+                @read_char 1 -> i; @erase_window 0;
+                
+                print (strong) "^Sole survivor syndrome.^^";
+                
+                print "That's what they call it. Psychological trauma
+                    after surviving an accident that killed so many
+                    others.^^";
+
+                print "You still can't look at a plane without hearing
+                    the screaming or smelling the blood. The last time
+                    you tried to visit an airport-- just to pick up
+                    someone-- you left in an ambulance, catatonic.^^";
+
+                print "Things looked bad when the old rust bucket died
+                    this morning. Flight was out of the question,
+                    obviously, but rail had existed far earlier than
+                    planes. So you found yourself pleading your case
+                    to a sympathetic rail station operator, who
+                    managed to squeeze you onto a special charter
+                    train direct to San Diego.^^";
+
+                print "Two years ago, the wedding was postponed
+                    indefinitely by your accident. You are determined
+                    that that will not happen again. The sun is
+                    shining, the tracks are clear, and in a few hours
+                    you'll be the star of the show. Come Hell or high
+                    water, nothing is going to stop you from
+                    being...^^";
+                
+                held_back_mode = false; ! Flush remainder of commands
+                turns = 1; ! We start from scratch
+                
+                Banner(); ! Display title, &c
+                
+                move Jacket to player;  give Jacket worn;
+                move RingBox to Jacket; give RingBox ~open;
+                move Ring to RingBox;
+                
+                the_time = 744;
+
+                give TrainMenu ~concealed;
+
+                move Seat4B to Car3Before; PlayerTo(Seat4b); 
+            }
+        ],
+ has    light;
+
+Object  -> Seat4BPlane "Seat 4B"
+ with   name "my" "seat" "chair" "4b",
+        description
+            "Why are these seats always made with the scratchiest
+            nylon on the market? It's bad enough arriving all sweaty
+            from nervousness, but do you really need a rash to top it
+            all off?",
+ has    enterable supporter proper scenery;
+
+Object  -> -> SeatBelt "seat belt"
+ with   name "seat" "belt" "seatbelt" "seat-belt",
+        description [;
+            if (self has open) "The seat belt is unfastened.";
+            else "The seat belt is fastened around your waist.";
+        ],
+        before [;
+         Close:
+            if (player notin Seat4BPlane)
+                "That would be a waste of time.";
+        ],
+        react_before [;
+         Exit:
+            if (self hasnt open)
+                "You'll need to undo your belt first.";
+        ],
+ has    openable scenery;
+
+Object  -> cockpitDoor "cockpit door"
+ with   name "cockpit" "flight" "deck" "captain^s" "pilot^s" "door",
+        react_before [;
+            if (self ~= noun or second || player notin seat4BPlane) rfalse;
+         Examine:
+            rfalse;
+         default:
+            "You can't reach the door from your seat.";
+        ],
+        before [;
+         Unlock, Attack:
+            "Any attempt to tamper with ", (the) self, " is a
+            violation of FAA regulations and may result in fines
+            and/or imprisonment.";
+         Listen:
+            "You hear the pilot and copilot talking about flight-related
+            matters.";
+        ],
+ has    openable locked door scenery;
+
+Object  -> Neighbor "neighbor"
+ with   name "neighbor" "passenger" "other" "seat" "4a",
+        description [;
+            if (airplane.number < 7)
+                 "He's asleep, and he looks like he needs his rest.";
+            else "He's wide awake, gripping the armrests with
+                  white-knuckled fear. You find his fixed-forward
+                  stare somewhat disturbing.";
+        ],
+        before [;
+         Enter, Receive:
+            "That's not your seat.";
+        ],
+        life
+        [;
+            if (airplane.number < 7)
+                 "He's sound asleep. Feel some pity, why don't you?";
+            else "He's too busy babbling to pay any attention to you.";
+        ],
+        each_turn [;
+            switch (airplane.number) {
+             7:  "^The passenger next to you awakes with a start.";
+             8:  "^~I hate flying,~ your seat-mate bemoans.";
+             9:  "^~I always wonder if I'll ever see my daughter again.~";
+             10: "^~What would my wife do if I were to die?~";
+            }
+        ],
+ has    supporter animate male scenery;
+
+Object  SanJoseStation "San Jose Station" has light;
+

@@ -1,0 +1,843 @@
+! -*- inform-project-file:"BestMan.inf" -*-
+! $Id$
+
+Object  Engine "Engine"
+ with   name "wrench", car 1,
+        initial [; Achieved(REACH_ENGINE); ],
+        description
+            "For years you've wanted to ride in the engine of a
+            train. Pity it had to happen under such unpleasant
+            circumstances.",
+        u_to Car2Topside,
+        n_to Car2Topside,
+        cant_go
+            "The only way out of the engine is to go back on top of
+            the train.",
+ has    light;
+
+Object  -> NiceConductor "conductor"
+ with   name "conductor" "man",
+        article "the",
+        describe
+            "^The conductor is here, standing in front of a large bank
+            of controls.",
+        description
+            "Despite the gravity of the situation, the conductor-- a handsome,
+            gray-haired man in his early 50's-- looks cheerful, almost
+            ebullient.",
+        react_before [;
+         Drop:
+            if (noun == BlackSphere) <<Give BlackSphere self>>;
+         Go:
+            if (noun == u_obj) print "~Good Luck.~^";
+        ],
+        before [;
+         Search:
+            print_ret (The) self, " would probably object to being frisked.";
+        ],
+        life [;
+         Attack, Kiss:
+            "He's got enough problems without adding you to the list.";
+
+         WakeOther:
+            "He's quite awake already.";
+
+         ThrowAt, Give:
+            if (noun == Spider) {
+                remove Spider;
+                print_ret "~", (strong) "Aaah!", " A spider!~^^
+                    He jumps back about a foot. When he discovers that 
+                    the spider is only paper, he shoots you a look of 
+                    disgust and tosses ", (the) Spider, " off the
+                    train.";
+            }
+            
+            if (noun == BlackSphere) {
+                deadflag = 1;
+                "~Thank you,~ he says, taking ", (the) BlackSphere, ", ~and
+                now I have something for you...~^^
+                The heavy metal wrench slamming into the side of your head is
+                painful, but the pain doesn't last long.";
+            }
+            
+            "~You dropped this,~ he says, returning ", (the) noun, " to you.";
+            
+         Show:
+            switch (noun) {
+             Photograph:
+                if (self has general)
+                    return self.discover();
+                else
+                    "~That's curious.  I wonder why someone would put
+                    that in a bomb? Maybe you should go examine the
+                    passengers again.~";
+             Ring:
+                "~Gave one of those to Lily, once...~ he sighs.";
+             BlackSphere:
+                "~That looks very dangerous. Maybe you should leave it
+                with me.~";
+            }
+
+         Ask:
+            switch (second) {
+             'metal', 'box', 'bomb':
+                if (self has general) return self.discover();
+                "~A bomb? Curious... guess those Ruskies needed some
+                sort of contingency plan.~";
+             'pane', 'rose', 'colored':
+                "~The glass pane could be broken, I suppose. Pity you
+                don't have a glass cutter.~";
+             'goop', 'sealant', 'silicone', 'caulk', 'caulking':
+                "~Stuff can't be cut or torn, I'll tell you that. Used
+                to have fun tossing darts inta it at my old job.~";
+             'beaker', 'chemical', 'acid', 'hcl', 'naoh':
+                "~Never was good in chem class at school... kept
+                getting acid burns.~";
+             'spider', 'spiders', 'wolfie':
+                "~Brrr! Hate spiders, just hate 'em. Can't even bear to
+                look at 'em.~";
+             'tube', 'swirling', 'gas':
+                "~That's very curious. Just sticking out there, eh?
+                I'm sure if you broke it, things would get nasty...~";
+             'dish', 'white', 'powder':
+                "~Obviously it's another kind of trigger. Maybe it's
+                sensitive to light or moisture or somethin'.";
+             'russian', 'georgian', 'terrorist', 'terrorists',
+             'armed', 'gunmen':
+                "~Pesky fellows, but not too bright. I walked right
+                over them... they don't seem to realize that there's
+                more than one path along the train.~";
+             'train', 'railroad', 'engine', 'car', 'cars':
+                "~I'm afraid to stop the train... it may be
+                booby-trapped.~";
+             'freezer', 'ice', 'refrigerator', 'tuff-stuf', 'chest':
+                "~The refrigerator in the kitchen died... not really
+                a problem, since those reporter fellows only wanted
+                sodas... brought my own favorite nearly-indestructable
+                ice chest on board for 'em.~";
+             'soda', 'can', 'cans':
+                "~Help yourself. Nobody's gonna complain now.~";
+             'air', 'vent', 'airvent':
+                "~Oh, yeah, those cars get stuffy unless the air vents
+                on the roof are open.~";
+             'underside':
+                give MetalPlate ~concealed;
+                "~There's a maintenance hatch in the floor of each junction.~";
+             'release', 'lever':
+                "~Thought about releasing the cars myself, but I'm pretty
+                sure those fellows booby-trapped the release lever somehow.~";
+            }
+            
+            print "~I have no idea,~ he says.";
+            
+            if (second == 'wife' or 'woman' or 'girl' or 'lily' or 'fiancee')
+                " But you notice a telltale flinch that says
+                otherwise.";
+            
+            new_line; rtrue;
+            
+         Tell:
+            "~How interesting.~";
+
+         Answer:
+            if (noun == 'stop') <<Ask Self 'train'>>;
+            "~Is that a fact?~ he mumbles absently.";
+
+         Order:
+            if (action ~= ##Go) "~Could you do it? I'm busy with the engine.~";
+            "The conductor shakes his head.^^
+            ~I must stay here and monitor the engine,~ he says";
+        ],
+        discover [ c;
+            held_back_mode = false;
+
+            move EvilConductor to parent(self);
+            if (PronounValue('him') == self)
+                PronounNotice(EvilConductor);
+            remove self;
+            
+            print "~Figured it out, did you?~ he laughs.^^
+
+            ~Yep, the bomb is mine. Built it myself, after
+            I found a big ol' box of plutonium that the
+            government was shipping incognito. Did they
+            really think that they could put a pound of
+            radioactive toxin in a metal strongbox and
+            slip it by everyone unnoticed? Then again,
+            those idiots in the NRC think they can get
+            away with just about ", (emphasis) "anything",
+            ".^^
+                                    
+            ~I really must thank you for keeping those
+            annoying terrorists occupied.  Weren't they
+            completely amateur? Like they could slip
+            through the President's security dressed up like
+            reporters...^^
+                        
+            ~My life seems to be plagued with idiots
+            getting in the way. Of course, the fact that
+            they were ", (emphasis) "on", " the train will
+            unfortunately diminish the effect of the
+            explosion. People might assume that ",
+            (emphasis) "they", " were responsible and not
+            the Escondido startup.^^
+            
+            ~But that blast ", (emphasis) "must", "
+            happen, so if you'll pardon this liberty I'm
+            about to take...~^^
+            
+            The conductor swings a large metal wrench at
+            your head.  It connects, sending you to
+            dreamland...^^";
+            
+            @read_char 1 -> c; @erase_window -1;
+            
+            if (parent(BlackSphere)) { ! wasn't removed
+                move BlackSphere to GlassBox; give GlassBox ~open;
+                
+                if (the_time < (Passes-->13) - 4) {
+                    the_time = (Passes-->13) - 4;
+                    current_station = 13;
+                }
+                
+                DisplayStatus(); DrawStatusLine();
+
+                "^~Welcome back,~ comes a voice through the
+                haze.^^
+                
+                ~I just wanted to tell you that I've
+                completed... ", (emphasis) "plans", ".^^
+                
+                ~In a few minutes we'll be closest to the
+                facility. Thought you'd like to be awake. Few
+                people have ever experienced being at ground
+                zero...~";
+            }
+            else {
+                if (the_time < (Passes-->12) - 2) {
+                    the_time = (Passes-->12) - 2;
+                    current_station = 12;
+                }
+                
+                DisplayStatus(); DrawStatusLine();
+
+                give TrainStopHints ~concealed;
+                
+                "^The darkness lifts, but your vision is
+                still blurry.^^
+                
+                ~Back again,~ the conductor laughs.^^
+                
+                ~I bet you're thinking that you were very
+                clever in disarming my bomb. Well you
+                were... in a sense. Most bomb experts are
+                well-versed in electronics but lack even the
+                most basic chemistry skills. My
+                congratulations...^^
+                
+                ~But even if someone managed to disarm it, I
+                had a backup plan. I know you're dying to know 
+                what it is, so I'll tell you.^^
+                
+                ~I'm going to slam this train into the side of 
+                the reactor.^^
+                
+                ~I told you the NRC were idiots. I said for
+                years that a terrorist could breach a reactor
+                by ramming it with a train, and that rail
+                spurs should stop far from the danger area.^^
+                
+                ~If that fool Williams survives the breach,
+                he'll be slaughtered in the polls. That'll
+                satisfy Lily...^^
+                
+                ~Now, sit back and enjoy the show.~";
+            }   
+        ],
+ has    animate male;
+
+Object  -> Controls "train controls"
+ with   name "control" "controls",
+        parse_name [; if (self hasnt transparent) return -1; return 0; ],
+        description [;
+            print "Among the controls, you see ";
+            WriteListFrom(child(self), ENGLISH_BIT|TERSE_BIT);
+            give self transparent moved;
+            ".";
+        ],
+        before [;
+         Examine:
+            rfalse;
+         Search:
+            <<Examine self>>;
+         default:
+            "Perhaps you should examine the controls first.";
+        ],
+ has    scenery pluralname;
+
+Class   Control
+ with   name "control" "controls",
+        before [;
+         Examine:
+            rfalse;
+         default:
+            give ControlHints ~concealed;
+            
+            if (NiceConductor in Engine)
+                "~Please don't fiddle with that. These controls are
+                sensitive.~";
+
+            if (EvilConductor hasnt general)
+                "You'd never reach the controls before the conductor reached ",
+                (emphasis) "you", ".";
+        ],
+ has    scenery;
+
+Control -> -> Throttle "throttle"
+ with   name "throttle" "knob" "handle",
+        description [;
+            print "It's a simple sliding knob. You open the throttle
+                by pulling on it.^^";
+            if (self has open) "The throttle is fully opened.";
+            "The throttle is only half-way open.";
+        ],
+        before [;
+            if (self.Control::before()) rtrue;
+            
+         Push:
+            StopTimer(EvilConductor); give EvilConductor ~general;
+            "The conductor notices that the train is slowing down
+            and opens the throttle once again.";
+            
+         Pull:
+            give self open; Achieved(OPEN_THROTTLE);
+            "You quickly pull the throttle out as far as possible, and
+            are rewarded by a significant increase in speed.";
+        ];
+
+Control -> -> Brake "emergency brake"
+ with   name "emergency" "brake" "knob" "handle" "cord",
+        description
+            "A simple apparatus: a red plastic ball on a cord. Pull it 
+            and the train stops, quickly. As in derailment.",
+        before [ c old_time;
+            if (self.Control::before()) rtrue;
+            
+         Pull:
+            if (Throttle has open) {
+                Achieved(DERAILMENT); current_station = -1;
+
+                print "The wheels scream as they try to grab onto the
+                    smooth surfaces of the rails. The floor beneath
+                    your feet is shaking so hard that you fall...^^
+                    
+                    Suddenly the whole world goes insane as the engine 
+                    flies off the tracks. You close your eyes tightly
+                    as you prepare for the end...^^";
+                                
+                @read_char 1 -> c; @erase_window -1;
+
+                PlayerTo(Seat4BPlane, 1);
+                old_time = the_time; the_time = 1064;
+                DisplayStatus(); DrawStatusLine();
+                
+                print "^The roaring... the exploding windows... a
+                    maelstrom of magazines, papers, and litter...
+                    oxygen masks fluttering around your head,
+                    forgotten, useless... luggage is falling
+                    from the overhead compartments... a suitcase hits
+                    the girl sitting in front of you, and the crack as
+                    her neck breaks... the passengers are screaming,
+                    begging, praying... your clothing being shredded
+                    by hurricane-force winds... the man next to you is
+                    calling for his wife... a safety card slaps you in
+                    the face, the irony completely lost in the raw
+                    chaos...^^
+                    
+                    Another explosion! The fireball melts the windows,
+                    splattering molten plastic all over your
+                    arm... your neighbor got the worst of it... the
+                    left side of his face burned away... the empty eye
+                    socket staring at you... accusing you... his final
+                    whisper...^^
+                    
+                    ~", (emphasis) "It's all your fault", ".~^^";
+                
+                the_time = old_time + 5;
+
+                give EndgameMenu ~concealed;
+                
+                @read_char 1 -> c; @erase_window -1;
+                new_line; PlayerTo(CrashSite);
+                DisplayStatus(); DrawStatusLine();
+
+                notify_mode = 0; ! we don't want the player knowing
+                                 ! about the score.
+
+                if (f_obj in compass) {
+                    print "^(You're no longer on board, so...)^^";
+                    <<Traditional>>;
+                }
+                else rtrue;
+            }
+            else {
+                StopTimer(EvilConductor); give EvilConductor ~general;
+                "The train slows down with a nerve-shattering squeal
+                of wheels-grinding-on-rails, but it fails to stop.^^
+                It does, however, return the conductor's attention to
+                you.";
+            }
+        ];
+
+Control -> -> "speedometer"
+ with   name "speed" "speedometer" "velocity",
+        description [;
+	    print "The speed of the train is ";
+	    if (Throttle has open)
+	     	print_ret (TRAIN_SPEED + 25), " MPH.";
+	    print_ret (TRAIN_SPEED + 0), " MPH.";
+        ];
+
+Control -> -> "temperature gauge"
+ with   name "temperature" "thermostat" "temp" "heat" "gauge" "meter",
+        description
+            "It's in the green zone, between the red zone (too hot)
+            and the yellow zone (flame out).";
+
+Array   Month --> "January " "February" "March" "April" "May" "June"
+            "July" "August" "September" "October" "November" "December";
+
+Object  -> -> Plaque "brass plaque"
+ with   name "plaque" "brass" "sign",
+        description [ screen_width width m;
+            screen_width = 0->33; if (screen_width == 0) screen_width = 80;
+            
+            print "A brass plaque bolted onto the body of the engine.
+                The text reads:^^";
+                
+            font off;
+                
+            width = 21;
+            if ((0-->1 & $03ff) > 9)  width++;
+            if ((0-->1 & $03ff) > 99) width++;
+            
+            spaces((screen_width - width) / 2);
+            print "Diesel Engine Mdl. #", (0-->1) & $03ff, "^";
+            
+            spaces((screen_width - 15) / 2);
+            print "Manufactured on^";
+            
+            m = (0->20 - '0') * 10 + (0->21 - '1');
+            
+            (Month-->m).print_to_array(StringBuffer);
+            
+            width = 8 + StringBuffer-->0;
+            if (0->22 ~= '0') width++;
+
+            spaces((screen_width - width) / 2);
+            print (string) Month-->m, " ";
+            if (0->22 ~= '0') print (char) 0->22;
+            print (char) 0->23, ", 20", (char) 0->18, (char) 0->19, "^";
+            
+            spaces((screen_width - 24) / 2);
+            print "Chief Designer: R. Menke^";
+            
+            font on;
+            
+            rtrue;
+        ],
+ has    static;
+
+Object  EvilConductor "conductor"
+ with   name "conductor" "man",
+        article "the",
+        describe [;
+            if (self has general)
+                "^The conductor has his back towards you.";
+            "^The conductor watches you with a predatory stare.";
+        ],
+        description
+            "The conductor has taken on a rather sinister air. His
+            inappropriate alacrity now has the disturbing feel of
+            insanity.",
+        react_before [;
+         Go:
+            if (self has general) {
+                give self ~general; StopTimer(self);
+                "Your movement attracts the attention of the
+                conductor, who blocks your escape.";
+            }
+            if (BlackSphere notin GlassBox)
+                "The conductor waves a wrench in your direction.^^
+                ~Sorry, can't let you run around the train anymore.~";
+            print "~You'll never make it in time...~^";
+        ],
+        before [;
+         Search:
+            <<Attack self>>;
+        ],
+        life [;
+         Attack:
+            if (self has general)
+                "Even though his back is turned, he's still carrying
+                that heavy steel wrench.";
+            "~I really wouldn't try anything funny, my young
+            friend.~";
+            
+         Kiss:
+            "That only works in the movies.";
+            
+         WakeOther:
+            "He's quite awake already.";
+
+         Give:
+            if (noun == GlassEye)
+                "~Keep it. Maybe if Williams survives he might find a
+                use for it.~";
+
+            "He's not in the mood for gifts. Of course, you could ",
+            (emphasis) "throw", " ", (the) noun, " at him...";
+            
+         ThrowAt:
+            if (noun == Spider && self hasnt general) {
+                StartTimer(self, 2); give self general;
+                
+                remove Spider;
+                print_ret "~", (strong) "Aaah!", " A spider!~^^
+                    He jumps back about a foot, cracking his head
+                    against a low-hanging pipe. Stunned for the
+                    moment, he stumbles around the cabin of the
+                    engine, completely ignoring you for the moment.^^
+                    Wolfie, unfortunately, is swept off the side of
+                    the train.";
+            }
+            
+            move noun to location;
+
+            if (self has general) "He didn't see ", (the) noun, ".";        
+            "The conductor easily ducks ", (the) noun, ", laughing the whole
+                time.";
+
+         Show:
+            if (self has general)
+                "He's distracted. Best to keep him that way.";
+            if (noun == Photograph)
+                "~Me and Lily... oh, those were wonderful times.~";
+            if (noun == Ring)
+                "~Gave one just like that to Lily. Was going to get
+                married... but the accident...~";
+            if (noun == Spider) {
+                print "You toss ", (the) Spider, " at ", (the) self, "...^^";
+                <<ThrowAt Spider self>>;
+            }
+            if (noun == GlassEye)
+                "~My gift from dear, dear President Williams,~ he sneers.";
+            
+         Ask:
+            if (self has general)
+                "He's distracted. Best to keep him that way.";
+
+            if (second == 'president' or 'senator' or 'williams' or 'nrc')
+                "~Williams and his NRC buddies... bunch of bribe-bloated
+                bureaucrats, the whole lot of 'em.~";
+
+            if (second == 'wife' or 'woman' or 'girl' or 'lily' or 'fiancee') {
+                if (GlassEye notin self)
+                    "A painful slap across the face tells you that he
+                    doesn't want to talk about her anymore.";
+                move GlassEye to location;
+
+                self.description =
+                    "He's hideous, the left side of his face a mass of
+                    scar tissue. Your stomach churns and you're forced
+                    to look away.";
+                
+                StartTimer(self, 2); give self general;
+                
+                "~Lily, oh my Lily...~ he sobs.^^
+
+                He spins around, enraged. ~Do you know what ",
+                (emphasis) "they", " did to her? What we all did to
+                her? I'm going to show you...~^^
+                
+                The conductor tears off his face... no, it's a mask, a 
+                heavy latex mask.^^
+                
+                You recoil in horror. There's very little remaining of
+                the left side of his face. The skin is tunneled with
+                scars and the underlying bone seems to be missing,
+                giving the side of his head a shrunken, withered
+                appearance. A glass eye falls to the floor, rolling to 
+                your feet. The empty socket stares at you accusingly
+                while the remaining eye blinks away tears.^^
+                
+                ~", (emphasis) "This", " is nuclear power. The power
+                to kill, to destroy, to eat away until nothing is
+                left. A blast of radioactive gas... I only got a
+                face-full, Lily, she... she was much closer. Two months
+                of agony as cancer ravaged our bodies. She succumbed
+                to sweet death, while I was left behind...~^^
+                
+                Overcome with grief, he turns his back on you and weeps.";
+            }
+
+            "~You ask too many questions.~";
+
+	 Tell, Answer:
+	    "~How fascinating,~ he sneers.";
+
+	 Order:
+	    "~Sorry, I have to have my vengence first.~";
+        ],
+        time_left, time_out [;
+            give self ~general;
+            if (TestScope(self))
+                "^The conductor turns to face you once again.";
+        ],
+ has    animate male;
+
+Object  -> GlassEye "glass eye"
+ with   name "glass" "eye" "eyeball",
+        description [;
+            if (self hasnt moved)
+                "It's rolling around near your feet. Eeew.";
+            "It's glass, and looks like an eyeball. That's about all
+            you can gather without getting sick.";
+        ];
+
+Object CrashSite "Crash Site"
+ with   name "debris" "wreckage" "train",
+        description
+            "The area around you is strewn with smoldering wreckage,
+            torn and tortured metal, hideously disfigured objects
+            whose original purpose might never be discovered.^^
+
+            A heavy metal bar sits on top of your broken legs.",
+        before [;
+         Look, Attack, Go, Wait, Push, Take, Technical, Traditional:
+            rfalse;
+         Exit:
+            "There's a big piece of metal on top of your legs.";
+         Examine:
+            if (noun == player) "You're in bad, bad shape.";
+         Inv, InvWide, InvTall:
+            "You can't feel your legs, let alone your possessions.";
+         Wake:
+            "This nightmare is happening ", (strong) "right now", ".";
+         VagueGo:
+            return self.cant_go();
+         Yell:
+            "You yell yourself hoarse, but nobody hears your call.";
+         default:
+            "What? No... don't understand... too dizzy...";
+        ],
+        number, daemon [ c obj;
+            switch (++self.number) {
+             1,2,3,4: return;
+
+             5: move DyingConductor to location;
+                PronounNotice(DyingConductor);
+                "^Something's moving underneath the wreckage...^^
+                The conductor pulls himself out from under a wheel.^^
+                You can tell that he's in bad shape by the way he pulls
+                his body along the ground, his useless legs dragging
+                behind him.";
+             6: "^He's almost upon you now! You futilely pull away from
+                his outstretched arms.";
+             7: "^The bloody stumps of his fingers wrap around your
+                throat as he hisses, ~My bomb, my train, my revenge...
+                all gone. ", (emphasis) "It's all your fault", ".~";
+             8: "^You stop struggling... the pain, the choking, it's
+                all a million miles away... the welcome darkness is
+                coming.";
+            }
+            
+            print "^", (emphasis) "Crack", "! ",
+                (emphasis) "Crack", "!^^
+                Your face is splattered with hot blood.  The conductor
+                collapses, his one good eye going cloudy in death.
+                Voices approach, but oblivion approaches faster...^^";
+
+            @read_char 1 -> c; @erase_window -1;
+            
+            give AmusingHints ~concealed;
+            
+            if (task_done->RESCUE) {
+                print "^~...when we found the passengers in the car
+                    they explained to us the best they could what was
+                    going on. We had a team ready to surround the
+                    train when it arrived, but thank God you were able 
+                    to keep that lunatic from detonating his bomb.^^";
+            }
+            else {
+                print "^~...and although you weren't able to save the
+                    passengers, you were able to stop that lunatic
+                    from detonating his bomb.^^";
+            }
+            
+            print "You give the FBI agent a gentle smile, hoping that
+                he'll get the hint and go away. No such luck.^^
+
+                ~You might want to know a little about your conductor
+                friend. Yes, he was a nuclear engineer. He, along with
+                his fianc@'ee, worked in the Escondido plant until
+                they were in an accident. Lots of money was passed
+                around to keep things quiet, Williams being one of the 
+                bigger obstructors. After the accident, they had
+                terrible bouts of cancer, and eventually the girl
+                died. The coroner said tumors were creeping through
+                his brain, which may account for his obsessive
+                behavior.^^
+                
+                ~Psychotic or not, he did give this country a needed
+                wake-up call about the possibility of nuclear
+                terrorism... and there's no keeping this out of the
+                papers. At least fifty reporters were on hand when the
+                train crashed; yes, you were ", (emphasis) "that", "
+                close to hitting the reactor.~^^
+                                
+                He stops at the door to the hospital cafeteria. Inside,
+                the small, subdued audience Jack promised has been
+                bloated by reporters looking for yet another angle on
+                the story. Shouldn't your fifteen minutes be over
+                by now?^^
+
+                ~Best of luck,~ the agent offers, then leaves.^^
+
+                Jack was such a good sport to hold his wedding here. His
+                comment still makes you laugh: ~If we risk pulling you
+                down here a third time, your car will probably fall
+                into the San Andreas fault or something...~^";
+
+            PlayerTo(Wheelchair);
+
+            obj = child(player);
+
+            while (obj) {
+                if (obj ~= Jacket or RingBox or Ring) {
+                    remove obj;
+                    obj = child(player);
+                }
+                else obj = sibling(obj);
+            }
+
+            obj = child(Jacket);
+
+            while (obj) {
+                if (obj ~= RingBox or Ring) {
+                    remove obj;
+                    obj = child(Jacket);
+                }
+                else obj = sibling(obj);
+            }
+
+            StopDaemon(self);
+            
+            rtrue;
+        ],
+        each_turn [; StartDaemon(self); ],
+        cant_go
+            "Even if your legs were free, the pain tells you that
+            they are probably broken. You'd be able to move a foot
+            or two at most before collapsing.",
+        u_to
+            "You'll be in heaven shortly. Just relax and wait...",
+        d_to
+        [;  "No, you weren't ", (emphasis) "that", " bad."; ],
+ has    light;
+
+Object  -> MetalBar "metal bar (on your legs)"
+ with   name "heavy" "metal" "bar" "fragment" "wreckage",
+        description
+           "Heavy. Metal. Bar. 'nuff said.",
+ has    scenery;
+
+Object  DyingConductor "conductor"
+ with   name "man" "conductor",
+        article "the",
+        description
+           "He's seriously, and most likely mortally, wounded. The way
+           he drags his body along the ground suggests extreme pain,
+           but what is truly terrifying is the obsessed maniacal
+           eye focused on you.",
+        life [;
+            if (location.number < 2) "He's too far away.";
+
+         Attack:
+            "A few feeble blows bounce off the top of his head, but
+            you're really in no shape to defend yourself.";
+         default:
+            "The conductor is too busy trying to kill you to respond.";
+        ],
+ has    scenery animate;
+
+Object  Hospital "Cafeteria"
+ with   description
+            "The aisle, the chairs, the audience... Jack probably
+            never planned to get married in a cafeteria, but you won't
+            be leaving the hospital for quite some time.",
+        number, each_turn [;
+            switch (self.number++) {
+             3: "^~The ", (strong) "ring", ", please.~";
+             4: "^~You didn't lose the ring, did you?~ Jack
+                whispers.";
+             5: deadflag = 5;
+                "^The medication kicks in, and you fall asleep right
+                in the middle of the wedding. Boy, will you feel like
+                an idiot when you wake up.";
+            }
+        ],
+ has    light;
+
+Object  -> Wheelchair "wheelchair"
+ with   name "wheelchair" "wheel" "chair" "wheel-chair",
+        before [;
+         Exit:
+            "You'll have to undergo another two months of physical
+            therapy before you can do that.";
+         Push, PushDir:
+            "The attendant has kindly locked the wheels of the
+            wheelchair.";
+        ],
+ has    enterable supporter;
+
+Object  -> Jack "Jack"
+ with   name "jack" "brother" "man" "groom",
+        article "your brother",
+        description
+            "He looks very dashing in his tuxedo.",
+        life [;
+         Give:
+            if (noun ~= Ring) jump DefaultResponse;
+            Achieved(GIVING_RING);
+            deadflag = 2;
+
+            "The applause is deafening, and the flashbulbs
+            blinding. Or maybe it's just the painkillers finally
+            taking effect... you don't know and you don't care. As
+            your wheelchair is taken out of the cafeteria, you fade
+            into a deep sleep, comforted by the knowledge that your
+            mission is complete.";
+
+         default:
+            .DefaultResponse;
+            "~No, no,~ he hisses. ~The ", (emphasis) "ring", "!~";
+        ],
+ has    proper animate;
+
+Object  -> Linda "Linda"
+ with   name "linda" "woman" "bride",
+        article "his bride-to-be",
+        description
+            "She is radiant in her wedding gown.",
+        life [;
+         Give:
+            if (noun == Ring) "~Give that to Jack, honey.~";
+            jump DefaultResponse;
+            
+         default:
+            .DefaultResponse;
+            print_ret (The) self, " looks at you as if you're mad.";
+        ],
+ has    proper animate;
+
