@@ -171,11 +171,16 @@ Object  SiliconeCaulking "silicone caulking"
 Object  MetalBox "metal box"
  with   name "metal" "box" "crate" "bomb",
         add_to_scope GlassPane SiliconeCaulking,
-        initial
-            "In front of you stands a large metal box, closed on all
-            sides save the front, which is protected by a pane of
-            glass. The rose-tinting of the glass hints at rather than
-            exposes the complicated machinery held within.",
+        initial [;
+	    if (self has open)
+		print "The glass box has been opened, allowing access to";
+	    else 
+            	print "In front of you stands a large metal box,
+		    closed on all sides save the front, which is
+		    protected by a pane of glass. The rose-tinting of
+		    the glass hints at rather than exposes";
+            " the complicated machinery held within.";
+	],
         before [;
          Open:
             if (self has open) rfalse;
