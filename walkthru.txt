@@ -1,6 +1,6 @@
-		      WALK-THRU for THE BEST MAN
+		      WALKTHRU for THE BEST MAN
 
-This is a minimal walk-thru, which only exercises some of the
+This is a minimal walkthru, which only exercises some of the
 possible solutions to the problems.  Specifically, how to use Wolfie
 (the paper spider guardian of computers) or the ice chest is not
 illustrated.
