@@ -709,7 +709,7 @@ Object CrashSite "Crash Site"
                 down here a third time, your car will probably fall
                 into the San Andreas fault or something...~^";
 
-            PlayerTo(Wheelchair);
+            PlayerTo(Wheelchair); the_time = 715;
 
             obj = child(player);
 
@@ -791,10 +791,18 @@ Object  Hospital "Cafeteria"
 
 Object  -> Wheelchair "wheelchair"
  with   name "wheelchair" "wheel" "chair" "wheel-chair",
-        before [;
+        description
+            "Your portable prison for the next few months.",
+        react_before [;
+         Go:
+            if (noun ~= u_to or d_to) <<PushDir self noun>>;
          Exit:
             "You'll have to undergo another two months of physical
             therapy before you can do that.";
+        ],
+        before [;
+         Unlock, Lock:
+            "You can't reach the locks. (Who designed this stupid thing?)";
          Push, PushDir:
             "The attendant has kindly locked the wheels of the
             wheelchair.";
