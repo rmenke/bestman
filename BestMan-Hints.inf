@@ -62,6 +62,8 @@ SwitchOption -> -> TechnicalDirectionsOption
             rtrue;
         ];
 
+Ifdef	INCLUDE_PACKAGE;
+
 Menu    -> "Game Package";
 
 Option  -> -> "The game package"
@@ -246,6 +248,8 @@ Option  -> -> "Newspaper clipping"
             activities near the President~ will be met with immediate
             response.";
         ];
+
+Endif;	! INCLUDE_PACKAGE
 
 Option  -> "Credits"
  with   description [;
