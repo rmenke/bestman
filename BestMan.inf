@@ -8,7 +8,10 @@ Include ">BestMan-Abbrev";
 Constant Story "THE BEST MAN";
 Constant Headline "^An Interactive Action-Adventure^by Rob Menke^";
 
-Constant NO_PLACES;
+! Places, to me, is like a debugging verb.
+
+Ifndef DEBUG; Constant NO_PLACES; Endif;
+
 Constant DIALECT_US;
 Constant DEATH_MENTION_UNDO;
 Constant AMUSING_PROVIDED;
@@ -16,12 +19,6 @@ Constant SACK_OBJECT        = Jacket;
 Constant MAX_CARRIED        = 5;
 
 Constant TRAIN_SPEED	    = 60;
-
-Constant HINT1__WD          = 'help';
-Constant HINT2__WD          = 'hint';
-Constant HINT3__WD          = 'hints';
-Constant HINT4__WD          = 'info';
-Constant HINT5__WD          = 'credits';
 
 ! Special Print Routines
 
@@ -177,7 +174,7 @@ Include "Parser";
         if (deadflag == 2 && AMUSING_PROVIDED == 0) {
             new_line; Amusing(); jump RRQPL;
         }
-     HINT1__WD, HINT2__WD, HINT3__WD, HINT4__WD, HINT5__WD:
+     'help', 'hint', 'hints', 'info', 'credits':
         new_line; HelpSub(); jump RRQPL;
         
 #IFV5;
