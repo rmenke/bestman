@@ -136,6 +136,17 @@ Replace NotifyOffSub;
 
 Include "Parser";
 
+! Special Math Routine
+
+[   DivNeg a b;                 ! Does a/b if a is negative correctly
+
+    if (standard_interpreter >= 256 || a >= 0)
+         return a / b;
+    else return -((-a) / b);
+];
+
+! Amusing things to do
+
 [   Amusing c; 
 
     if (AmusingHints.select() ~= 2) {
@@ -373,7 +384,10 @@ Class   Bottle
         ],
         react_after [ liq vol mol;
          Go:
-            liq = child(self); if (liq == nothing || self hasnt open) rfalse;
+            liq = child(self);
+            
+            if (liq == nothing || self hasnt open ||
+                ~~IndirectlyContains(player, self)) rfalse;
             
             vol = self.capacity / child(self).quantity + 1;
             
@@ -391,10 +405,7 @@ Class   Bottle
                     print "Some of ", (the) liq, " sloshes out of ",
                         (the) self, ".^^";
 
-                    mol = liq.acidity;
-                    if (mol < 0)
-                         mol = -(-mol * (vol/5) / (liq.quantity/5));
-                    else mol = mol * (vol/5) / (liq.quantity/5);
+                    mol = DivNeg(liq.acidity * (vol/5), liq.quantity/5);
                     
                     liq.quantity = liq.quantity - vol;
                     liq.acidity = liq.acidity - mol;
@@ -474,9 +485,7 @@ Class   Liquid (5)
                 
                 ! Some interpreters have problems with signed division
                 
-                if (mol < 0)
-                    mol = -(-mol * (vol/5) / (noun.quantity/5));
-                else mol = mol * (vol/5) / (noun.quantity/5);
+                mol = DivNeg(mol * (vol/5), noun.quantity/5);
                 
                 rest = Liquid.create();
                 Liquid.copy(rest, noun);
@@ -828,8 +837,7 @@ Global  current_station = -1;
 
 Object  Events
  with   daemon [;
-            if (current_station >= 0 &&
-                the_time >= Passes-->current_station) {
+            if (current_station >= 0 && the_time >= Passes-->current_station) {
 
                 new_line;
                 
@@ -837,15 +845,13 @@ Object  Events
                 print "The train just ",
                 (string) random("zoomed","rushed","barreled","rumbled"),
                 (string) random(" past"," by"," through"), " the ",
-                (string) Station-->current_station, " station.";
+                (string) Station-->current_station, " station.^";
                 style roman;
 
-                if (current_station >= 6) Quote(4);
-            
-                new_line;
-                
-                if (current_station < 12) current_station++;
-                else current_station = -1;
+                if (current_station < 12)
+                    current_station++;
+                else
+                    current_station = -1;
             }
             
             if (the_time == 755 && location == Car3Before &&
@@ -1638,8 +1644,6 @@ Statusline time;
     string 2 e_str;
     string 3 w_str;
     
-    SetTime(1053, 1);
-    
     move BlackBox to Car2Underside;     give BlackBox concealed;
     move WhiteBox to Car6Underside;     give WhiteBox concealed;
 
@@ -1678,6 +1682,8 @@ Statusline time;
 
     for (obj = 0 : obj < 14 : obj++)
 	Passes-->obj = Passes-->obj * 60 / TRAIN_SPEED + 720;
+    
+    SetTime(Passes-->12 - 15, 1);
     
     ! The cleaning fluid is the only liquid that starts with a color.
     
@@ -2066,5 +2072,4 @@ Endif;
         "Stop notifying you of what? The weather?";
     notify_mode=0; L__M(##NotifyOff);
 ];
-
 
