@@ -1,0 +1,178 @@
+		      WALK-THRU for THE BEST MAN
+
+This is a minimal walk-thru, which only exercises some of the
+possible solutions to the problems.  Specifically, how to use Wolfie
+(the paper spider guardian of computers) or the ice chest is not
+illustrated.
+
+There's very little you can do in the opening scene.  It's a dream
+sequence designed to explain why anyone would still take a train.
+
+> WAKE UP.
+
+The conductor wants proof that you should be on this train.
+
+> GIVE TICKET TO CONDUCTOR. STAND.
+
+Time to explore, but your options at this time are pretty limited.
+
+> NORTH.
+
+What a mess!  No reason to appear like a slob upon arrival...
+
+> OPEN DOOR. WEST.
+> TURN ON WATER.
+> CLOSE DOOR. LOCK IT.
+> CLEAN JACKET.
+
+Hmmm... we need to convince the terrorists that the lavatory is
+unoccupied.
+
+> UNLOCK DOOR. TURN OFF WATER.
+
+Still, a search is possible.  Best to find someplace to hide.
+
+> OPEN WINDOW. WEST.
+> WAIT. WAIT. WAIT. EAST.
+
+Time to go exploring.  The ticket and schedule are unimportant: lose
+them.
+
+> GET TICKET, SCHEDULE. DROP ALL.
+> OPEN DOOR. EAST.
+> NORTH. NORTH. NORTH. NORTH.
+
+The door with the painted window looks interesting...
+
+> OPEN DOOR. WEST.
+> SEARCH SHELF. LOOK UNDER TABLE.
+> GET ACID, FLUID, RED BULB, TUBE.
+
+The terrorists are in the next car, so we need to find a way around
+them.
+
+> EAST. NORTH.
+> PUT ALL IN JACKET.
+> STAND ON RAIL.
+> UP. NORTH.
+
+Time to eliminate the terrorists in the car below.  There are many
+ways of doing this: this one is the most direct.
+
+> GET FLUID. OPEN IT.
+> OPEN ACID. POUR ACID IN FLUID.
+> PUT FLUID ON VENT.
+> CLOSE ACID.
+
+More exploring...
+
+> DOWN. NORTH.
+> OPEN CHEST. GET ALL FROM IT.
+> PUT ALL IN JACKET. SOUTH. UP.
+> CLOSE FLUID.
+> DOWN. SOUTH.
+
+You can poke around in here, but there's not much to do yet.  Keep
+exploring...
+
+> SOUTH. SOUTH. SOUTH. SOUTH. SOUTH.
+> UP. SOUTH. DOWN.
+> OPEN CRATE.
+
+Oh dear...  First we need to handle the trap of the gas-filled tube.
+
+> GET WHITE BULB. DROP IT.
+> GET RED BULB. SCREW IT INTO SOCKET.
+> PULL CORD. CLOSE HATCH.
+
+Now we need to neutralize the white powder.
+
+> GET CAN. PUT IT IN GOOP.
+> SQUIRT LUBRICANT ON WHITE POWDER.
+
+Now you can cut the glass!
+
+> OPEN SMALL BOX.
+> CUT PANE WITH RING.
+
+Don't forget-- the lubricant WILL evaporate.
+
+> GET DISH. DROP IT.
+
+The beaker problem is tough.  The hint is that they're attached to
+scales... even though they're balanced in weight, they're still not
+balanced.  Use the litmus to find out why.
+
+> OPEN SMALL TUBE.
+> POUR LITMUS INTO LEFT.
+> POUR LITMUS INTO RIGHT.
+
+OK, the left beaker is filled with base, the right with acid.  The
+acid from the darkroom and the cleaner will neutralize the beakers,
+respectively.  Add small amounts until the solutions turn purple.
+
+> OPEN ACID. OPEN CLEANER.
+> POUR 5ML FROM ACID INTO LEFT BEAKER.
+> AGAIN.
+> AGAIN.
+  ...
+> POUR 5ML FROM CLEANER INTO RIGHT BEAKER.
+> AGAIN.
+> AGAIN.
+  ...
+
+Now they're pH balanced, but not balanced by volume.  You can either
+get some water from the lavatory, or simply take advantage of the fact 
+that the right beaker is filled with a neutral solution.
+
+> POUR 75ML FROM RIGHT BEAKER INTO LEFT BEAKER.
+
+The box should open with a *CLICK*.
+
+> GET ACID, CLEANER. DROP ALL.
+> OPEN BOX.
+> GET SPHERE.
+> GET PHOTO.
+> GET OIL.
+> PUT ALL IN JACKET.
+
+> OPEN HATCH. UP. NORTH. DOWN. NORTH. NORTH.
+> NORTH. NORTH. NORTH. NORTH. NORTH.
+
+> GET BLACK SPHERE. DROP IT.
+
+(You could also use the ice chest to get rid of the sphere.)
+
+> SOUTH. EXAMINE FLOOR. OPEN HATCH. DOWN.
+> NORTH. SEARCH UNDERCARRIAGE.
+> GET WHITE BOX. PUT IT IN JACKET.
+> SOUTH. SOUTH.
+> GET WHITE BOX. DROP IT.
+> NORTH. SQUIRT OIL ON LEVER.
+> PULL LEVER. YES.
+
+Get out of there, quickly!
+
+> UP. UP. WAIT. SOUTH. SOUTH. SOUTH. SOUTH.
+> EXAMINE CONTROLS. EXAMINE PLAQUE.
+> EXAMINE THROTTLE. EXAMINE BRAKE.
+> EXAMINE CONDUCTOR. EXAMINE PHOTO.
+> SHOW PHOTO TO HIM.
+
+Now, time is tight.  If you examined the schedule, Capistrano is the
+last stop before Escondido...
+
+> ASK CONDUCTOR ABOUT LILY.
+  (Also, THROW WOLFIE AT CONDUCTOR.  Both may be used for extra time.)
+> PULL THROTTLE. PULL BRAKE.
+> PULL IT.
+
+Not much you can do here.  Relax, help is on its way...
+
+> WAKE. RUN. EXAMINE BAR. UP. DOWN. WAIT. WAIT. WAIT. WAIT.
+
+Ah, finally made it!  Just one last thing to do...
+
+> GIVE RING TO JACK.
+
+($Id$)
