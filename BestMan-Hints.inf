@@ -127,25 +127,30 @@ SwitchOption -> -> TechnicalDirectionsOption
 
 Option  -> "Credits"
  with   description [;
-            "Rob Menke (author) -- Rob has been interested in adventure games
-            ever since he played ~Zork I~ on an old Apple ][ back in the early
-            '80s. He is often tempted to add ~Finished 'Stationfall' in a
-            four-day marathon session~ to his resume. ~The Best Man~ is his
-            first interactive fiction game for use by the general public. At
-            the time of this release, his web site can be found at:^",
-            (strong) "http://www.best.com/~rgm/", "^^
+            "Rob Menke (author) -- Rob has been interested in 
+            adventure games ever since he played ~Zork I~ on an old 
+            Apple ][ back in the early '80s. He is often tempted to 
+            add ~Finished 'Stationfall' in a four-day marathon 
+            session~ to his resume. ~The Best Man~ is his first 
+            interactive fiction game for use by the general public. 
+            Please direct all bug reports to his interim mailing 
+            address ", (strong) "robmenke@@64mac.com", " (Rob is
+            in the process of changing ISPs so response may be
+            delayed.)^^
 
-            Christopher Livingston (playability, details) -- That you can use
-            ~lube~ as a verb and propose to the conductor are both thanks to
-            Chris. All IF authors should be as lucky to have a tester as
-            disturbed as he is. You are encouraged to visit his web site:^",
+            Christopher Livingston (playability, details) -- That you
+            can use ~lube~ as a verb and propose to the conductor are
+            both thanks to Chris. All IF authors should be as lucky to
+            have a tester as disturbed as he is. You are encouraged to
+            visit his web site:^",
             (strong) "http://www.notmydesk.com/", "^^
 
-            Mark Rosenfelder (continuity, structure) -- The closing sequence
-            was completely rewritten at the request of Mark, who felt its silly
-            tone conflicted with the rather graphic endgame. The task-oriented
-            nature of the hints are his brainchild; they assume less and
-            provide more. More info about Mark can be found at:^",
+            Mark Rosenfelder (continuity, structure) -- The closing
+            sequence was completely rewritten at the request of Mark,
+            who felt its silly tone conflicted with the rather graphic
+            endgame. The task-oriented nature of the hints are his
+            brainchild; they assume less and provide more. More info
+            about Mark can be found at:^",
             (strong) "http://www.zompist.com/", "^^
 
             Other testing performed by: Greg Galcik, Heather Garvey.";
