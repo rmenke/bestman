@@ -371,6 +371,36 @@ Class   Bottle
 
             return wc;
         ],
+        react_after [ liq vol mol;
+         Go:
+            liq = child(self); if (liq == nothing || self hasnt open) rfalse;
+            
+            vol = self.capacity / child(self).quantity + 1;
+            
+            if (random(vol) == 1) {
+                vol = random(4) * 5;
+               
+                if (vol > liq.quantity) vol = liq.quantity;
+                                
+                if (liq.quantity == vol) {
+                    print "The last of ", (the) liq, " sloshes out of ",
+                        (the) self, ".^^";
+                    Liquid.destroy(liq);
+                }
+                else {
+                    print "Some of ", (the) liq, " sloshes out of ",
+                        (the) self, ".^^";
+
+                    mol = liq.acidity;
+                    if (mol < 0)
+                         mol = -(-mol * (vol/5) / (liq.quantity/5));
+                    else mol = mol * (vol/5) / (liq.quantity/5);
+                    
+                    liq.quantity = liq.quantity - vol;
+                    liq.acidity = liq.acidity - mol;
+                }
+            }
+        ],
         before [;
          Drink:
             "It might not be potable, so you decide against it.";
@@ -1279,7 +1309,8 @@ Object  LavatorySink "sink"
  has    static open container;
 
 Object  LavatoryFaucet "faucet"
- with   name "water" "single" "knobbed" "knob" "faucet" "spigot" "stopcock",
+ with   name "water" "single" "knobbed" "knob" "faucet" "spigot"
+            "stopcock" "tap",
         found_in Lavatory Darkroom,
         description
             "A single-knobbed faucet.",
@@ -1331,7 +1362,7 @@ Object  LavatoryFaucet "faucet"
         ],
         after [;
          SwitchOn:
-            StartTimer(self, 12);
+            StartTimer(self, 5);
             "You turn on ", (the) self, ", allowing water to flow into ",
             (the) LavatorySink, ".";
 
@@ -2035,4 +2066,5 @@ Endif;
         "Stop notifying you of what? The weather?";
     notify_mode=0; L__M(##NotifyOff);
 ];
+
 
