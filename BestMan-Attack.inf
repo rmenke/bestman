@@ -936,14 +936,15 @@ Class   CarDoor
         react_before [;
          Go:
             if (noun.door_dir() ~= self.door_dir()) rfalse;
-            
+            <Open self>; if (self hasnt open) rtrue;
+        ],
+        before [;
+         Open:
             if (Terrorists in (self.&found_in)-->0) {
                 give ShadowHints ~concealed;
                 "You start to open the door, but an ominous shadow across the
                 window convinces you otherwise.";
             }
-            
-            new_line; <Open self>;
         ],
         after [;
          Open:
