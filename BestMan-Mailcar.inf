@@ -132,7 +132,7 @@ Object  GlassPane "rose-colored glass pane"
 
 Object  SiliconeCaulking "silicone caulking"
  with   name "silicone" "plastic" "caulk" "caulking" "gasket" "gel"
- 	    "gooey" "rubbery" "goop" "sealant",
+ 	    "gooey" "rubbery" "goop" "sealant" "seal",
         description
             "The centimeter-wide gap between the edge of the metal box and the
             glass pane has been filled with a rubbery sealant, probably
