@@ -221,8 +221,6 @@ Object  -> NiceConductor "conductor"
                 
                 DisplayStatus(); DrawStatusLine();
 
-                give TrainStopHints ~concealed;
-                
                 "^The darkness lifts, but your vision is
                 still blurry.^^
                 
@@ -281,8 +279,6 @@ Class   Control
          Examine:
             rfalse;
          default:
-            give ControlHints ~concealed;
-            
             if (NiceConductor in Engine)
                 "~Please don't fiddle with that. These controls are
                 sensitive.~";
@@ -364,8 +360,6 @@ Control -> -> Brake "emergency brake"
                 
                 the_time = the_time + 10;
 
-                give EndgameMenu ~concealed;
-                
                 PressSpaceToContinue();
                 print "^^^^^^^^^^^^"; Quote(DIEHARD_QUOTE);
  		PlayerTo(CrashSite); DisplayStatus(); DrawStatusLine();
@@ -822,7 +816,6 @@ Object  -> Jack "Jack"
             Achieved(GIVING_RING);
 
             if (task_done->RESCUE) deadflag = 2; else deadflag = 4;
-            give AmusingHints ~concealed;
 
             "The applause is deafening, and the flashbulbs
             blinding. Or maybe it's just the painkillers finally

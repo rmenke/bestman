@@ -196,6 +196,7 @@ Include "Parser";
         new_line; FullScoreSub(); jump RRQPL;
      AMUSING__WD:
         if (deadflag == 2 && AMUSING_PROVIDED == 0) {
+	    give AmusingHints ~concealed;
             new_line; Amusing(); jump RRQPL;
         }
      'help', 'hint', 'hints', 'info', 'credits':
@@ -786,13 +787,11 @@ Box     WhiteBox "white box"
     	
     	if (the_car == pass_car) {
             remove Passengers;
-            give ExplosiveHints ~concealed;
             print "^Unfortunately, the hostage passengers were in that
             	car.^";
     	}
     	else if (the_car < pass_car) {
             remove Passengers;
-            give ExplosiveHints ~concealed;
             print "^The car carrying the passengers plows into the flaming
             	wreckage. You wince when you realize that there's no
             	chance for survivors...^";
@@ -878,7 +877,7 @@ Object  Events
             if (the_time == 755 && location == Car3Before &&
                 Jacket hasnt general) {
                 
-                give Jacket general; give JacketHints ~concealed;
+                give Jacket general;
                 "^~Whoops!~^^One of the reporters was walking down the
                 aisle with a large cup of coffee when the train
                 jerked. Guess who was unlucky enough to be in front of
@@ -1237,7 +1236,7 @@ Object  Car3AftBefore "Car 3, Aft"
             and the door to the tiny lavatory @03.",
         initial [;
             if (Jacket hasnt general) {
-                give Jacket general; give JacketHints ~concealed;
+                give Jacket general;
                 print "~Whoops!~^^Oh dear, it seems that you bumped
                     into a young man carrying an open container of
                     coffee, most of which is now decorating the front
@@ -1510,8 +1509,6 @@ Object LavatoryDoor "lavatory door"
         after [;
          Lock:
             if (self hasnt general) {
-                give CorridorHints ~concealed;
-                give GettingShotHints ~concealed;
                 StartDaemon(self);
             }
 
@@ -1594,7 +1591,6 @@ Object LavatoryDoor "lavatory door"
              default:
                 give self general; StopDaemon(self);
                 move Terrorists to Car5;
-                give AfterAttackMenu ~concealed;
                 
                 "^~Take everyone to the last car.~^^There is the sound
                 of marching outside the door, then silence.";

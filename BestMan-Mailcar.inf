@@ -73,8 +73,6 @@ Object  -> WoodenCrate "wooden crate"
          Open:
             Quote(AIRPLANE2_QUOTE);
 
-            give MailCarMenu ~concealed;
-            
             move MetalBox to parent(self);
             remove self;
             
@@ -122,7 +120,6 @@ Object  GlassPane "rose-colored glass pane"
                 if (WhitePowder.each_turn()) rtrue;
                 
                 Achieved(GLASS_PANE);
-                give GlassBoxHints ~concealed;
                 
                 "^Nothing else happens, so you carefully remove the
                 cut pane and set it to the side.";
@@ -246,8 +243,6 @@ Object  -> Sensor
                 print "^", (The) self, " cracks with a loud ",
                     (emphasis) "pop";
 
-		give LightHints ~concealed;
-
                 if (BlackSphere in GlassBox) {
                     deadflag = 1;
                     ", followed by a much larger explosion.";
@@ -297,8 +292,6 @@ Object  -> -> WhitePowder "white powder"
             
             if (self has oiled) rfalse;
 
-	    give PowderHints ~concealed;
-            
             print "^", (strong) "Whumpf!", " ", (The) self, " suddenly
                 bursts into flame!^";
             
@@ -352,9 +345,6 @@ Object  -> GlassBox "plexiglas box"
             rtrue;
         ],
         after [;
-         Open:
-            give BlackSphereHints ~concealed;
-            
          LetGo:
 	    ! This achieves the phosphorous task because its possible to
 	    ! lubricate the phosphorous beyond the length of the game.
@@ -363,7 +353,6 @@ Object  -> GlassBox "plexiglas box"
 	    
             if (Photograph in BlackSphere) {
                 move Photograph to self; PronounNotice(Photograph);
-                give PhotographHints ~concealed;
                 "As you remove ", (the) BlackSphere, ", you notice something
                 else inside ", (the) self, ".";
             }

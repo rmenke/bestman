@@ -206,8 +206,7 @@ Hints   -> -> -> "I don't want to die in a crash!"
             "...because it happened in the past."
             "The best you can do is WAKE UP.";
 
-Menu    -> -> TrainMenu "The Train"
- has    concealed;
+Menu    -> -> TrainMenu "The Train";
 
 Menu    -> -> -> "The Prologue";
 
@@ -218,7 +217,6 @@ Hints   -> -> -> -> "I got kicked off the train!"
             "GIVE THE TICKET TO THE CONDUCTOR.";
 
 Hints   -> -> -> -> JacketHints "What a mess! How do I clean my jacket?"
- has    concealed
  with   hint
             "You need water to do the job properly."
             "Water can be found in the lavatory."
@@ -231,7 +229,6 @@ Hints   -> -> -> -> JacketHints "What a mess! How do I clean my jacket?"
             "LOCK THE DOOR.";
 
 Hints   -> -> -> -> CorridorHints "What's going on in the corridor?"
- has    concealed
  with   hint
             "A group of Georgian terrorists have decided to throw
             President Williams a surprise party."
@@ -240,7 +237,6 @@ Hints   -> -> -> -> CorridorHints "What's going on in the corridor?"
             "They are searching the train for anyone missing...";
 
 Hints   -> -> -> -> GettingShotHints "How can I avoid being shot?"
- has    concealed
  with   hint
             "You need to convince two people that you're not there:
             Sergei and the terrorist leader."
@@ -257,11 +253,9 @@ Hints   -> -> -> -> GettingShotHints "How can I avoid being shot?"
             "Also make sure the water is turned off and the door is
             still unlocked.";
 
-Menu    -> -> -> AfterAttackMenu "After the Attack"
- has    concealed;
+Menu    -> -> -> AfterAttackMenu "After the Attack";
 
 Hints   -> -> -> -> ShadowHints "The ominous shadows... should I be worried?"
- has    concealed
  with   hint
             "Yes, the terrorists have taken up residence in that car."
             "You need to get around them. There are three ways."
@@ -276,7 +270,6 @@ Hints   -> -> -> -> ShadowHints "The ominous shadows... should I be worried?"
             junctions.";
 
 Hints   -> -> -> -> TerroristHints "The terrorists found me! How can I escape?"
- has    concealed
  with   hint
             "You could run..."
             "You could attack..."
@@ -286,7 +279,6 @@ Hints   -> -> -> -> TerroristHints "The terrorists found me! How can I escape?"
             hope.";
 
 Hints   -> -> -> -> JunctionHints "What can I do in the junction?"
- has    concealed
  with   hint
             "Obviously, you can go into either of the cars."
             "Have you read the description carefully?"
@@ -299,7 +291,6 @@ Hints   -> -> -> -> JunctionHints "What can I do in the junction?"
             "You can knock on the doors, but be ready to run...";
 
 Hints   -> -> -> -> DarkroomHints "What can I do in the darkroom?"
- has    concealed
  with   hint
             "It has a sink, if you need water."
             "It has a shelf of stuff."
@@ -313,7 +304,6 @@ Hints   -> -> -> -> DarkroomHints "What can I do in the darkroom?"
             you find... nasty accidents might happen otherwise.";
 
 Hints   -> -> -> -> ChemicalHints "What can I do with the chemicals?"
- has    concealed
  with   hint
             "The acid and developer bottles are quite useful."
             "When the chemicals are mixed, they produce deadly vapors."
@@ -323,7 +313,6 @@ Hints   -> -> -> -> ChemicalHints "What can I do with the chemicals?"
             have found where else you may need the acid.";
 
 Hints   -> -> -> -> PassengerHints "What can I do with the passengers?"
- has    concealed
  with   hint
             "Most of the time, they will ignore you."
             "You can ask them questions."
@@ -334,8 +323,7 @@ Hints   -> -> -> -> PassengerHints "What can I do with the passengers?"
             "You can win even if you accidentally kill them, but you
             won't get maximum points";
 
-Menu    -> -> -> UndersideMenu "Under the Train"
- has    concealed;
+Menu    -> -> -> UndersideMenu "Under the Train";
 
 Hints   -> -> -> -> "A lever! I want to pull it!"
  with   hint
@@ -345,7 +333,6 @@ Hints   -> -> -> -> "A lever! I want to pull it!"
             "Now you can pull it. But beware the consequences...";
 
 Hints   -> -> -> -> PassengerKillHints "The terrorists killed the passengers!"
- has    concealed
  with   hint
             "Sore losers. Dumb, though. Why kill hostages?"
             "You need to remove the terrorists from the fifth car."
@@ -354,7 +341,6 @@ Hints   -> -> -> -> PassengerKillHints "The terrorists killed the passengers!"
             the car safely.";
 
 Hints   -> -> -> -> ExplosiveHints "The car exploded after it was released!"
- has    concealed
  with   hint
             "Obviously somebody booby-trapped the car to prevent a rescue just
              like yours."
@@ -365,7 +351,6 @@ Hints   -> -> -> -> ExplosiveHints "The car exploded after it was released!"
             "SEARCH THE UNDERCARRIAGE.";
 
 Hints   -> -> -> -> BoxHints "The black and white boxes, what do they do?"
- has    concealed
  with   hint
             "They form a circuit."
             "They prevent you from releasing the car safely."
@@ -374,8 +359,7 @@ Hints   -> -> -> -> BoxHints "The black and white boxes, what do they do?"
             "Be forewarned: the car in which the explosive is will be
              destroyed, as well as the cars behind it.";
 
-Menu    -> -> -> TopsideMenu "On Top of The Train"
- has    concealed;
+Menu    -> -> -> TopsideMenu "On Top of The Train";
 
 Hints   -> -> -> -> "What can I do up here?"
  with   hint
@@ -389,8 +373,7 @@ Hints   -> -> -> -> "What can I do up here?"
             "They draw air (or other gasses) into the cars."
             "You need some things from the darkroom.";
 
-Menu    -> -> -> MailCarMenu "The Mail Car"
- has    concealed;
+Menu    -> -> -> MailCarMenu "The Mail Car";
 
 Hints   -> -> -> -> "How do I open the glass-fronted box?"
  with   hint
@@ -404,7 +387,6 @@ Hints   -> -> -> -> "How do I open the glass-fronted box?"
             "CUT THE PANE WITH THE DIAMOND RING.";
 
 Hints   -> -> -> -> PowderHints "The powder burst into flame!"
- has    concealed,
  with   hint
             "The conductor may offer some insight on the white powder
             and the silicone caulking."
@@ -432,7 +414,6 @@ Hints   -> -> -> -> PowderHints "The powder burst into flame!"
             "Just don't carry it on your person...";
 
 Hints   -> -> -> -> LightHints "The glass tube cracked!"
- has    concealed
  with   hint
             "Well, it's not sensitive to air, if you tried coating
             it."
@@ -452,7 +433,6 @@ Hints   -> -> -> -> LightHints "The glass tube cracked!"
 
 Hints   -> -> -> -> GlassBoxHints "The Plexiglas box is locked, and I
             don't have a key!"
- has    concealed
  with   hint
             "The ~key~ is the beakers."
             "The hint is that they're attached to a scale."
@@ -479,7 +459,6 @@ Hints   -> -> -> -> GlassBoxHints "The Plexiglas box is locked, and I
             That will unbalance the acidity again.";
 
 Hints   -> -> -> -> BlackSphereHints "What's with the black sphere?"
- has    concealed
  with   hint
             "It's the bomb core."
             "It contains a lot of explosive and a significant amount
@@ -489,7 +468,6 @@ Hints   -> -> -> -> BlackSphereHints "What's with the black sphere?"
             to get shot.";
 
 Hints   -> -> -> -> PhotographHints "Who is in the photograph?"
- has    concealed
  with   hint
             "One of the photographers in the caboose can give you a hint."
             "You can check the photograph against people by examining
@@ -501,8 +479,7 @@ Hints   -> -> -> -> PhotographHints "Who is in the photograph?"
             confront him by either showing him the photograph or
             asking him about the bomb.";
 
-Menu    -> -> -> EngineMenu "The Engine"
- has    concealed;
+Menu    -> -> -> EngineMenu "The Engine";
 
 Hints   -> -> -> -> "How do I get there?"
  with   hint
@@ -514,7 +491,6 @@ Hints   -> -> -> -> "How do I get there?"
             "Specifically, ask them about the conductor.";
 
 Hints   -> -> -> -> TrainStopHints "How can I stop the train?"
- has    concealed
  with   hint
             "If you can't get to the controls, read the next section."
             "If you pull the brake, you'll slow down the train without
@@ -525,7 +501,6 @@ Hints   -> -> -> -> TrainStopHints "How can I stop the train?"
 	    "...THEN pull the brake.";
 
 Hints   -> -> -> -> ControlHints "How do I get to the train controls?"
- has    concealed
  with   hint
             "The conductor won't let you near them."
             "You need to distract him."
@@ -540,8 +515,7 @@ Hints   -> -> -> -> ControlHints "How do I get to the train controls?"
             "You can also prey on his arachnophobia."
             "SHOW WOLFIE TO THE CONDUCTOR.";
 
-Menu    -> -> -> EndgameMenu "The Endgame"
- has    concealed;
+Menu    -> -> -> EndgameMenu "The Endgame";
 
 Hints   -> -> -> -> "Was it all a dream then?"
  with   hint

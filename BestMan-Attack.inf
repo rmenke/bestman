@@ -245,7 +245,6 @@ Object  Darkroom "Darkroom"
             shelf, while a workbench sits under a naked electrical
             fixture.",
         initial [;
-            give DarkroomHints ~concealed;
             DarkroomDoor.short_name = "darkroom door";
         ],
         after [;
@@ -278,7 +277,6 @@ Object  -> "shelf"
                 move DeveloperBottle to self;
                 move AcidBottle to self;
 		move BaseBottle to self;
-		give ChemicalHints ~concealed;
             }
             
             if (child(self) == nothing)
@@ -517,7 +515,6 @@ Object  Terrorists "terrorists"
             
             if (parent(self) == real_location && self hasnt general) {
                 StopDaemon(self); give self general;
-                give TerroristHints ~concealed;
                 "^Oh dear, it looks like you've walked right into the
                 people hunting for you...";
             }
@@ -545,7 +542,6 @@ Object  Terrorists "terrorists"
             if (new_location == location)
                 if (self hasnt general) {
                     StopDaemon(self); give self general;
-                    give TerroristHints ~concealed;
                     "^A group of armed terrorists have entered the car!";
                 }
 
@@ -632,7 +628,6 @@ Object  Car6 "Car 6, the last car"
 Object  -> Passengers "passengers"
  with   name "passengers" "people" "hostages" "reporters",
         article "all of the",
-        describe [; give PassengerHints ~concealed; ],
         description
             "They look scared, and with good reason. Reporters report
             news; they aren't part of it.",
@@ -901,7 +896,6 @@ Class   OilTimer (20)
         u_to Ladder,
         d_to MetalPlate,
         each_turn [;
-            give JunctionHints ~concealed;
             if (self has general)
                 "^The metal plates shift unpleasantly underfoot.";          
         ],
@@ -953,7 +947,6 @@ Class   CarDoor
         before [;
          Open:
             if (Terrorists in (self.&found_in)-->0) {
-                give ShadowHints ~concealed;
                 "You start to open the door, but an ominous shadow across the
                 window convinces you otherwise.";
             }
@@ -1149,7 +1142,6 @@ CarJunction Car56Junction "Junction Between Car 5 and 6"
 
  Class JunctionUnderside
  with   short_name [;
-            give UndersideMenu ~concealed;
             print "Underneath the junction between cars ",
                 self.s_to.car, " and ", self.car;
             rtrue;          
@@ -1323,7 +1315,6 @@ Class   ReleaseLever
                 else if (pe_loc && pe_loc.car >= c) {
                     remove Passengers; pe_loc = nothing;
                     remove Terrorists; tr_loc = nothing;
-                    give PassengerKillHints ~concealed;
                     print "^The bursts of machine gun fire and the
                         screams of agony tell you it wasn't a good
                         idea to leave the passengers with the
@@ -1344,7 +1335,6 @@ Class   ReleaseLever
                 }
                 if (pe_loc && pe_loc.car == c) {
                     remove Passengers; pe_loc = nothing;
-                    give PassengerKillHints ~concealed;
                     print "The screams of dying passengers are a grim
                         reminder of the guns' range and
                         effectiveness.^";
@@ -1446,7 +1436,6 @@ Object  Undercarriage "undercarriage"
             if (self has general) rfalse;
             give self general;
             Achieved(FIND_BOXES);
-            give BoxHints ~concealed;
 
             print "You find something hidden in ", (the) self, "...^";
             
@@ -1520,7 +1509,6 @@ CarUnderside Car6Underside
 
 Class   CarTopside class Outside
  with   short_name [;
-            give TopsideMenu ~concealed;
             print "On top of car ", self.car;
             rtrue;
         ],

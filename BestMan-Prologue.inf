@@ -172,8 +172,6 @@ Object  Airplane "Airplane"
                 
                 the_time = 744;
 
-                give TrainMenu ~concealed;
-
                 move Seat4B to Car3Before; PlayerTo(Seat4b); 
             }
         ],
