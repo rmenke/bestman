@@ -385,8 +385,10 @@ Object  -> LitmusPowder
          Transfer, Insert:
             if (second ofclass Bottle && child(second)) {
                 if (ObjectIsUntouchable(child(second))) rtrue;
+                print "You dissolve a few crystals in ",
+ 		    (the) child(second), ".";
                 give child(second) general;
-                "You dissolve a few crystals in ", (the) child(second), ".";
+                new_line; rtrue;
             }
         ];
 
@@ -575,10 +577,10 @@ Object  Terrorists "terrorists"
          ThrowAt:
             if (noun == Spider && second == self) {
                 print "~Oh, look, a paper spider,~ one of the terrorists
-                     says.^^
-                     Far from fright, their reaction is best described as
-                     vaguely amused.^^
-                     You are frog-marched to an unoccupied car of the
+		    says.^^
+		    Far from fright, their reaction is best described as
+		    vaguely amused.^^
+		    You are frog-marched to an unoccupied car of the
 		    train. One of them stands guard over you for the
 		    remainder of the trip, which ends abruptly with ";
                 if (BlackSphere in GlassBox)
@@ -596,8 +598,9 @@ Object  Terrorists "terrorists"
  has    concealed animate static pluralname;
 
 Object  -> TerroristCorpses "terrorist corpses"
- with   name "corpses" "bodies" "terrorists" "people" "men" "weapons"
-            "guns",
+ with   name 'corpse' 'corpses//p' 'body' 'bodies//p' 'terrorist'
+ 	    'terrorists//p' 'people' 'man' 'men//p' 'weapon'
+	    'weapons//p' 'gun' 'guns//p' ,
         description
             "They're draped over their weapons.",
         initial
@@ -1185,12 +1188,15 @@ CarJunction Car56Junction "Junction Between Car 5 and 6"
 Class   CarUnderside
  with   short_name [; print "Car ", self.car, ", underside"; rtrue; ],
         description
-            "From here, you can make out the complex speed regulators,
-            air brakes, and other mechanisms you take for granted
-            whenever you travel by rail. You can crawl @00 or @01
-            along the length of the car.",
-        d_to "Death. Nasty, oily, ground-to-a-pulp-under-the-wheels death. Best
-            not to even consider it.",
+	    "It's a tough crawl, between the mess of an undercarriage
+	    above that threatens to tear your back apart to the coarse 
+	    mesh below through which you see the disturbing blur of
+	    the ground.  You can wiggle @00 or @01 to more open
+	    spaces.",
+        d_to "Death. Nasty, oily, ground-to-a-pulp-under-the-wheels
+	    death. Best not to even consider it.",
+	u_to "If there's an exit in the undercarriage, it's
+	    well-hidden.",
         before [ obj;
          Go:
             if (noun == u_to or d_to) rfalse;
