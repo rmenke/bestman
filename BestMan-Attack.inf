@@ -535,9 +535,9 @@ Object  Terrorists "terrorists"
                 else new_location = new_location.&found_in-->0;
             }
 
-            if (new_location == Car4Aft  && location == Office5 ||
-                new_location == Car4Mid  && location == Office3 or Office4 ||
-                new_location == Car4Fore && location == Office3 or Office4)
+            if ((new_location == Car4Aft && location == Office5) ||
+                (new_location == Car4Mid or Car4Fore &&
+ 		 location == Office3 or Office4))
                 new_location = location;
 
             move self to new_location;
@@ -1555,8 +1555,8 @@ Class   CarTopside class Outside
                 of the train...^";
         ],
         each_turn [;
-            if (parent(Terrorists) && parent(Terrorists).car == self.car ||
-		parent(Passengers) && parent(Passengers).car == self.car)
+            if ((parent(Terrorists) && parent(Terrorists).car == self.car) ||
+		(parent(Passengers) && parent(Passengers).car == self.car))
                 "^You hear noises from the car below.";
         ];
  
