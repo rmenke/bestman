@@ -83,9 +83,9 @@ Object  -> WoodenCrate "wooden crate"
             if (self hasnt general) {
                 give self general;
                 "You pull off the front of ", (the) self, ". Horror
-                    grips your stomach as you survey the infernal
-                    contraption inside. It could be only one thing: a
-                    bomb.";
+                grips your stomach as you survey the infernal
+                contraption inside. It could be only one thing: a
+                bomb.";
             }
             else "You open ", (the) self, ", once again revealing ",
                 (the) MetalBox, ".";
@@ -383,8 +383,6 @@ Object  -> -> -> Photograph "photograph"
         initial
             "Hidden under the sphere was an old photograph.",
         description [;
-	    give self general;
-	    
             if (self.last_examined == Terrorists or TerroristCorpses)
                 "None of the terrorists resemble the people in the
                 photo.";
@@ -398,19 +396,24 @@ Object  -> -> -> Photograph "photograph"
                 resemblance to the conductor!";
             }
 
-            "It's a photograph of a handsome young couple at the
-            beach. Judging by the man's hairstyle, you'd place it
-            sometime in the early '70s.";
+	    if (self hasnt general) {
+	    	give self general;
+            	"It's a photograph of a handsome young couple at the
+            	beach. Judging by the man's hairstyle, you'd place it
+            	sometime in the early '70s.";
+	    }
         ],
         last_examined,
         react_before [;
 	    if (action ~= ##Examine)
 		self.last_examined = nothing;
-            else {
-		if (noun == self) rfalse;
+            else if (noun ~= self) {
  		self.last_examined = noun;
-		if (self has general) <<Examine self>>;
+		if (self has general && self.description()) {
+		    give self ~general; rtrue;
+		}
 	    }
+	    
 	    give self ~general;
         ];
         
