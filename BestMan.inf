@@ -1969,6 +1969,10 @@ Extend 'look'
 Verb 'lubricate' 'lube' 'oil'
     * noun                              -> Lubricate;
 
+Verb 'puncture' 'poke' 'stab'
+    * noun 'into'/'through'/'thru' noun	-> Insert
+    * noun 'with' noun			-> Insert reverse;
+
 Extend 'lock' first
     * noun                              -> Lock;
 
