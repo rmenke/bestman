@@ -265,9 +265,14 @@ Object  -> Sensor
 
 Object  -> GlassDish "glass dish"
  with   name "glass" "evaporation" "concave" "dish" "lens",
-        initial
-            "A glass dish sits under a thick metal coil, which dangles
-            from another breadboard packed with electronics.",
+        initial [;
+            print "A glass dish sits under a thick metal coil, which
+            dangles from another breadboard packed with electronics.";
+            if (WhitePowder in self)
+                " In the center of the dish is a small pile of clumpy
+                white powder.";
+            new_line; rtrue;
+        ],
         before [;
          PutOn:
             <<Insert noun second>>;
