@@ -477,26 +477,37 @@ Class   Liquid (5)
                 Liquid outside Bottle! ***^";
             if (noun has measured) vol = noun.quantity;
             
+	    if (vol) print "You pour ", vol, "mL into ", (the) second, ".^";
+	    else     print "You pour some liquid into ", (the) second, ".^";
+	    
             if ((obj = sibling(noun)) ~= nothing) {               
-                if (noun has general) give obj general;
-                if (noun has toxic  ) give obj toxic;
-                
+                if (noun has general && obj hasnt general) {
+                    give obj general;                
+		    obj.each_turn();
+		}
+		
+		if (noun has toxic  ) give obj toxic;
+		
+		oc0 = obj.&color-->0;
+		oc1 = obj.&color-->1;
+		
                 if (noun.short_name ~= obj.short_name)
                     obj.short_name = LIQUID_NAME;
 
-		oc0 = obj.&color-->0;
-		oc1 = obj.&color-->1;
-
-		if (noun.&color-->0 ~= 0 && obj.&color-->0 == 0)
+		if (noun.&color-->0 ~= 0 && oc0 == 0)
 		    obj.&color-->0 = noun.&color-->0;
-		if (noun.&color-->1 ~= 0 && obj.&color-->1 == 0)
+		if (noun.&color-->1 ~= 0 && oc1 == 0)
 		    obj.&color-->1 = noun.&color-->1;
+		
+		if (obj.&color-->0 ~= oc0 || obj.&color-->1 ~= oc1) {
+                    print "^The ", (name) obj, " in ",
+ 			(the) parent(obj), " turns";
+                    if (obj.&color-->0 == 0 && obj.&color-->1 == 0) " clear.";
+                    if (obj.&color-->0) print " ", (address) obj.&color-->0;
+                    if (obj.&color-->1) print " ", (address) obj.&color-->1;
+                    print ".^";
+		}
 
-		if (noun.&color-->0 ~= obj.&color-->0)
-		    obj.&color-->0 = 0;
-		if (noun.&color-->1 ~= obj.&color-->1)
-		    obj.&color-->1 = 0;
-                
                 obj.quantity = obj.quantity + noun.quantity;
                 obj.acidity  = obj.acidity  + noun.acidity;
                 
@@ -505,21 +516,7 @@ Class   Liquid (5)
             }
             else give noun ~measured;
             
-            if (keep_silent) rtrue;
-            
-            if (vol) print "You pour ", vol, "mL into ", (the) second, ".";
-            else     print "You pour some liquid into ", (the) second, ".";
-	    
-	    if (noun.&color-->0 ~= oc0 || noun.&color-->1 ~= oc1) {
-		if (noun.&color-->0 == 0 && noun.&color-->1 == 0)
-		    " The colors swirl as the liquids mix.";
-		print " The liquid in ", (the) second, " turns";
-		if (noun.&color-->0) print " ", (address) noun.&color-->0;
-		if (noun.&color-->1) print " ", (address) noun.&color-->1;
-		print_ret ".";
-	    }
-
-	    new_line; rtrue;
+	    rtrue;
         ],
         
         each_turn [ oc0 oc1;
