@@ -696,6 +696,15 @@ Object  -> Passengers "passengers"
 
 	    "They mumble amongst themselves, but the consensus is that 
 	    they have no comment to make on ", (the) noun, ".";
+
+	 Give:
+	    if (noun == soda) {
+		remove soda;
+		print_ret (The) self, " take ", (the) soda, " and drink ",
+                    (ItOrThem) soda, ".";
+	    }
+
+	    "They politely refuse to touch ", (the) noun, ".";
 	    
 	 default:
             "The passengers are too scared to respond.";
