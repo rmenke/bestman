@@ -46,7 +46,11 @@ Global liquid_quantity;         ! Volume of liquid as determined by parser.
 
 ! Quotes
 
-Array quote_done -> 5;
+Constant AIRPLANE2_QUOTE        = 0;
+Constant CSLEWIS_QUOTE          = 1;
+Constant DIEHARD_QUOTE          = 2;
+
+Array quote_done -> 3;
 
 Global next_quote = -1;
 
@@ -60,29 +64,19 @@ Global next_quote = -1;
 [   PrintQuote;
 
     switch(next_quote) {
-     0: box
+     AIRPLANE2_QUOTE: box
          "~I don't want to alarm you, but"
          " there's a bomb on this plane.~"
          "~A ba...!~"
          "~No, not a 'ba', a bomb.~"
          ""
          "   -- ~Airplane II: The Sequel~";
-     1: box
-         "This glass is held wher it is by goop."
-         ""
-         "                  -- Alt.Fan.Spinnwebe";
-     2: box
+     CSLEWIS_QUOTE: box
          "~Easy in, but not easy out,~"
          " said the lobster in the lobster pot."
          ""
          "                       -- C. S. Lewis";
-     3: box
-         "~I want to carry dead bodies around"
-         " and put them in interesting places.~"
-         ""
-         "                  -- Chris Livingston";
-
-     4: box
+     DIEHARD_QUOTE: box
      	 "~Come out to the coast."
  	 " We'll get together,   "
  	 " have a few laughs.~   "

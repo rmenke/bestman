@@ -367,8 +367,8 @@ Control -> -> Brake "emergency brake"
                 give EndgameMenu ~concealed;
                 
                 PressSpaceToContinue();
-                print "^^^^^^^^^^^^"; Quote(4); PlayerTo(CrashSite);
-                DisplayStatus(); DrawStatusLine();
+                print "^^^^^^^^^^^^"; Quote(DIEHARD_QUOTE);
+ 		PlayerTo(CrashSite); DisplayStatus(); DrawStatusLine();
 
                 notify_mode = 0; ! we don't want the player knowing
                                  ! about the score.

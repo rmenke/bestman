@@ -71,7 +71,7 @@ Object  -> WoodenCrate "wooden crate"
         ],
         before [;
          Open:
-            Quote(0);
+            Quote(AIRPLANE2_QUOTE);
 
             give MailCarMenu ~concealed;
             
@@ -184,7 +184,6 @@ Object  MetalBox "metal box"
         before [;
          Open:
             if (self has open) rfalse;
-            Quote(1);
             "Try as you might, the glass is securely affixed to the
             front of the box by some thick, gooey sealant. The sealant 
             itself seems to be invulnerable to all of your attacks.";

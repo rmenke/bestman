@@ -366,7 +366,7 @@ Object  Tube "small plastic tube"
             chemicals. There's a label on the tube.",
         before [;
          Receive:
-            if (noun == LitmusPowder) Quote(2);
+            if (noun == LitmusPowder) Quote(CSLEWIS_QUOTE);
             "The mouth of the tube is too small to receive ",
                 (the) noun, ".";
          Examine:
@@ -609,7 +609,6 @@ Object  -> TerroristCorpses "terrorist corpses"
             the car.",
         before [;
          Take, Push, PushDir, Pull:
-            Quote(3);
             "You'd rather not touch the bodies.";
         ],
  has    pluralname static;
@@ -730,7 +729,6 @@ Object  -> -> PassengerCorpses "passenger corpses"
             the car.",
         before [;
          Take, Push, PushDir, Pull:
-            Quote(3);
             "That's rather disgusting.";
         ],
  has    pluralname static;
