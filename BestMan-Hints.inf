@@ -62,17 +62,9 @@ SwitchOption -> -> TechnicalDirectionsOption
             rtrue;
         ];
 
-Ifdef	INCLUDE_PACKAGE;
+Ifdef	DEBUG;
 
 Menu    -> "Game Package";
-
-Option  -> -> "The game package"
- with   description
-            "The game package is a PDF file that should have been
-            included with the z-code story file you are using
-            now. Copies of the articles included in the children's
-            magazine ~All Aboard~ and the newspaper clipping are
-            reproduced here.";
 
 Option  -> -> "Article #1 of ~All Aboard!~"
  with   description [;
@@ -249,7 +241,7 @@ Option  -> -> "Newspaper clipping"
             response.";
         ];
 
-Endif;	! INCLUDE_PACKAGE
+Endif;	! DEBUG
 
 Option  -> "Credits"
  with   description [;
