@@ -706,11 +706,11 @@ Object CrashSite "Crash Site"
 
                 ~Best of luck,~ the agent offers, then leaves.^^
 
-                Jack was such a good sport to hold his wedding here. His
-                comment still makes you laugh: ~If we risk pulling you
-                down here a third time, your car will probably fall
-                into the San Andreas fault or something...~^";
-
+                Jack was such a good sport to hold his wedding
+                here. His reasoning was simple: ~If we risk pulling
+                you down here a third time, your car will probably
+                fall into the San Andreas fault or something...~^";
+	    
             PlayerTo(Wheelchair); the_time = 715;
 
             obj = child(player);
