@@ -839,7 +839,7 @@ Object  -> -> OilCan "can of lubricant"
             if (second provides found_in)
                 "That would be a complete waste of time.";
             
-            objectloop (obj ofclass OilTimer && obj.time_left)
+            objectloop (obj ofclass OilTimer && obj notin OilTimer)
                 if (obj.oiled_obj == second) {
                     obj.time_left = obj.time_left + 10;
                     "You put more lubricant on ", (the) second, ".";
