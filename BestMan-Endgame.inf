@@ -320,7 +320,7 @@ Control -> -> Brake "emergency brake"
         description
             "A simple apparatus: a red plastic ball on a cord. Pull it 
             and the train stops, quickly. As in derailment.",
-        before [ c old_time;
+        before [ c;
             if (self.Control::before()) rtrue;
             
          Pull:
@@ -336,9 +336,8 @@ Control -> -> Brake "emergency brake"
                     as you prepare for the end...^^";
                                 
                 @read_char 1 -> c; @erase_window -1;
-
                 PlayerTo(Seat4BPlane, 1);
-                old_time = the_time; the_time = 1064;
+                the_time = the_time - 5;
                 DisplayStatus(); DrawStatusLine();
                 
                 print "^The roaring... the exploding windows... a
@@ -363,12 +362,12 @@ Control -> -> Brake "emergency brake"
                     
                     ~", (emphasis) "It's all your fault", ".~^^";
                 
-                the_time = old_time + 5;
+                the_time = the_time + 10;
 
                 give EndgameMenu ~concealed;
                 
                 @read_char 1 -> c; @erase_window -1;
-                new_line; PlayerTo(CrashSite);
+                print "^^^^^^^^^^^^"; Quote(4); PlayerTo(CrashSite);
                 DisplayStatus(); DrawStatusLine();
 
                 notify_mode = 0; ! we don't want the player knowing
@@ -503,11 +502,15 @@ Object  EvilConductor "conductor"
                 StartTimer(self, 2); give self general;
                 
                 remove Spider;
+                
+                held_back_mode = false;
+                                
                 print_ret "~", (strong) "Aaah!", " A spider!~^^
                     He jumps back about a foot, cracking his head
-                    against a low-hanging pipe. Stunned for the
-                    moment, he stumbles around the cabin of the
-                    engine, completely ignoring you for the moment.^^
+                    against a low-hanging pipe. Stunned, he stumbles
+                    around the cabin of the engine, completely ignoring
+                    you at the moment.^^
+                    
                     Wolfie, unfortunately, is swept off the side of
                     the train.";
             }
@@ -545,6 +548,7 @@ Object  EvilConductor "conductor"
                 if (GlassEye notin self)
                     "A painful slap across the face tells you that he
                     doesn't want to talk about her anymore.";
+
                 move GlassEye to location;
 
                 self.description =
@@ -660,19 +664,17 @@ Object CrashSite "Crash Site"
 
             @read_char 1 -> c; @erase_window -1;
             
-            give AmusingHints ~concealed;
-            
             if (task_done->RESCUE) {
                 print "^~...when we found the passengers in the car
                     they explained to us the best they could what was
                     going on. We had a team ready to surround the
                     train when it arrived, but thank God you were able 
-                    to keep that lunatic from detonating his bomb.^^";
+                    to keep that lunatic from detonating his bomb.~^^";
             }
             else {
                 print "^~...and although you weren't able to save the
                     passengers, you were able to stop that lunatic
-                    from detonating his bomb.^^";
+                    from detonating his bomb.~^^";
             }
             
             print "You give the FBI agent a gentle smile, hoping that
@@ -818,7 +820,9 @@ Object  -> Jack "Jack"
          Give:
             if (noun ~= Ring) jump DefaultResponse;
             Achieved(GIVING_RING);
-            deadflag = 2;
+
+            if (task_done->RESCUE) deadflag = 2; else deadflag = 4;
+            give AmusingHints ~concealed;
 
             "The applause is deafening, and the flashbulbs
             blinding. Or maybe it's just the painkillers finally
