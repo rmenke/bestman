@@ -1,6 +1,8 @@
 ! -*- inform-project-file:"BestMan.inf" -*-
 ! $Id$
 
+Release 2;
+
 Include ">BestMan-Abbrev";
 
 ! Constants
