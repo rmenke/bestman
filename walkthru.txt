@@ -133,7 +133,7 @@ The box should open with a *CLICK*.
 > OPEN BOX.
 > GET SPHERE.
 > GET PHOTO.
-> GET OIL.
+> GET LUBE.
 > PUT ALL IN JACKET.
 
 > OPEN HATCH. UP. NORTH. DOWN. NORTH. NORTH.
@@ -148,7 +148,7 @@ The box should open with a *CLICK*.
 > GET WHITE BOX. PUT IT IN JACKET.
 > SOUTH. SOUTH.
 > GET WHITE BOX. DROP IT.
-> NORTH. SQUIRT OIL ON LEVER.
+> NORTH. SQUIRT LUBE ON LEVER.
 > PULL LEVER. YES.
 
 Get out of there, quickly!
