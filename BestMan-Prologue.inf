@@ -11,7 +11,7 @@ Object  Airplane "Airplane"
             	There is a door @00 and a small kitchenette @01.^";
 
 	    if (self hasnt visited)
- 	    	"^(First time players should type INFO for gameplaying
+ 	    	"^(First time players should type INFO for game-playing
 		details.)";
 	],
         in_to
@@ -141,13 +141,17 @@ Object  Airplane "Airplane"
                     you tried to visit an airport-- just to pick up
                     someone-- you left in an ambulance, catatonic.^^";
 
-                print "Things looked bad when the old rust bucket died
-                    this morning. Flight was out of the question,
-                    obviously, but rail had existed far earlier than
-                    planes. So you found yourself pleading your case
-                    to a sympathetic rail station operator, who
-                    managed to squeeze you onto a special charter
-                    train direct to San Diego.^^";
+                print "Things were looking bad when the old rust 
+                    bucket died this morning. The mechanic said that 
+                    the earliest he could get to it was first thing 
+                    Monday morning, and the rental agency just 
+                    laughed when you asked if you could get a car on 
+                    short notice for the weekend. Flight was out of 
+                    the question for obvious reasons, but rail had 
+                    existed far earlier than planes. So you found 
+                    yourself pleading your case to a sympathetic 
+                    station manager, who managed to squeeze you onto 
+                    a special charter train direct to San Diego.^^";
 
                 print "Two years ago, the wedding was postponed
                     indefinitely by your accident. You are determined
