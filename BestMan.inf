@@ -1929,6 +1929,11 @@ Extend 'cut' replace
 Extend 'slice' replace
     * noun 'with' held                  -> Cut;
 
+Extend 'push' replace
+    * noun                           	-> Push
+    * noun noun=ADirection		-> PushDir
+    * noun 'to' noun                 	-> Transfer;
+
 Verb 'pour'
     * quant                             -> Empty
     * 'out' quant                       -> Empty
