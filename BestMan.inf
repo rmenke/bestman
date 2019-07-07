@@ -16,7 +16,7 @@ Ifndef DEBUG; Constant NO_PLACES; Endif;
 
 Constant DIALECT_US;
 Constant DEATH_MENTION_UNDO;
-Constant AMUSING_PROVIDED;
+! Constant AMUSING_PROVIDED;
 Constant SACK_OBJECT        = Jacket;
 Constant MAX_CARRIED        = 5;
 
@@ -30,9 +30,9 @@ Constant TRAIN_SPEED	    = 60;
 Constant PPSTC = "[Please press SPACE to continue]";
 
 [   PressSpaceToContinue c;
-    
+
     c = 0->33; if (c == 0) c = 80;
-    
+
     font off;
     spaces((c - 32) / 2);
     print (string) PPSTC;
@@ -40,7 +40,7 @@ Constant PPSTC = "[Please press SPACE to continue]";
 
     do { @read_char 1 -> c; }
     until (c == 10 or 13 or 32);
-    
+
     @erase_window -1;
 ];
 
@@ -57,7 +57,7 @@ Array quote_done -> 3;
 Global next_quote = -1;
 
 [   Quote i;
-    
+
     if (quote_done->i == 0 && next_quote == -1) {
         quote_done->i = 1; next_quote = i;
     }
@@ -85,7 +85,7 @@ Global next_quote = -1;
 	 ""
 	 "          -- ~Die Hard~";
     }
-    
+
     next_quote = -1;
 ];
 
@@ -117,7 +117,7 @@ Constant MAX_SCORE                      = 100;
 Array task_scores -> 5 1 5 5 5 5 5 10 5 10 5 10 5 5 5 10 4;
 
 [   PrintTaskName ach;
-    
+
     switch (ach) {
      STAYING_ON:        "staying on the train";
      CLEAN_JACKET:      "cleaning your jacket";
@@ -160,13 +160,13 @@ Include "Parser";
 
 ! Amusing things to do
 
-[   Amusing c; 
+[   Amusing c;
 
-    if (AmusingHints.select() ~= 2) {
-        #Ifdef LIB_PRE_63; print "^", (string) PPSTC, "^";
-        #Ifnot; L__M(##Miscellany, 53); #endif;
-        @read_char 1 -> c; @erase_window -1; new_line;
-    }
+!   if (AmusingHints.select() ~= 2) {
+!       #Ifdef LIB_PRE_63; print "^", (string) PPSTC, "^";
+!       #Ifnot; L__M(##Miscellany, 53); #endif;
+!       @read_char 1 -> c; @erase_window -1; new_line;
+!   }
 ];
 
 ! Death and Beyond
@@ -178,11 +178,11 @@ Include "Parser";
     print "> ";
 
     #IFV3; read buffer parse; #ENDIF;
-    
+
     temp_global=0;
-    
+
     #IFV5; read buffer parse DrawStatusLine; #ENDIF;
-    
+
     i=parse-->1;
 
     switch (i) {
@@ -196,12 +196,12 @@ Include "Parser";
         new_line; FullScoreSub(); jump RRQPL;
      AMUSING__WD:
         if (deadflag == 2 && AMUSING_PROVIDED == 0) {
-	    give AmusingHints ~concealed;
-            new_line; Amusing(); jump RRQPL;
+!           give AmusingHints ~concealed;
+!           new_line; Amusing(); jump RRQPL;
         }
-     'help', 'hint', 'hints', 'info', 'credits':
-        new_line; HelpSub(); jump RRQPL;
-        
+!    'help', 'hint', 'hints', 'info', 'credits':
+!       new_line; HelpSub(); jump RRQPL;
+
 #IFV5;
      UNDO1__WD, UNDO2__WD, UNDO3__WD:
         if (undo_flag == 0) {
@@ -218,7 +218,7 @@ Include "Parser";
         jump RRQPL;
     }
 #ENDIF;
-    
+
     L__M(##Miscellany,8);
     jump RRQL;
 ];
@@ -246,7 +246,7 @@ Object  LibraryMessages
  with   before [;
          Miscellany:
             if (lm_n ~= 5) rfalse;
-            
+
             print "^Would you like to RESTART, RESTORE a saved game";
             #Ifdef DEATH_MENTION_UNDO; print ", UNDO your last move"; #Endif;
             if (TASKS_PROVIDED==0)
@@ -338,12 +338,12 @@ Class   LightBulbSocketClass
             if (self has on)
                 print_ret (emphasis) "Ouch!", " You get a nasty
                     shock.";
-            
+
             if (noun ofclass LightBulbClass) rfalse;
 
             print_ret (The) self, " wasn't designed for ", (the) noun,
                 ", Edison.";
-            
+
          LetGo:
             if (self has on && child(self))
                 "The bulb is too hot to handle.";
@@ -359,7 +359,7 @@ Class   LightBulbSocketClass
                 give child(self) light;
                 print (The) child(self), " begins to glow.^";
             }
-             
+
          SwitchOff:
             if (child(self)) {
                 give child(self) ~light;
@@ -369,10 +369,10 @@ Class   LightBulbSocketClass
         after [;
          Receive:
             "You screw ", (the) noun, " into ", (the) self, ".";
-            
+
          LetGo:
             "You unscrew ", (the) noun, " from ", (the) self, ".";
-            
+
          SwitchOn, SwitchOff:
             if (child(self)) rtrue; else "Nothing seems to happen.";
         ],
@@ -399,17 +399,17 @@ Class   Bottle
         react_after [ liq vol mol;
          Go:
             liq = child(self);
-            
+
             if (liq == nothing || self hasnt open ||
                 ~~IndirectlyContains(player, self)) rfalse;
-            
+
             vol = self.capacity / child(self).quantity + 1;
-            
+
             if (random(vol) == 1) {
                 vol = random(4) * 5;
-               
+
                 if (vol > liq.quantity) vol = liq.quantity;
-                                
+
                 if (liq.quantity == vol) {
                     print "The last of ", (the) liq, " sloshes out of ",
                         (the) self, ".^^";
@@ -420,7 +420,7 @@ Class   Bottle
                         (the) self, ".^^";
 
                     mol = DivNeg(liq.acidity * (vol/5), liq.quantity/5);
-                    
+
                     liq.quantity = liq.quantity - vol;
                     liq.acidity = liq.acidity - mol;
                 }
@@ -462,8 +462,8 @@ Class   Liquid (5)
         before [ vol mol rest;
          Remove:
             "That would only make a mess.";
-            
-         Transfer:                
+
+         Transfer:
             if (second ~= d_obj && ~~ second ofclass Bottle)
                 print_ret (The) second, " is not designed to hold
                     liquids.";
@@ -483,34 +483,34 @@ Class   Liquid (5)
             else vol = second.capacity;
 
             if (vol > noun.quantity) vol = noun.quantity;
-            
+
             if (liquid_quantity) {
                 if (vol > liquid_quantity) vol = liquid_quantity;
                 give noun measured;
             }
             else
                 give noun ~measured;
-            
+
             if (vol == 0)
                 print_ret (The) second, " is already as full as possible.";
-            
+
             if (noun.quantity > vol) {
                 mol = noun.acidity;
-                
+
                 ! Some interpreters have problems with signed division
-                
+
                 mol = DivNeg(mol * (vol/5), noun.quantity/5);
-                
+
                 rest = Liquid.create();
                 Liquid.copy(rest, noun);
                 move rest to parent(noun);
-                
+
                 rest.quantity = noun.quantity - vol;
                 rest.acidity  = noun.acidity  - mol;
-                
+
                 noun.quantity = vol; noun.acidity = mol;
             }
-            
+
             if (second == d_obj) {
                 Liquid.destroy(noun);
                 if (TestScope(LavatorySink))
@@ -526,21 +526,21 @@ Class   Liquid (5)
                 print_ret (strong) "^*** Programming error:
                 Liquid outside Bottle! ***^";
             if (noun has measured) vol = noun.quantity;
-            
+
 	    if (vol) print "You pour ", vol, "mL into ", (the) second, ".^";
 	    else     print "You pour some liquid into ", (the) second, ".^";
-	    
-            if ((obj = sibling(noun)) ~= nothing) {               
+
+            if ((obj = sibling(noun)) ~= nothing) {
                 if (noun has general && obj hasnt general) {
-                    give obj general;                
+                    give obj general;
 		    obj.each_turn();
 		}
-		
+
 		if (noun has toxic  ) give obj toxic;
-		
+
 		oc0 = obj.&color-->0;
 		oc1 = obj.&color-->1;
-		
+
                 if (noun.short_name ~= obj.short_name)
                     obj.short_name = LIQUID_NAME;
 
@@ -548,7 +548,7 @@ Class   Liquid (5)
 		    obj.&color-->0 = noun.&color-->0;
 		if (noun.&color-->1 ~= 0 && oc1 == 0)
 		    obj.&color-->1 = noun.&color-->1;
-		
+
 		if (obj.&color-->0 ~= oc0 || obj.&color-->1 ~= oc1) {
                     print "^The ", (name) obj, " in ",
  			(the) parent(obj), " turns";
@@ -560,23 +560,23 @@ Class   Liquid (5)
 
                 obj.quantity = obj.quantity + noun.quantity;
                 obj.acidity  = obj.acidity  + noun.acidity;
-                
+
                 Liquid.destroy(noun);
                 noun = obj;
             }
             else give noun ~measured;
-            
+
 	    rtrue;
         ],
-        
+
         each_turn [ oc0 oc1;
             if (self has toxic && self.acidity > 0) StartDaemon(self);
 
             if (self hasnt general) rtrue;
-            
+
             oc0 = self.&color-->0;
             oc1 = self.&color-->1;
-                        
+
             if (self.acidity > 0) {
                  self.&color-->0 = 'bright';
                  self.&color-->1 = 'red';
@@ -589,7 +589,7 @@ Class   Liquid (5)
                  self.&color-->0 = 'deep';
                  self.&color-->1 = 'purple';
             }
-            
+
             if (oc0 ~= self.&color-->0 || oc1 ~= self.&color-->1) {
                 print "^The ", (name) self, " in ", (the) parent(self),
                     " turns";
@@ -611,10 +611,10 @@ Class   Liquid (5)
             if (p provides vents_to) {
                 if (v) print "^The vapors pouring out of ",
                     (the) parent(self), " are drawn into ", (the) p, ".^";
-                
+
                 for (i = 0 : i < (p.#vents_to/2) : i++)
                     give (p.&vents_to-->i) toxic;
-                
+
                 return;
             }
 
@@ -633,7 +633,7 @@ Class   Liquid (5)
 Class   Box
  with   parse_name [ w c;
             if (self has concealed) return 0;
-            
+
             while ((w = NextWordStopped()) ~= -1) {
                 if (w == 'box' or 'cube' or self.name)
                     c++;
@@ -644,7 +644,7 @@ Class   Box
 
             return c;
         ],
-        
+
         before [;
             if (self notin Boxes) rfalse;
             move WhiteBox to parent(Boxes);
@@ -653,7 +653,7 @@ Class   Box
             give Boxes general; remove Boxes;
             StartDaemon(Boxes);
         ],
-        
+
         old_loc,
         react_before [; Go: self.old_loc = real_location; ],
         react_after  [ c w p;
@@ -665,7 +665,7 @@ Class   Box
             if (p == nothing) p = ScopeCeiling(self);
             #Ifdef DEBUG; if (debug_flag & 2) print "[p = ", (name) p, "]^";
             #Endif;
-            
+
             if (~~ TestScope(self.c, self)) {
                 if (TestScope(self.c.c, self)) {
                     print "(You roll up some of the excess wire.)^";
@@ -675,7 +675,7 @@ Class   Box
                     if (c == con_t)
                          w = RedWire.create(self, self.con_t);
                     else w = RedWire.create(self.con_f, self);
-                    
+
                     if (w) {
                         if (RedWire.remaining())
                              print "(You unroll some of the wire.)^";
@@ -704,7 +704,7 @@ Object  Boxes "boxes"
         daemon [;
             if (parent(WhiteBox) ~= parent(BlackBox)) return;
             if (WhiteBox.con_t.con_t ~= BlackBox) return;
-            
+
             move self to parent(WhiteBox); give self ~general;
             move WhiteBox to self; move BlackBox to self;
             move WhiteBox.con_t to self;
@@ -723,7 +723,7 @@ Box     BlackBox "black box"
         ],
         initial
             "Nestled in the undercarriage is a black plastic box.";
-            
+
 Box     WhiteBox "white box"
  with   name "white", con_t BlackBox,
         description
@@ -736,10 +736,10 @@ Box     WhiteBox "white box"
 [   Explode     the_car sphere_car pass_car;
 
     if (BlackBox.con_f == nothing) rfalse;
-    
+
     the_car = FindCar(WhiteBox);
     if (the_car) the_car = the_car.car;
-    
+
     if (TestScope(BlackBox))
         print "^The wire attached to ", (the) BlackBox, " breaks!^";
 
@@ -754,21 +754,21 @@ Box     WhiteBox "white box"
             "^Suddenly the entire world is flame and noise as an explosion
             rips through the car. Your pain is, thankfully, brief.";
     	}
-    	
+
     	if (the_car < location.car) {
             deadflag = 1;
-            "^One of the cars closer to the front of the train 
-	    explodes in a ball of fire and shrapnel. Unfortunately, 
-	    your car plows into the flaming wreckage and derails. 
-	    Between the fire and the flying debris, there's very 
+            "^One of the cars closer to the front of the train
+	    explodes in a ball of fire and shrapnel. Unfortunately,
+	    your car plows into the flaming wreckage and derails.
+	    Between the fire and the flying debris, there's very
 	    little left of you.";
 	}
-    	
+
 	print "^One of the cars behind you explodes!^";
-    	
+
     	sphere_car = FindCar(BlackSphere);
     	if (sphere_car) sphere_car = sphere_car.car;
-    	
+
     	if (the_car == sphere_car) {
             deadflag = 1;
             "^A second explosion, a million times more powerful than
@@ -781,10 +781,10 @@ Box     WhiteBox "white box"
             explodes, but with a force a million times greater than
             the first.";
     	}
-    	
+
     	pass_car = FindCar(Passengers);
     	if (pass_car) pass_car = pass_car.car;
-    	
+
     	if (the_car == pass_car) {
             remove Passengers;
             print "^Unfortunately, the hostage passengers were in that
@@ -797,7 +797,7 @@ Box     WhiteBox "white box"
             	chance for survivors...^";
     	}
     }
-	
+
     while (BlackBox.con_f provides con_f) {
         if (TestScope(BlackBox.con_f))
             if (BlackBox.con_f hasnt concealed)
@@ -808,9 +808,9 @@ Box     WhiteBox "white box"
                     undercarriage, but you can't catch it in time.^";
         RedWire.destroy(BlackBox.con_f);
     }
-    
+
     remove WhiteBox;
-    
+
     BlackBox.con_f = nothing;
     BlackBox.react_after = NULL;
     StopDaemon(Boxes);
@@ -860,7 +860,7 @@ Object  Events
             if (current_station >= 0 && the_time >= Passes-->current_station) {
 
                 new_line;
-                
+
                 style bold;
                 print "The train just ",
                 (string) random("zoomed","rushed","barreled","rumbled"),
@@ -873,10 +873,10 @@ Object  Events
                 else
                     current_station = -1;
             }
-            
+
             if (the_time == 755 && location == Car3Before &&
                 Jacket hasnt general) {
-                
+
                 give Jacket general;
                 "^~Whoops!~^^One of the reporters was walking down the
                 aisle with a large cup of coffee when the train
@@ -885,7 +885,7 @@ Object  Events
                 this stain. While your jacket isn't especially stylish,
                 it would look bad to show up dressed like a bum.";
             }
-            
+
             else if (the_time > 770 && location ~= Airplane &&
                      LavatoryDoor.number == 0) {
                 deadflag = 1;
@@ -897,17 +897,17 @@ Object  Events
 
             else if (the_time >= (Passes-->13) && BlackSphere in GlassBox) {
                 deadflag = 1;
-                
+
                 if (TestScope(GlassBox))
                     "^", (The) BlackSphere, " in ",
                         (the) GlassBox, " detonates, vaporizing you
                         instantly.";
-                
+
                 else if (location == MailCar)
                     "^", (The) WoodenCrate, " goes ",
                         (emphasis) "click", ", followed by a much,
                         much louder explosion.";
-                
+
                 else if (WoodenCrate has general)
                     "^The bomb detonates, vaporizing you instantly.";
 
@@ -915,7 +915,7 @@ Object  Events
                     "^", (emphasis) "Something", " just happened,
                         because you were just vaporized by a nuclear
                         explosion.";
-            }           
+            }
 
             else if (the_time >= (Passes-->12) && TestScope(BlackSphere) &&
                      BlackSphere notin GlassBox) {
@@ -1040,7 +1040,7 @@ Object  Schedule "train schedule"
             for (ix = 0 : ix < 14 : ix++) {
                 print (string) Station-->ix;
                 (Station-->ix).print_to_array(StringBuffer);
-                spaces(30 - StringBuffer-->0);
+                spaces(30 - StringBuffer->0);
                 LanguageTimeOfDay((Passes-->ix)/60, (Passes-->ix)%60);
                 new_line;
             }
@@ -1074,13 +1074,13 @@ Object  -> ConductorBefore "conductor"
                 He stands straight and proud, driven by the conviction
                 that he has an important job and that he does it very
                 well.^^";
-            
+
             switch (self.number) {
              0 to 3:  "He smiles softly as he waits for your ticket.";
              4 to 5:  "A small twitch near the side of his mouth hints
                 at impatience.";
             }
-            
+
             "His eyes are narrowed suspiciously. Perhaps it would be a
             good idea to give him your ticket ", (emphasis) "now",
             ".";
@@ -1093,18 +1093,18 @@ Object  -> ConductorBefore "conductor"
          Kiss:
             print_ret (The) self, " is on duty and cannot fraternize
                 with the passengers.";
-            
+
          ThrowAt:
             if (noun == Ticket or Ring) <<give noun self>>;
             print_ret (The) self, " deftly catches ", (the) noun, " and
                 returns it to you.";
-            
+
          Give:
             if (noun == Ticket) {
                 give Ticket general;
                 remove ConductorBefore;
                 Achieved(STAYING_ON);
-                
+
                 print_ret (The) self, " reads the back of the ticket
                     quickly. ~Ah, that explains why you're not on my
                     list.~^^", (strong) "CLUNK", ". ", (The) self, "
@@ -1114,20 +1114,20 @@ Object  -> ConductorBefore "conductor"
             else if (noun == Ring)
                 print_ret (The) self, " politely refuses your offer of
                     marriage. Besides, it's not your ring to give.";
-                        
-            print_ret (The) self, " politely refuses your offer.^^~I'd 
+
+            print_ret (The) self, " politely refuses your offer.^^~I'd
                 rather see your ticket, please.~";
-                
+
          Show:
             if (noun == Ticket) "~That's the one.~";
             if (noun == Ring) "~Very pretty.~";
             if (noun == Schedule) "~We're only stopping when we reach
                 Escondido. This is a special.~";
             "~I'd rather see your ticket, please.~";
-            
+
          Ask:
             "~I can answer all of your questions later.~";
-         
+
          Tell, Answer:
             print_ret (The) self, " is not interested in idle chit-chat. He has
                 a job to do.";
@@ -1178,9 +1178,9 @@ Object  OtherSeat
         ],
         parse_name [ word cnt a l i;
             word = NextWord();
-            
+
             give self ~proper; self.number = 0;
-            
+
             if (word == 'reporter')
                 if (NextWord() == 'in' or 'on') {
                     cnt = 2;
@@ -1192,9 +1192,9 @@ Object  OtherSeat
                 cnt++;
                 word = NextWord();
             }
-            
+
             wn--; a = WordAddress(wn); l = WordLength(wn);
-            
+
             for (i = 0 : i < l-1 : i++) {
                 if (a->i < '0' || a->i > '9') {
                     self.number = 0;
@@ -1202,14 +1202,14 @@ Object  OtherSeat
                 }
                 self.number = self.number * 10 + a->i - '0';
             }
-            
+
             self.number = self.number * 4 + a->i - ('a' - 1);
 
             if (a->i < 'a' || a->i > 'd' || self.number == 18) {
                 self.number = 0;
                 return cnt;
             }
-            
+
             give self proper; return cnt + 1;
         ],
         before [;
@@ -1277,7 +1277,7 @@ Object  Lavatory "Lavatory"
             if (noun == w_obj or LavatoryDoor &&
                 parent(Terrorists) == Car34Junction or Car3Aft or Car3) {
                 print "(You quickly close the door behind you.)^";
-                give LavatoryDoor ~open; 
+                give LavatoryDoor ~open;
             }
         ],
  has    light;
@@ -1309,28 +1309,28 @@ Object  LavatorySink "sink"
             }
             rtrue;
         ],
-        
+
         react_before [;
          EmptyT:
             if (noun ofclass Bottle && second == self)
                 <<Empty noun>>;
         ],
-        
+
         before [;
          SwitchOn, SwitchOff, Drink:
             <<(action) LavatoryFaucet (second)>>;
-         
+
          Receive:
              if (LavatoryFaucet has on)
                  print_ret (The) noun, " would only get wet.";
 
          Empty:
              "There's no stopper in the sink, so it empties automatically.";
-         
+
          EmptyT:
              if (second ofclass Bottle) <<Fill second>>;
         ],
-        
+
         capacity 1,
  has    static open container;
 
@@ -1352,26 +1352,26 @@ Object  LavatoryFaucet "faucet"
             if (noun ofclass Bottle) {
                 h2o = Liquid.create(noun.capacity, 0);
                 h2o.short_name = "water";
-                
+
                 if (child(noun))
                     h2o.quantity = h2o.quantity - child(noun).quantity;
-                
+
                 if (h2o.quantity == 0) {
                     Liquid.destroy(h2o);
                     print_ret (The) noun, " is already full.";
                 }
-                
+
                 move h2o to player; <Insert h2o noun>;
                 if (h2o in player) Liquid.destroy(h2o);
                 rtrue;
             }
             else "That can't hold water.";
         ],
-        
+
         before [;
          Open:
             <<SwitchOn self>>;
-         
+
          Close:
             <<SwitchOff self>>;
 
@@ -1382,7 +1382,7 @@ Object  LavatoryFaucet "faucet"
          Drink:
             if (self has on)
                 "You cup some water in your hands and drink. Refreshing!";
-         
+
          EmptyT:
             <<Fill second>>;
         ],
@@ -1413,15 +1413,15 @@ Class   Outside
                 deadflag = 1;
                 print "Dropping ", (the) noun;
             }
-            else if (IndirectlyContains(noun, BlackSphere)) { 
+            else if (IndirectlyContains(noun, BlackSphere)) {
                 deadflag = 1;
                 print "Dropping ", (the) noun, " (which contains ",
                     (the) BlackSphere, ")";
             }
-            
+
             if (deadflag) " off the train wasn't one of your more
                 inspired ideas. The explosion was pretty, though.";
-            
+
 	    remove noun;
 
 	    print (The) noun, " fall";
@@ -1432,11 +1432,11 @@ Class   Outside
 	    if (noun has pluralname) print "they are";
 	    else print "it is";
 	    print " out of sight.^";
-	    
+
 	    if (noun == WhiteBox or BlackBox or Boxes &&
  		Explode() && deadflag == 0)
 		"^A dull explosion can be heard in the distance.";
-	    
+
 	    rtrue;
 	],
  has    light;
@@ -1512,13 +1512,13 @@ Object LavatoryDoor "lavatory door"
                 StartDaemon(self);
             }
 
-            give LavatoryLight light;       
+            give LavatoryLight light;
             "The light above the sink flickers, then glows.";
-         Unlock: 
-            give LavatoryLight ~light;      
+         Unlock:
+            give LavatoryLight ~light;
             "The fluorescent light goes off.";
         ],
-        
+
         number, daemon [;
             if (self has general) {
                 StopDaemon(self);
@@ -1532,16 +1532,16 @@ Object LavatoryDoor "lavatory door"
                 never startle a man with a gun. Unfortunately, it's
                 the last rule of thumb you ever learn.";
             }
-            
+
             switch (self.number++) {
              0: move Terrorists to Car3Aft;
                 "^There seems to be a commotion outside.";
-                
+
              1: "^Wait... was that ", (emphasis) "gunfire", "...?";
-                
+
              2: "^Your Russian may be rusty, but a voice definitely
                 said, ~Sergei, check the toilets.~";
-                
+
              3: if (self has locked) {
                     print "^The door rattles for a second as the
                         gunman tries to get in. Frustrated, he fires
@@ -1552,24 +1552,24 @@ Object LavatoryDoor "lavatory door"
                     deadflag = 1; " and you.";
                 }
                 "^A voice outside the door says, ~Empty.~";
-                
+
              4: "^The screams have died down, so the gunmen have
                 decided to start the usual diatribe. ~We now control
                 this train... if you cooperate, you will be
                 spared... attempt tricks and you will die...~";
-                
+
              5: "^~Is everyone here?~^^~Everyone was here or in the
                 press car,~ the conductor replies, strangely calm. ~As
                 you can see, everyone in this car is also on this
                 list.~^^~Da...~";
-                
+
              6: "^~Sergei, did you check the toilets?~^^~Da, I checked
                 the toilets.~^^~Did you check ", (emphasis) "inside",
                 " the toilets?^^There is a momentary pause, followed
                 by a low curse.";
-                
+
              7: "^~Ready?~ asks a voice outside.";
-                
+
              8: print "^The door explodes inward.";
                 if (location == Lavatory) {
                     deadflag = 1;
@@ -1587,16 +1587,16 @@ Object LavatoryDoor "lavatory door"
                 }
                 Achieved(SURVIVING);
                 "^^~Good, nobody here.~^^The door is closed again.";
-                
+
              default:
                 give self general; StopDaemon(self);
                 move Terrorists to Car5;
-                
+
                 "^~Take everyone to the last car.~^^There is the sound
                 of marching outside the door, then silence.";
             }
         ],
-        
+
  has    static door openable lockable;
 
 Object  LavatoryWindow "lavatory window"
@@ -1604,7 +1604,7 @@ Object  LavatoryWindow "lavatory window"
         found_in Lavatory LavatoryOutside,
         description [;
             if (location == LavatoryOutside) "Safety lies inside.";
-            print "It's a small window, but if you were feeling suicidal, 
+            print "It's a small window, but if you were feeling suicidal,
                 you could probably squeeze through it. That's a pretty
                 big ", (emphasis) "if", "...^";
             if (self has open)
@@ -1637,14 +1637,14 @@ Include ">BestMan-Hints";
 Statusline time;
 
 [   Initialise   obj;
-    
+
     font off;
     print "^^^^^^^^^^";
     obj = 0->33; if (obj == 0) obj = 80;
     spaces((obj - 12) / 2);
     print "THE BEST MAN^^";
     font on;
-        
+
     box "We'll try to stay serene and calm..."
         "When Alabama gets the bomb!         "
         ""
@@ -1658,25 +1658,25 @@ Statusline time;
     #Message "Randomization removed.";
     give Computer1 on;
     #Endif;
-    
+
     location = Seat4BPlane;
     move Jacket to player;
 
     player.capacity = 2;	! Three objects
-    
+
     remove nw_obj; remove ne_obj; remove sw_obj; remove se_obj;
-    
+
     string 0 s_str;
     string 1 n_str;
     string 2 e_str;
     string 3 w_str;
-    
+
     move BlackBox to Car2Underside;     give BlackBox concealed;
     move WhiteBox to Car6Underside;     give WhiteBox concealed;
 
     obj = RedWire.create(BlackBox.con_f, BlackBox);
     move obj to Car6Underside;          give obj concealed;
-    
+
     obj = RedWire.create(BlackBox.con_f, BlackBox);
     move obj to Junction56Underside;    give obj concealed;
 
@@ -1702,18 +1702,18 @@ Statusline time;
     move obj to Car2Underside;          give obj concealed;
 
     StartDaemon(Boxes);
-    
+
     StartDaemon(Events);
 
     ! A train leaves at noon, and travels at 60 MPH...
 
     for (obj = 0 : obj < 14 : obj++)
 	Passes-->obj = Passes-->obj * 60 / TRAIN_SPEED + 720;
-    
+
     SetTime(Passes-->12 - 15, 1);
-    
+
     ! The cleaning fluid is the only liquid that starts with a color.
-    
+
     CleaningFluid.&color-->0 = 'pale';
     CleaningFluid.&color-->1 = 'blue';
 
@@ -1721,12 +1721,12 @@ Statusline time;
         to propose. All you need to do is hop on a commuter plane, get
         the big lug to the church on time, and zip back. Piece of
         cake...^^";
-    
+
     print "Well, almost.  Blasted El Ni@~no has air traffic in an
         uproar. This daily commuter flight out of San Francisco was
         delayed three times, which will make life ", (emphasis) "fun",
         " when you finally make it down to San Diego...^";
-    
+
     return 2;
 ];
 
@@ -1735,7 +1735,7 @@ Global player_toxin = 0;
 [   AfterPrompt;
 
     liquid_quantity = 0;
-    
+
     #Ifdef TechnicalDirectionsOption;
         if (TechnicalDirectionsOption has on && n_obj in compass) {
             print "TECHNICAL.^";
@@ -1748,7 +1748,7 @@ Global player_toxin = 0;
             L__M(##Prompt);
         }
     #Endif;
-    
+
     PrintQuote();
 ];
 
@@ -1764,14 +1764,14 @@ Global player_toxin = 0;
 
         jump ToxinEffect;
     }
-    
+
     switch (++player_toxin) {
      1: print "^Your eyes are watering.^";
      2: print "^Your lungs are beginning to burn.^";
      3: print "^You are so dizzy, you can barely stand up.^";
      4: deadflag = 1; "^You pass out, and never awaken.";
     }
-    
+
     .ToxinEffect;
 
     objectloop (obj provides poison)
@@ -1787,7 +1787,7 @@ Global player_toxin = 0;
         }
         else if (obj.poison > 0)
             obj.poison--;
-    
+
     objectloop (obj has toxic && ~~ obj ofclass Liquid)
         give obj ~toxic;
 ];
@@ -1805,7 +1805,7 @@ Global player_toxin = 0;
             if (obj has door && obj has openable) PlaceInScope(obj);
         }
     }
-    
+
     rfalse;
 ];
 
@@ -1822,7 +1822,7 @@ Global player_toxin = 0;
             return 1;
         }
     }
-    
+
     rfalse;     ! Normal rules apply
 ];
 
@@ -1834,7 +1834,7 @@ Include "Grammar";
 
 [   SqueezeIntoSub;
     if (ObjectIsUntouchable(second)) rtrue;
-    
+
     if (second hasnt container or supporter)
         "That can't contain things, so there's no reason to squeeze ",
             (the) noun, " into it.";
@@ -1845,32 +1845,32 @@ Include "Grammar";
     else "That's just silly.";
 ];
 
-[   quant a l i q n;    
-    
+[   quant a l i q n;
+
     a = WordAddress(wn); l = WordLength(wn);
-    
+
     liquid_quantity = 0;
-    
+
     for (i = 0 : i < l : i++)
         if (a->i >= '0' && a->i <= '9')
             q = q * 10 + a->i - '0';
         else if (i == l-2 && a->i == 'm' && a->(i+1) == 'l')
             break;
         else return -1;
-    
+
     wn++;
-    
+
     if (i == l && NextWord() ~= 'ml') return -1;
     if (NextWord() ~= 'of' or 'from') return -1;
-    
+
     n = NounDomain(actor, actors_location, NOUN_TOKEN);
-    
+
     if (n == REPARSE_CODE) return n;
     else if (n && child(n) && child(n) ofclass Liquid) {
         liquid_quantity = q;
         return n;
     }
-    
+
     return -1;
 ];
 
@@ -1881,22 +1881,22 @@ Include "Grammar";
 
     if (f_obj in compass)
         "(Technical directions already enabled.)";
-    
+
     remove n_obj; remove s_obj; remove e_obj; remove w_obj;
-    
+
     move f_obj to compass;
     move a_obj to compass;
     move p_obj to compass;
     move sb_obj to compass;
-    
+
     string 0 f_str;
     string 1 a_str;
     string 2 p_str;
     string 3 sb_str;
-        
+
     #Ifdef TechnicalDirectionsOption; give TechnicalDirectionsOption on;
     #Endif;
-    
+
     "(Technical directions mode.)";
 ];
 
@@ -1907,22 +1907,22 @@ Verb meta 'technical' 'relative' 'anal'
 
     if (n_obj in compass)
         "(Traditional directions already enabled.)";
-    
+
     remove f_obj; remove a_obj; remove p_obj; remove sb_obj;
-    
+
     move n_obj to compass;
     move s_obj to compass;
     move e_obj to compass;
     move w_obj to compass;
-    
+
     string 0 s_str;
     string 1 n_str;
     string 2 e_str;
     string 3 w_str;
-    
+
     #Ifdef TechnicalDirectionsOption; give TechnicalDirectionsOption ~on;
     #Endif;
-    
+
     "(Traditional directions mode.)";
 ];
 
@@ -1966,7 +1966,7 @@ Extend 'squeeze'
 
 Extend 'look'
     * 'out' noun                        -> Search;
-    
+
 [   LubricateSub;
     if (TestScope(OilCan)) <<Squeeze OilCan noun>>;
     "There's no good lubricant here.";
@@ -2015,10 +2015,10 @@ Extend 'go'
 [   YellSub;
 
     print (strong) "Aaaaaaaaaaaaargh!^^";
-    
+
     if (TerroristCorpses notin Terrorists || LavatoryDoor hasnt general)
         "Feel better now? Good.";
-    
+
     deadflag = 1;
     "Screaming is a good way to attract the unwanted attention of terrorists,
     you quickly find out.";
@@ -2043,16 +2043,16 @@ Extend only 'unscrew' first
 
 Ifdef MainMenu;
 
-Constant HINT_DISABLED = 
+Constant HINT_DISABLED =
   "(Hints have been disabled for the remainder of the game.)";
 
 [ HelpSub; if (HintMenu has concealed) print_ret (string) HINT_DISABLED;
   HintMenu.Select(); ];
 [ HelpOffSub; give HintMenu concealed; print_ret (string) HINT_DISABLED; ];
 
-Verb meta 'help' 'hint' 'hints'
-    *                                   -> Help
-    * 'off'/'disable'                   -> HelpOff;
+! Verb meta 'help' 'hint' 'hints'
+!     *                                   -> Help
+!     * 'off'/'disable'                   -> HelpOff;
 
 [ InfoSub; MainMenu.select(); ];
 
@@ -2074,14 +2074,14 @@ Endif;
     if (score == 0 || TASKS_PROVIDED == 1) rfalse;
     new_line;
     L__M(##FullScore,1);
-    
+
     font off;
     for (i = 0 : i < NUMBER_TASKS : i++)
         if (task_done->i == 1) {
             PANum(task_scores->i);
             PrintTaskName(i);
         }
-    
+
     if (things_score~=0) {
         PANum(things_score); L__M(##FullScore, 2);
     }
@@ -2092,7 +2092,7 @@ Endif;
     font on;
 ];
 
-[   NotifyOnSub; 
+[   NotifyOnSub;
     if (location == CrashSite)
         "Notify you of what? Your imminent demise?";
     notify_mode=1; L__M(##NotifyOn);

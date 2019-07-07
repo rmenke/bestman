@@ -7,7 +7,7 @@ Object  Airplane "Airplane"
 		but you don't believe a word of it. This cramped cabin
 		feels about as roomy as a culvert, and has
 		approximately the same decor.^^
-		
+
             	There is a door @00 and a small kitchenette @01.^";
 
 	    if (self hasnt visited)
@@ -44,45 +44,45 @@ Object  Airplane "Airplane"
         ],
         each_turn [;
             self.number++;
-            
+
             if (self.number > 6 && Player notin Seat4BPlane) {
                 print "^A flight attendant rushes up, escorts you back
                     to your seat, clips you in, then disappears.^";
                 PlayerTo(Seat4BPlane, 0);
                 give SeatBelt ~open;
             }
-            
+
             if (self.number > 6 && SeatBelt has open) {
                 print "^A breathless flight attendant rushes up and
                     clips your belt closed for you, then
                     disappears.^";
                 give SeatBelt ~open;
             }
-            
+
             switch (self.number) {
              4: "^The plane shudders slightly.";
-                
+
              6: "^", (strong) "*** PING ***", "^^~Ladies and
                     gentlemen, we are experiencing some minor
                     turbulence. Please return to your seat and fasten
                     your seat belts.~";
-                
+
              9: "^The plane lurches hard to the left. Your stomach
                 churns.";
-                                
+
              11:
                 print "^A bright blue flash illuminates the entire
                     @03 side of the airplane, followed by the noise of
                     a tremendous explosion. The wing is on fire!^^";
-                
+
                 print "For a brief moment, everything is silent as the
                     situation slowly sinks into the minds of the
                     passengers. Then pandemonium breaks out in the
                     cabin as the plane goes into a near-vertical
                     dive.^^";
-                
+
                 print "~It's all your fault, you know.~^^";
-                
+
                 print "Your traveling companion turns to face you, and
                     you recoil in horror. The left side of his face is
                     horribly mutilated, the skin torn and burnt. The
@@ -92,46 +92,46 @@ Object  Airplane "Airplane"
                     child... they depended on me! You had nothing! You
                     ", (emphasis) "were", " nothing, and you still ",
                     (emphasis) "are", " nothing!~^^";
-                
+
                 print "He leans forward, and you can smell the horrid
                     odor of burnt flesh.^^";
-                
+
                 print "~Nothing...~^^";
-                
+
                 print "Crash positions be damned! You struggle at your
                     seat belt, but the mechanism is jammed.^^";
-                
+
                 print "He's moving closer... reaching out... reaching
                     toward you... the stumps of his
                     fingers... twitching... touching you... shaking
                     you...^^";
-                
+
                 PressSpaceToContinue();
                 the_time = 720; PlayerTo(SanJoseStation, 1);
                 DisplayStatus(); DrawStatusLine();
-                
+
                 current_station = 0;
-                
+
                 print "^...and you find yourself wrestling the station
                     attendant.^^";
-                
+
                 print "~Sorry about that! Didn't mean to startle you,
                     but by the sound of it you were having a dilly of
                     a nightmare!^^";
-                
+
                 print "~Anyway, you best be going. I've written a note
                     explaining the situation to the conductor; it's on
                     the back of your ticket. Better hurry.~^^";
-                
+
                 move Ticket to Jacket; move Schedule to Jacket;
 
                 print "You take the ticket and a copy of the schedule
                     and make your way out to the platform.^^";
-                
+
                 PressSpaceToContinue();
-                
+
                 print (strong) "^Sole survivor syndrome.^^";
-                
+
                 print "That's what they call it. Psychological trauma
                     after surviving an accident that killed so many
                     others.^^";
@@ -141,16 +141,16 @@ Object  Airplane "Airplane"
                     you tried to visit an airport-- just to pick up
                     someone-- you left in an ambulance, catatonic.^^";
 
-                print "Things were looking bad when the old rust 
-                    bucket died this morning. The mechanic said that 
-                    the earliest he could get to it was first thing 
-                    Monday morning, and the rental agency just 
-                    laughed when you asked if you could get a car on 
-                    short notice for the weekend. Flight was out of 
-                    the question for obvious reasons, but rail had 
-                    existed far earlier than planes. So you found 
-                    yourself pleading your case to a sympathetic 
-                    station manager, who managed to squeeze you onto 
+                print "Things were looking bad when the old rust
+                    bucket died this morning. The mechanic said that
+                    the earliest he could get to it was first thing
+                    Monday morning, and the rental agency just
+                    laughed when you asked if you could get a car on
+                    short notice for the weekend. Flight was out of
+                    the question for obvious reasons, but rail had
+                    existed far earlier than planes. So you found
+                    yourself pleading your case to a sympathetic
+                    station manager, who managed to squeeze you onto
                     a special charter train direct to San Diego.^^";
 
                 print "Two years ago, the wedding was postponed
@@ -160,19 +160,19 @@ Object  Airplane "Airplane"
                     you'll be the star of the show. Come Hell or high
                     water, nothing is going to stop you from
                     being...^^";
-                
+
                 held_back_mode = false; ! Flush remainder of commands
                 turns = 1; ! We start from scratch
-                
+
                 Banner(); ! Display title, &c
-                
+
                 move Jacket to player;  give Jacket worn;
                 move RingBox to Jacket; give RingBox ~open;
                 move Ring to RingBox;
-                
+
                 the_time = 744;
 
-                move Seat4B to Car3Before; PlayerTo(Seat4b); 
+                move Seat4B to Car3Before; PlayerTo(Seat4b);
             }
         ],
  has    light;

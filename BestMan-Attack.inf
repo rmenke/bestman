@@ -15,17 +15,17 @@ Constant CarMissingMsg = "Going in that direction makes no sense,
      3:  Car2Topside.n_to   =
          Car2Topside.d_to   =
          Car2Underside.n_to = CarMissingMsg;
-        
+
      4:  Car3Topside.n_to   =
          Car3Topside.d_to   =
          CarDoor3N.door_to  =
          Car3Underside.n_to = CarMissingMsg;
-        
+
      5:  Car4Topside.n_to   =
          Car4Topside.d_to   =
          CarDoor4N.door_to  =
          Car4Underside.n_to = CarMissingMsg;
-        
+
      6:  Car5Topside.n_to   =
          Car5Topside.d_to   =
          CarDoor5N.door_to  =
@@ -97,13 +97,13 @@ Class   Computer
                     you!^";
                 <<Look>>;
             }
-                        
+
          SwitchOn:
             if (self has on) rfalse;
             "The computer comes to life, goes through its complex
             bootstrap procedure, then asks you for a user name and
             password. You turn the machine off in disgust.";
-                    
+
          SwitchOff:
             if (self hasnt on) rfalse;
             "Better not, you might not get it alive again.";
@@ -278,7 +278,7 @@ Object  -> "shelf"
                 move AcidBottle to self;
 		move BaseBottle to self;
             }
-            
+
             if (child(self) == nothing)
                 "Nothing of interest is on the shelf.";
         ],
@@ -289,12 +289,12 @@ Object  -> -> "miscellaneous junk"
         before [;
          Search:
             <<Search (parent(self))>>;
-            
+
          Remove:
             if (parent(self) has general)
                  "The rest of the stuff is just junk.";
             else "As far as you can tell, it's just junk.";
-            
+
          default:
             "It's just junk.";
         ],
@@ -314,7 +314,7 @@ Object  -> "workbench"
             "There's nothing else under ", (the) self, ".";
         ],
  has    scenery supporter;
- 
+
 Bottle DeveloperBottle "bottle of developing fluid"
  with   name "developing" "developer" "chemical" "cyanide" "solution"
              "fluid",
@@ -342,7 +342,7 @@ Bottle	AcidBottle "bottle of acid"
             "HYDROCHLORIC ACID (HCl) 1.0 M^^
             DANGER: Highly corrosive.",
  has    transparent openable container;
- 
+
 Liquid -> with quantity 200, acidity 200, short_name "acid";
 
 Bottle	BaseBottle "bottle of hydroxide"
@@ -429,7 +429,7 @@ Object  -> IceChest "ice chest"
          default:
             give self ~general;
         ],
-        
+
         before [;
          Take:
             "You manage to pick it up for a moment, but put it down
@@ -447,7 +447,7 @@ Object  -> IceChest "ice chest"
                 remove self;
                 print "^", (strong) "Whump!", " ", (The) self, " falls off
                     the end of the train and out of your life";
-                                
+
                 if (IndirectlyContains(self, BlackSphere)) {
                     if (self has open) {
                         deadflag = 1;
@@ -455,7 +455,7 @@ Object  -> IceChest "ice chest"
                         the black sphere flies out of the chest and
                         crashes on the rails.";
                     }
-                    
+
                     Achieved(BLACK_SPHERE); remove BlackSphere;
                     print ", and with it goes the threat of the black
                         sphere";
@@ -465,17 +465,17 @@ Object  -> IceChest "ice chest"
                 else ".";
             }
 
-            AllowPushDir(); rtrue; 
+            AllowPushDir(); rtrue;
         ],
         after [;
          Open:
             give Soda general;
-            
+
          Receive:
             print (The) noun;
             if (noun has pluralname) print " fit "; else print " fits ";
             "snugly in ", (the) self, ".";
-            
+
          PushDir:
             give self moved;
             "It's a pain, but you manage to push ", (the) self, " ",
@@ -514,20 +514,20 @@ Object  Terrorists "terrorists"
 	    if (parent(self) == nothing) {
 		StopDaemon(self); return;
 	    }
-            
+
             if (parent(self) == real_location && self hasnt general) {
                 StopDaemon(self); give self general;
                 "^Oh dear, it looks like you've walked right into the
                 people hunting for you...";
             }
-            
+
             if (parent(self) == Car5 && self hasnt general) {
                  give self general; return;
             }
             else give self ~general;
 
             new_location = parent(self).(self.march);
-            
+
             if (new_location has door) {
                 if (self in new_location.&found_in-->0)
                      new_location = new_location.&found_in-->1;
@@ -540,7 +540,7 @@ Object  Terrorists "terrorists"
                 new_location = location;
 
             move self to new_location;
-            
+
             if (new_location == location)
                 if (self hasnt general) {
                     StopDaemon(self); give self general;
@@ -548,7 +548,7 @@ Object  Terrorists "terrorists"
                 }
 
 	    if (new_location == Car5) StopDaemon(self);
-	    
+
             if (new_location == Car5 && location ~= Car5) {
 		obj = child(Car5);
 		while (obj) {
@@ -563,7 +563,7 @@ Object  Terrorists "terrorists"
 		    "^You hear a voice in the distance say,
  		    ~Sergei, throw away that junk.~";
 	    }
-            
+
             if (metaclass(parent(self).(self.march)) ~= Object) {
                 if (self.march == n_to)
                      self.march = s_to;
@@ -668,9 +668,9 @@ Object  -> Passengers "passengers"
                 Once they heard his knock, they made a big deal about marching
                 up and down the train to make their point about who's in
                 charge.~";
-            
+
             jump AskOrTell;
-            
+
          Tell:
             if (second == 'terrorists' or 'russians' or 'georgians' or 'armed')
                 if (TerroristCorpses notin Terrorists)
@@ -684,18 +684,18 @@ Object  -> Passengers "passengers"
             if (second == 'bomb' or 'explosive')
                 "~A bomb! Did he say a bomb?!?~ The group becomes more
                 agitated.";
-                
+
             "They mumble amongst themselves, but do not reply.";
 
 	 Show:
 	    if (noun == Photograph)
 		"A grizzled old photographer steps up and says, ~The
-		best way I've found to identify people in a photograph 
+		best way I've found to identify people in a photograph
 		is to examine them, then immediately examine the
 		photograph again, while their face is still fresh in
 		your mind.~";
 
-	    "They mumble amongst themselves, but the consensus is that 
+	    "They mumble amongst themselves, but the consensus is that
 	    they have no comment to make on ", (the) noun, ".";
 
 	 Give:
@@ -706,7 +706,7 @@ Object  -> Passengers "passengers"
 	    }
 
 	    "They politely refuse to touch ", (the) noun, ".";
-	    
+
 	 default:
             "The passengers are too scared to respond.";
         ],
@@ -757,29 +757,29 @@ Bottle -> -> "squirt bottle"
          Smell:
             if (self has open && child(self) && child(self).acidity < 0)
                 "The scent of ammonia assaults your nostrils.";
-            
+
          SqueezeInto:
             if (child(noun) == nothing)
                 print_ret (The) self, " is empty.";
             if (second == noun)
                 "If you could do that, you'd be a magician.";
-            
+
             if (second ofclass Bottle) {
                 k = keep_silent; keep_silent = 1;
                 o = noun hasnt open; give noun open measured;
-                
+
                 liquid_quantity = 5; <Transfer (child(noun)) second>;
-                
+
                 give noun ~measured; if (o) give noun ~open;
                 keep_silent = k;
-                
+
                 "You squirt some liquid into ", (the) second, ".";
             }
-            
+
          Squeeze:
             if (child(noun) == nothing)
                 print_ret (The) noun, " is empty.";
-            
+
             if (second == nothing) {
                 print "You squirt some liquid into the air.";
 
@@ -788,7 +788,7 @@ Bottle -> -> "squirt bottle"
 
                 new_line; rtrue;
             }
-            
+
             if (second == noun)
                 "If you could do that, you'd be a magician.";
             "You squirt some liquid on ", (the) second, ",
@@ -813,7 +813,7 @@ Object  -> -> OilCan "can of lubricant"
         before [ is_closed is_untouchable obj;
          Examine:
             if (verb_word == 'read') return self.label();
-            
+
          Squeeze:
             if (second == nothing)
                 "You need to tell me what to squirt the lubricant on.";
@@ -841,13 +841,13 @@ Object  -> -> OilCan "can of lubricant"
 
             if (second provides found_in)
                 "That would be a complete waste of time.";
-            
+
             objectloop (obj ofclass OilTimer && obj notin OilTimer)
                 if (obj.oiled_obj == second) {
                     obj.time_left = obj.time_left + 10;
                     "You put more lubricant on ", (the) second, ".";
                 }
-            
+
             if (OilTimer.create(second) == nothing)
                 "The nozzle seems to be clogged.";
             "You apply a liberal amount of lubricant to ", (the) second, ".";
@@ -884,7 +884,7 @@ Class   OilTimer (20)
                     print "Something felt wobbly when you stepped into
                         this area, and a quick investigation reveals the
                         answer. ";
-                    <<Examine MetalPlate>>; 
+                    <<Examine MetalPlate>>;
                 }
                 else "There's nothing else hidden on the floor.";
             }
@@ -900,7 +900,7 @@ Class   OilTimer (20)
         d_to MetalPlate,
         each_turn [;
             if (self has general)
-                "^The metal plates shift unpleasantly underfoot.";          
+                "^The metal plates shift unpleasantly underfoot.";
         ],
  has    light;
 
@@ -908,7 +908,7 @@ Class   CarDoor
  with   name "door" "to" "car" "junction",
         parse_name [ w c d;
             w = self.door_dir();
-            
+
             objectloop (d in compass) if (d.door_dir == w) break;
 
             if (parser_action == ##TheSame) return -2;
@@ -919,7 +919,7 @@ Class   CarDoor
                         TryNumber(wn-1) == (self.&found_in-->0).car ||
                         WordInProperty(w, d, name)) c++;
                     else break;
-            
+
             else
                 while ((w = NextWordStopped()) ~= -1)
                     if (w == 'door' or 'to' or 'car' or 'junction' ||
@@ -994,7 +994,7 @@ CDoorS  CarDoor5S
         before [;
          KnockAt:
             if (Terrorists notin Car5) rfalse;
-            
+
             Terrorists.march = s_to;
             StartDaemon(Terrorists);
             print_ret (string) TerroristBabble;
@@ -1005,7 +1005,7 @@ CDoorN  CarDoor5N
         before [;
          KnockAt:
             if (Terrorists notin Car5) rfalse;
-            
+
             Terrorists.march = n_to;
             StartDaemon(Terrorists);
             print_ret (string) TerroristBabble;
@@ -1074,7 +1074,7 @@ Object  MetalPlate "maintenance access hatch"
             else "It's a metal panel that provides access to the upper
             portion of the train.";
         ],
-        door_dir [; 
+        door_dir [;
             if (location ofclass CarJunction) return d_to; else return u_to;
         ],
         door_to [;
@@ -1095,7 +1095,7 @@ Object  MetalPlate "maintenance access hatch"
             if (~~ location provides topside)
                 "You can't. There's something on the other side preventing you
                 from opening it.";
-            
+
          Search:
             "There's enough space to crawl into, if that's what you mean.";
         ],
@@ -1113,7 +1113,7 @@ Object  MetalPlate "maintenance access hatch"
             }
             if (noun == d_obj or self && location ofclass CarJunction) rfalse;
             if (self hasnt open) rfalse;
-            
+
             give self ~open;
             print "(", (The) self, " slams shut when you release it to
                 move.)^";
@@ -1147,7 +1147,7 @@ CarJunction Car56Junction "Junction Between Car 5 and 6"
  with   short_name [;
             print "Underneath the junction between cars ",
                 self.s_to.car, " and ", self.car;
-            rtrue;          
+            rtrue;
         ],
         description
             "You're in a small gap between the cars. Small maintenance
@@ -1183,13 +1183,13 @@ CarJunction Car56Junction "Junction Between Car 5 and 6"
             if (self has general)
                 print "^The junction shudders, creeks and groans.^";
         ],
- has    light; 
+ has    light;
 
 Class   CarUnderside
  with   short_name [; print "Car ", self.car, ", underside"; rtrue; ],
         description
 	    "It's a tough crawl, between the mess of an undercarriage
-	    above that threatens to tear your back apart to the coarse 
+	    above that threatens to tear your back apart to the coarse
 	    mesh below through which you see the disturbing blur of
 	    the ground.  You can wiggle @00 or @01 to more open
 	    spaces.",
@@ -1269,9 +1269,9 @@ Class   ReleaseLever
             give location general;
             if (location provides topside)
                 give (location.topside) general;
-            
+
             StartTimer(self, RELEASE_DELAY);
-            
+
             "The connector opens with a loud ", (emphasis) "clank", ".^^Slowly
             the cars begin to separate. The cables and hoses surrounding you
             complain loudly as they struggle to hold the cars together.";
@@ -1279,14 +1279,14 @@ Class   ReleaseLever
 
         time_left, time_out [ c w o tr_loc bm_loc pe_loc;
             c = parent(self).car;
-            
+
             ReleaseCar(c);
-            
+
             print "^With a groan that shudders through the entire
                 train, the cars separate.^";
-            
+
             ! If the player is in the junction that's splitting...
-            
+
             if (location ofclass CarJunction or JunctionUnderside &&
                 location.car == c) {
                 deadflag = 1;
@@ -1304,14 +1304,14 @@ Class   ReleaseLever
                     if (w ~= (FindCar(o).car >= c) && Explode())
                         rtrue;
             }
-            
+
             ! If the terrorists can get to the passengers, ugliness
             ! results...
 
             tr_loc = FindCar(Terrorists);
             bm_loc = FindCar(BlackSphere);
             pe_loc = FindCar(Passengers);
-                        
+
             if (tr_loc && tr_loc.car >= c) {
                 if (location.car >= c) {
                     deadflag = 1;
@@ -1348,9 +1348,9 @@ Class   ReleaseLever
             }
 
             ! Locate the bomb and the passengers
-            
+
             ! If the bomb is in the junction that's splitting...
-            
+
             if (bm_loc ofclass CarJunction or JunctionUnderside &&
                 bm_loc.car == c &&
                 ~~IndirectlyContains(IceChest, BlackSphere)) {
@@ -1361,53 +1361,53 @@ Class   ReleaseLever
                 " tells you that it probably wasn't the best idea to
                 put ", (the) BlackSphere, " where it would fall onto
                 the tracks. Fortunately you don't live long enough to
-                agonize over this rather embarrassing oversight.";      
+                agonize over this rather embarrassing oversight.";
             }
-            
+
             ! We'll assume that the passengers will not stick around
             ! on a splitting car, so no need to check that...
-            
+
             ! If the player is still on the train but can see the part
             ! splitting away...
-            
+
             if (location.n_to == CarMissingMsg)
                 print "^You watch the cars to the @01 slow then come
                     to a halt. Within moments they are mere specks on
                     the horizon.^";
-            
+
             ! The best thing would be to get rid of the black sphere
             ! AND save the passengers...
-            
+
             if (bm_loc && pe_loc && bm_loc.car >= c && pe_loc.car >= c) {
-                
+
                 Achieved(BLACK_SPHERE); remove BlackSphere;
                 Achieved(RESCUE);       remove Passengers;
-                
+
                 print "^", (strong) "Whew!", " In one stroke, you were
                     able to save the passengers ", (emphasis) "and", "
                     eliminate the threat of ", (the) BlackSphere, ".^";
             }
-            
+
             ! ...but saving the passengers is fine...
-            
+
             else if (pe_loc && pe_loc.car >= c) {
                 Achieved(RESCUE);       remove Passengers;
-                
+
                 print "^You give a sigh of relief knowing that the
                     passengers are safe.^";
             }
-            
+
             ! ...and eliminating the black sphere is better than nothing.
-            
+
             else if (bm_loc && bm_loc.car >= c) {
                 Achieved(BLACK_SPHERE); remove BlackSphere;
-                
+
                 print "^Well, at least the threat of ", (the)
                     BlackSphere, " has been eliminated.^";
             }
 
             ! If the player is in the part of the train that's left behind...
-            
+
             if (location.car >= c) {
                 deadflag = 3;
                 "^As the rest of the train disappears over the
@@ -1444,11 +1444,11 @@ Object  Undercarriage "undercarriage"
             Achieved(FIND_BOXES);
 
             print "You find something hidden in ", (the) self, "...^";
-            
+
             for (obj = WhiteBox : obj ~= BlackBox : obj = obj.con_t)
                 give obj ~concealed;
             give obj ~concealed;
-            
+
             <<Look>>;
         ],
  has    scenery;
@@ -1483,7 +1483,7 @@ CarUnderside Car4Underside
  with   car 4,
         n_to Junction45Underside,
         s_to Junction34Underside;
- 
+
 JunctionUnderside Junction45Underside
  with   car 5,
         n_to Car5Underside,
@@ -1553,7 +1553,7 @@ Class   CarTopside class Outside
 		(parent(Passengers) && parent(Passengers).car == self.car))
                 "^You hear noises from the car below.";
         ];
- 
+
 Class   AirVent
  with   name "air" "vent" "vents" "screen" "screens" "grate" "grates",
         short_name "air vent",
@@ -1588,7 +1588,7 @@ Object  TopsideLight "light"
             illumination; maybe they're warnings of some sort.^^
             The bubbles are dark.",
  has    scenery;
- 
+
 CarTopside Car2Topside
  with   car 2,
         description [;
