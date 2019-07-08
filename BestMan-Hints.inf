@@ -1,546 +1,657 @@
 ! -*- inform-project-file:"BestMan.inf" -*-
 
-! Class   Hints class Option
-!  with   number 1,
-!         description [ c i m;
-!             m = (self.#hint) / 2;
-
-!             print "[Press H for another hint, any other key to exit]^^";
-
-!             for (i = 0 : i < self.number : i++)
-!                 print "(", i+1, "/", m, ") ",
-!                     (string) (self.&hint-->i), "^^";
-
-!             while (i < m) {
-!                 @read_char 1 -> c;
-
-!                 if (c ~= 'h' or 'H') return 2;
-
-!                 print "(", i+1, "/", m, ") ",
-!                     (string) (self.&hint-->i), "^^";
-
-!                 i = ++self.number;
-!             }
-
-!             "[No more hints.]";
-!         ];
-
-! Menu    MainMenu "Instructions and Hints for ~The Best Man~";
-
-! Menu    -> "How to play";
-
-! Option  -> -> "General introduction to Interative Fiction"
-!  with   description [;
-!             print "With Interactive Fiction you type in English commands
-!                 each time you see a prompt. Commands allow your
-!                 character to move around the setting and manipulate
-!                 objects within the game.^^",
-
-! 		(strong) "Moving Around^^",
-
-! 		"You can move your character by typing in the direction
-! 	        that you wish to go.  Directions may be abbreviated:  N
-! 	        for NORTH, SW for SOUTHWEST, D for DOWN.  (",
-! 	        (emphasis) "The Best Man", " has support for alternative
-! 	        directions FORE (F), AFT (A), STARBOARD (SB), and PORT
-! 	        (P) which can be activated with the TECHNICAL
-! 	        command.)^^";
-
-! 	    font off;
-! 	    print ">STAND^
-! 	           >NORTH^
-! 	           >S^^";
-! 	    font on;
-
-!             print (strong) "Handling Objects^^",
-
-! 	        "Objects encountered in the game may be examined, taken,
-! 	        dropped, and so on by typing in the appropriate verb
-! 	        followed by the name of the object. Objects that the
-! 	        player is currently carrying may be listed with the
-! 	        INVENTORY (I) command.^^
-
-! 	        Objects may also be referenced in groups by either
-! 	        separating their names using commas or using the word
-! 	        ALL. TAKE ALL, for instance, will cause the character
-! 	        to try and pick up every object in sight. DROP ALL will
-! 	        transfer the player's inventory to the current
-! 	        location.^^";
-
-! 	    font off;
-! 	    print ">EXAMINE SEAT BELT^
-! 	           >OPEN IT^
-! 	           >TAKE ALL^^";
-! 	    font on;
-
-! 	    print (strong) "Interacting with Other Characters^^",
-
-! 	        "The player's character, over time, will come to
-! 	        encounter other characters. Special commands such as
-! 	        ASK, TELL, and SHOW may be used with these characters,
-! 	        as well as a special order syntax.^^";
-
-! 	    font off;
-! 	    print ">SHOW PILOT THE TICKET^
-! 	           >GIVE RING TO COPILOT^
-! 	           >ASK CONDUCTOR ABOUT THE TRAIN^
-! 	           >STEWARDESS, GIVE ME THE GOLD WATCH";
-! 	    font on;
-
-! 	    new_line; rtrue;
-! 	];
-
-
-! Option  -> -> "Special commands used in ~The Best Man.~"
-!  with   description
-!             "There are two ways of describing the world: with fixed
-!             directions or with relative directions. TECHNICAL and
-!             TRADITIONAL commands switch between these
-!             modes. (TECHNICAL is also known as ANAL in honor of the
-!             beta tester that complained that ~north,~ &c. is
-!             meaningless on a moving train.)^^
-
-!             You can squeeze things onto other things:  SQUEEZE THE
-!             LEMON ON THE FISH.^^
-
-!             LOCK and UNLOCK do not always require keys.^^
-
-!             You can POUR or EMPTY containers of liquids. Under
-!             certain conditions, you can even pour specific quantities:
-!             POUR 100ML FROM THE MILK JUG INTO THE BATTER. If no
-!             quantity is specified, the maximum amount possible will
-!             be used.^^
-
-! 	    Comparisons between two items are done automatically.
-! 	    Examining the items in sequence, with no intervening
-! 	    actions, will report similarities (if any).";
-
-! SwitchOption -> -> TechnicalDirectionsOption
-!  with   short_name [;
-!             print "Technical Directions ";
-!             if (self has on) print "ENABLED"; else print "DISABLED";
-!             rtrue;
-!         ];
-
-! Option  -> "Credits"
-!  with   description [;
-!             "Rob Menke (author) -- Rob has been interested in
-!             adventure games ever since he played ~Zork I~ on an old
-!             Apple ][ back in the early '80s. He is often tempted to
-!             add ~Finished 'Stationfall' in a four-day marathon
-!             session~ to his resume. ~The Best Man~ is his first
-!             interactive fiction game for use by the general public.
-!             Please direct all bug reports to his interim mailing
-!             address ", (strong) "robmenke@@64mac.com", " (Rob is
-!             in the process of changing ISPs so response may be
-!             delayed.)^^
-
-!             Christopher Livingston (playability, details) -- That you
-!             can use ~lube~ as a verb and propose to the conductor are
-!             both thanks to Chris. All IF authors should be as lucky to
-!             have a tester as disturbed as he is. You are encouraged to
-!             visit his web site:^",
-!             (strong) "http://www.notmydesk.com/", "^^
-
-!             Mark Rosenfelder (continuity, structure) -- The closing
-!             sequence was completely rewritten at the request of Mark,
-!             who felt its silly tone conflicted with the rather graphic
-!             endgame. The task-oriented nature of the hints are his
-!             brainchild; they assume less and provide more. More info
-!             about Mark can be found at:^",
-!             (strong) "http://www.zompist.com/", "^^
-
-!             Other testing performed by: Greg Galcik, Heather Garvey.";
-!         ];
-
-! Menu    -> HintMenu "Hints"
-!  with   select [;
-!             self.select = MainMenu.select;
-
-!             if (sender ofclass Option) {
-!                 @erase_window $ffff;
-!                 @set_window 0;
-!                 font on; style roman;
-!                 new_line; new_line;
-!             }
-
-!             "[HINTS: It is ", (emphasis) "strongly", " suggested that you
-!             experiment with the puzzles before resorting to hints. If the
-!             temptation to read the hints is too great, you can also disable
-!             the hints permanently with the HINTS OFF command. Note that you
-!             will always have the option of reading hints after you die.]";
-!         ];
-
-! Menu    -> -> "The Plane";
-
-! Option  -> -> -> "What's going on here?"
-!  with   description
-!             "You're on a plane en route to San Diego. You are going to
-!             be the best man at your brother's wedding. But something
-!             goes horribly wrong...";
-
-! Hints   -> -> -> "How do I warn the stewardess?"
-!  with   hint
-!             "She certainly has her hands full, doesn't she?"
-!             "You could use the call button on your seat..."
-!             "...if there was one."
-!             "Maybe you could stop her when she escorts you to your
-!             seat."
-!             "There's no way to warn the stewardess.";
-
-! Hints   -> -> -> "How do I warn the pilot?"
-!  with   hint
-!             "The pilot never leaves the cockpit."
-!             "You need to get in there to warn him."
-!             "Did you try knocking?"
-!             "Did you try kicking the door down?"
-!             "You can't warn the pilot.";
-
-! Hints   -> -> -> "I don't want to die in a crash!"
-!  with   hint
-!             "You can't seem to warn anyone about the crash."
-!             "You can't prevent the crash..."
-!             "...because it happened in the past."
-!             "The best you can do is WAKE UP.";
-
-! Menu    -> -> TrainMenu "The Train";
-
-! Menu    -> -> -> "The Prologue";
-
-! Hints   -> -> -> -> "I got kicked off the train!"
-!  with   hint
-!             "They take stowaways seriously on this rail line."
-!             "You need to prove that you belong on that train."
-!             "GIVE THE TICKET TO THE CONDUCTOR.";
-
-! Hints   -> -> -> -> JacketHints "What a mess! How do I clean my jacket?"
-!  with   hint
-!             "You need water to do the job properly."
-!             "Water can be found in the lavatory."
-!             "But you also need light."
-!             "Trains are like planes, they conserve electricity."
-!             "The light will only go on when there is someone in the
-!             lavatory."
-!             "The only way the lavatory ~knows~ it is occupied is if
-!             the door is locked."
-!             "LOCK THE DOOR.";
-
-! Hints   -> -> -> -> CorridorHints "What's going on in the corridor?"
-!  with   hint
-!             "A group of Georgian terrorists have decided to throw
-!             President Williams a surprise party."
-!             "All the passengers are being herded into the end of the
-!             train."
-!             "They are searching the train for anyone missing...";
-
-! Hints   -> -> -> -> GettingShotHints "How can I avoid being shot?"
-!  with   hint
-!             "You need to convince two people that you're not there:
-!             Sergei and the terrorist leader."
-!             "Sergei's easy to fool. He takes everything at face
-!             value."
-!             "If the door says the lavatory is unoccupied, he believes
-!             it."
-!             "UNLOCK THE DOOR."
-!             "His boss, however, is going to open the door."
-!             "You need to be out of there. But there's only one way
-!             out..."
-! 	    "...or IS there?"
-!             "OPEN THE WINDOW. LOOK OUT THE WINDOW."
-!             "Also make sure the water is turned off and the door is
-!             still unlocked.";
-
-! Menu    -> -> -> AfterAttackMenu "After the Attack";
-
-! Hints   -> -> -> -> ShadowHints "The ominous shadows... should I be worried?"
-!  with   hint
-!             "Yes, the terrorists have taken up residence in that car."
-!             "You need to get around them. There are three ways."
-!             "If you knock on the door, they will walk up and down the
-!             length of the train."
-!             "You can hide in the darkroom or lavatory as they march
-!             past."
-!             "Or you can kill them."
-!             "The tools for the elimination of the terrorists can be
-!             found in the darkroom."
-!             "The third way is to figure out the puzzle of the
-!             junctions.";
-
-! Hints   -> -> -> -> TerroristHints "The terrorists found me! How can I escape?"
-!  with   hint
-!             "You could run..."
-!             "You could attack..."
-!             "You could throw Wolfie at them..."
-!             "But nothing will work. If the terrorists catch you, the
-!             game is over. The extra turn is there to give you false
-!             hope.";
-
-! Hints   -> -> -> -> JunctionHints "What can I do in the junction?"
-!  with   hint
-!             "Obviously, you can go into either of the cars."
-!             "Have you read the description carefully?"
-!             "That metal railing looks interesting."
-!             "CLIMB ON THE METAL RAILING."
-!             "There's something disturbing about the floor, too."
-!             "EXAMINE FLOOR."
-!             "Note also that there are doors that keep the wind out of
-!             the cars."
-!             "You can knock on the doors, but be ready to run...";
-
-! Hints   -> -> -> -> DarkroomHints "What can I do in the darkroom?"
-!  with   hint
-!             "It has a sink, if you need water."
-!             "It has a shelf of stuff."
-!             "SEARCH SHELF."
-!             "The large bench is interesting too."
-!             "LOOK UNDER BENCH."
-!             "Have you closed the door?"
-!             "It's a darkroom, silly. Open the door, then pull the
-!             light cord."
-!             "Oh, and be sure to read the containers of any chemicals
-!             you find... nasty accidents might happen otherwise.";
-
-! Hints   -> -> -> -> ChemicalHints "What can I do with the chemicals?"
-!  with   hint
-!             "The acid and developer bottles are quite useful."
-!             "When the chemicals are mixed, they produce deadly vapors."
-!             "So be sure to mix them where there is a lot of ventilation."
-!             "Speaking of ventilation, have you found the air vents yet?"
-!             "You might want to delay mixing the acid and developer until you
-!             have found where else you may need the acid.";
-
-! Hints   -> -> -> -> PassengerHints "What can I do with the passengers?"
-!  with   hint
-!             "Most of the time, they will ignore you."
-!             "You can ask them questions."
-!             "If you want to get to the engine, ASK PASSENGERS ABOUT
-!             CONDUCTOR."
-!             "While you're there, check out the tool chest"
-!             "But ultimately, you need to rescue them."
-!             "You can win even if you accidentally kill them, but you
-!             won't get maximum points";
-
-! Menu    -> -> -> UndersideMenu "Under the Train";
-
-! Hints   -> -> -> -> "A lever! I want to pull it!"
-!  with   hint
-!             "But you can't."
-!             "Until you lubricate it."
-!             "SQUIRT OIL ON LEVER."
-!             "Now you can pull it. But beware the consequences...";
-
-! Hints   -> -> -> -> PassengerKillHints "The terrorists killed the passengers!"
-!  with   hint
-!             "Sore losers. Dumb, though. Why kill hostages?"
-!             "You need to remove the terrorists from the fifth car."
-!             "One method is temporary, the other permanent."
-!             "You may need to solve other puzzles to be able to release
-!             the car safely.";
-
-! Hints   -> -> -> -> ExplosiveHints "The car exploded after it was released!"
-!  with   hint
-!             "Obviously somebody booby-trapped the car to prevent a rescue just
-!              like yours."
-!             "You'll need to disarm the explosive."
-!             "But where is it?"
-!             "In the car?"
-!             "Under the car?"
-!             "SEARCH THE UNDERCARRIAGE.";
-
-! Hints   -> -> -> -> BoxHints "The black and white boxes, what do they do?"
-!  with   hint
-!             "They form a circuit."
-!             "They prevent you from releasing the car safely."
-!             "Break the red wire, and the white box explodes."
-!             "PULL THE WIRE if you want the box to explode."
-!             "Be forewarned: the car in which the explosive is will be
-!              destroyed, as well as the cars behind it.";
-
-! Menu    -> -> -> TopsideMenu "On Top of The Train";
-
-! Hints   -> -> -> -> "What can I do up here?"
-!  with   hint
-!             "You can move along the length of the train freely."
-!             "That is, you can bypass the terrorists."
-!             "You can get to the mail car."
-!             "If you've done certain tasks, you can also get to the
-!             engine."
-!             "Best of all, you can kill the terrorists."
-!             "Examine the air vents."
-!             "They draw air (or other gasses) into the cars."
-!             "You need some things from the darkroom.";
-
-! Menu    -> -> -> MailCarMenu "The Mail Car";
-
-! Hints   -> -> -> -> "How do I open the glass-fronted box?"
-!  with   hint
-!             "You need to get rid of the sealant or the glass."
-!             "The sealant is nigh indestructible-- you can't cut it,
-!             tear it, or dissolve it."
-!             "That leaves the glass."
-!             "You can't pull it off, or break it."
-!             "You need to cut it."
-!             "What cuts glass?"
-!             "CUT THE PANE WITH THE DIAMOND RING.";
-
-! Hints   -> -> -> -> PowderHints "The powder burst into flame!"
-!  with   hint
-!             "The conductor may offer some insight on the white powder
-!             and the silicone caulking."
-!             "Read carefully. You heard a hiss before detonation..."
-!             "...as if gas were escaping..."
-! 	    "...or going IN!"
-!             "The box has a vacuum inside. The white powder is
-!             sensitive to air."
-!             "You need to prevent air from getting to the powder."
-!             "If you drench it in lubricant, the powder will not
-!             ignite."
-!             "But to drench it, you need to open the box! A real
-!             chicken-and-egg problem..."
-!             "What you need to do is get the lubricant to the powder
-!             without breaking the seal."
-!             "EXAMINE THE CAN OF LUBRICANT."
-!             "~...with a long pointy tube...~"
-!             "...which can easily poke through the sealant."
-!             "INSERT LUBRICANT TUBE INTO SEALANT. SQUIRT LUBRICANT ON
-!             WHITE POWDER."
-!             "But the lubricant won't last forever."
-!             "If you add enough, you can get the sphere out before it
-!             ignites."
-!             "But it's probably easier to remove the dish."
-!             "Just don't carry it on your person...";
-
-! Hints   -> -> -> -> LightHints "The glass tube cracked!"
-!  with   hint
-!             "Well, it's not sensitive to air, if you tried coating
-!             it."
-!             "It has to be sensitive to something else."
-!             "If you read carefully, you'll notice that sunlight from
-!             the hatch falls onto the metal box."
-!             "But turning on the light and closing the hatch doesn't
-!             help."
-!             "Examine the pane. Ever wonder why it's red?"
-!             "Perhaps the tube is sensitive to non-red light."
-!             "Unfortunately, the hatch and the bulb only produce white
-!             light."
-!             "Where can you find a source of non-white light?"
-!             "Ever take a photography class?"
-!             "You can find a red bulb in the darkroom."
-!             "UNSCREW WHITE BULB. SCREW RED BULB INTO SOCKET.";
-
-! Hints   -> -> -> -> GlassBoxHints "The Plexiglas box is locked, and I
-!             don't have a key!"
-!  with   hint
-!             "The ~key~ is the beakers."
-!             "The hint is that they're attached to a scale."
-!             "You need to balance them."
-!             "Did you read the labels? If you know a little chemistry
-!             (try reading the children's magazine and the bottles in the
-!             darkroom) that may offer a clue..."
-!             "One is an acid, the other a base."
-!             "You need to balance weight AND acidity."
-!             "You need to use the litmus powder."
-!             "It's hidden in the darkroom, if you haven't found it."
-!             "The litmus changes color depending on the acidity."
-!             "Add small amounts of the window cleaner (a base) to the
-!             beaker with hydrochloric acid until it turns purple."
-!             "Add small amounts of the acid to the beaker with sodium
-!             hydroxide until it turns purple as well."
-!             "Of course, that now unbalances the scale in terms of
-!             weight: 200ml in the left beaker, 350ml in the right."
-!             "Get some water from the lavatory and pour 150ml of it
-!             into the left beaker."
-!             "Or, if you're clever, just pour 75ml from the right beaker
-!             into the left one."
-!             "Don't mix the neutral solution with the acid or cleaner!
-!             That will unbalance the acidity again.";
-
-! Hints   -> -> -> -> BlackSphereHints "What's with the black sphere?"
-!  with   hint
-!             "It's the bomb core."
-!             "It contains a lot of explosive and a significant amount
-!             of plutonium."
-!             "Damaging it in any way is instantaneously lethal."
-!             "In other words, don't throw it off the train or allow it
-!             to get shot.";
-
-! Hints   -> -> -> -> PhotographHints "Who is in the photograph?"
-!  with   hint
-!             "One of the photographers in the caboose can give you a hint."
-!             "You can check the photograph against people by examining
-!             them (or their corpses), and then the photograph."
-!             "It's not any of the passengers..."
-!             "Or any of the terrorists..."
-!             "The conductor is the bomber."
-!             "After discovering that the conductor built the bomb,
-!             confront him by either showing him the photograph or
-!             asking him about the bomb.";
-
-! Menu    -> -> -> EngineMenu "The Engine";
-
-! Hints   -> -> -> -> "How do I get there?"
-!  with   hint
-!             "If you rescue the passengers and get the black sphere off
-!             the train safely, the way to the engine will be revealed
-!             to you."
-!             "If you want to get there beforehand, ask the passengers
-!             questions."
-!             "Specifically, ask them about the conductor.";
-
-! Hints   -> -> -> -> TrainStopHints "How can I stop the train?"
-!  with   hint
-!             "If you can't get to the controls, read the next section."
-!             "If you pull the brake, you'll slow down the train without
-!             stopping it."
-!             "You need to do something more drastic."
-!             "Like derailing the train."
-!             "Speed up the train by opening the throttle..."
-! 	    "...THEN pull the brake.";
-
-! Hints   -> -> -> -> ControlHints "How do I get to the train controls?"
-!  with   hint
-!             "The conductor won't let you near them."
-!             "You need to distract him."
-!             "You need to put him under pressure."
-!             "If you haven't found the photograph, stop reading."
-!             "Once you've found out who is in the photograph, show it to the
-!              conductor."
-!             "Listen carefully to what he says."
-!             "One name sounds important."
-!             "If you need another clue, show him the ring."
-!             "ASK CONDUCTOR ABOUT LILY."
-!             "You can also prey on his arachnophobia."
-!             "SHOW WOLFIE TO THE CONDUCTOR.";
-
-! Menu    -> -> -> EndgameMenu "The Endgame";
-
-! Hints   -> -> -> -> "Was it all a dream then?"
-!  with   hint
-!             "In other words, is this the hallucination of a victim of an
-!              airline crash, dying in a wreckage-strewn field?"
-!             "That question will be answered in a turn or two.";
-
-! Hints   -> -> -> -> "I'm going to die, right?"
-!  with   hint
-!             "Not if somebody rescues you first."
-!             "Provided they find you before you go into shock..."
-!             "...or are strangled to death."
-!             "Relax. Help is on the way.";
-
-! Hints   -> -> AmusingHints "Have you tried...?"
-!  has    concealed
-!  with   hint
-!             "...giving the ring to the conductor in the beginning?"
-!             "...singing? On the plane? On the train?"
-!             "...throwing Wolfie at various people?"
-!             "...yelling at various times?"
-!             "...doing anything with the bodies? (this one's for
-!             you, Chris)"
-!             "...drinking the soda?"
-!             "...leaving the soda inside when you pushed the chest
-!             off the train?"
-!             "...pushing the ice chest down the maintenance access
-!             hatch, then praying?"
-!             "...being in TECHNICAL mode when the train crashes?"
-!             "...going up or down from the crash site?"
-!             "...checking your score at the crash site?";
+Constant INCLUDE_SWITCHOPTION;
+Constant INCLUDE_HINTOPTION;
+
+Include "dmenus";
+
+Menu    MainMenu "Instructions and Hints for ~The Best Man~";
+
+Menu    -> "How to play";
+
+Object  -> -> "General introduction to Interative Fiction"
+ with   description [;
+            print "With Interactive Fiction you type in English commands
+                each time you see a prompt. Commands allow your
+                character to move around the setting and manipulate
+                objects within the game.^^",
+
+		(strong) "Moving Around^^",
+
+		"You can move your character by typing in the direction
+	        that you wish to go.  Directions may be abbreviated:  N
+	        for NORTH, SW for SOUTHWEST, D for DOWN.  (",
+	        (emphasis) "The Best Man", " has support for alternative
+	        directions FORE (F), AFT (A), STARBOARD (SB), and PORT
+	        (P) which can be activated with the TECHNICAL
+	        command.)^^";
+
+	    font off;
+	    print ">STAND^
+	           >NORTH^
+	           >S^^";
+	    font on;
+
+            print (strong) "Handling Objects^^",
+
+	        "Objects encountered in the game may be examined, taken,
+	        dropped, and so on by typing in the appropriate verb
+	        followed by the name of the object. Objects that the
+	        player is currently carrying may be listed with the
+	        INVENTORY (I) command.^^
+
+	        Objects may also be referenced in groups by either
+	        separating their names using commas or using the word
+	        ALL. TAKE ALL, for instance, will cause the character
+	        to try and pick up every object in sight. DROP ALL will
+	        transfer the player's inventory to the current
+	        location.^^";
+
+	    font off;
+	    print ">EXAMINE SEAT BELT^
+	           >OPEN IT^
+	           >TAKE ALL^^";
+	    font on;
+
+	    print (strong) "Interacting with Other Characters^^",
+
+	        "The player's character, over time, will come to
+	        encounter other characters. Special commands such as
+	        ASK, TELL, and SHOW may be used with these characters,
+	        as well as a special order syntax.^^";
+
+	    font off;
+	    print ">SHOW PILOT THE TICKET^
+	           >GIVE RING TO COPILOT^
+	           >ASK CONDUCTOR ABOUT THE TRAIN^
+	           >STEWARDESS, GIVE ME THE GOLD WATCH";
+	    font on;
+
+	    new_line; rtrue;
+	];
+
+Object  -> -> "Special commands used in ~The Best Man.~"
+ with   description
+            "There are two ways of describing the world: with fixed
+            directions or with relative directions. TECHNICAL and
+            TRADITIONAL commands switch between these
+            modes. (TECHNICAL is also known as ANAL in honor of the
+            beta tester that complained that ~north,~ &c. is
+            meaningless on a moving train.)^^
+
+            You can squeeze things onto other things:  SQUEEZE THE
+            LEMON ON THE FISH.^^
+
+            LOCK and UNLOCK do not always require keys.^^
+
+            You can POUR or EMPTY containers of liquids. Under
+            certain conditions, you can even pour specific quantities:
+            POUR 100ML FROM THE MILK JUG INTO THE BATTER. If no
+            quantity is specified, the maximum amount possible will
+            be used.^^
+
+	    Comparisons between two items are done automatically.
+	    Examining the items in sequence, with no intervening
+	    actions, will report similarities (if any).";
+
+SwitchOption -> -> TechnicalDirectionsOption
+ with   short_name [;
+            print "Technical Directions ";
+            if (self has on) print "ENABLED"; else print "DISABLED";
+            rtrue;
+        ];
+
+Object  -> "Credits"
+ with   description [;
+            "Rob Menke (author) -- Rob has been interested in
+            adventure games ever since he played ~Zork I~ on an old
+            Apple ][ back in the early '80s. He is often tempted to
+            add ~Finished 'Stationfall' in a four-day marathon
+            session~ to his resume. ~The Best Man~ is his first
+            interactive fiction game for use by the general public.
+            Please direct all bug reports to his interim mailing
+            address ", (strong) "rgm@@64the-wabe.com", " (Rob is
+            in the process of changing ISPs so response may be
+            delayed.)^^
+
+            Christopher Livingston (playability, details) -- That you
+            can use ~lube~ as a verb and propose to the conductor are
+            both thanks to Chris. All IF authors should be as lucky to
+            have a tester as disturbed as he is.^^
+
+            Mark Rosenfelder (continuity, structure) -- The closing
+            sequence was completely rewritten at the request of Mark,
+            who felt its silly tone conflicted with the rather graphic
+            endgame. The task-oriented nature of the hints are his
+            brainchild; they assume less and provide more. More info
+            about Mark can be found at:^",
+            (strong) "http://www.zompist.com/", "^^
+
+            Other testing performed by: Greg Galcik, Heather Garvey.";
+        ];
+
+Menu    -> HintMenu "Hints"
+ with   before [;
+            if (self has locked) {
+                print_ret (string) HINT_DISABLED;
+            }
+            if (self has concealed) {
+                give self ~concealed;
+
+                "[HINTS: It is ", (emphasis) "strongly", " suggested
+                    that you experiment with the puzzles before
+                    resorting to hints. If the temptation to read
+                    the hints is too great, you can also disable the
+                    hints permanently with the HINTS OFF command.
+                    Note that you will always have the option of
+                    reading hints after you die.]";
+            }
+        ]
+ has    concealed;
+
+Menu    -> -> "The Plane"
+ has    transparent;
+
+HintOption -> -> -> "What's going on here?"
+ with   description
+            "You're on a plane en route to San Diego. You are going to
+            be the best man at your brother's wedding. But something
+            goes horribly wrong...";
+
+HintOption   -> -> -> "How do I warn the stewardess?"
+ with   getHints [ n;
+            switch (n) {
+             0: return 5;
+             1: "She certainly has her hands full, doesn't she?";
+             2: "You could use the call button on your seat...";
+             3: "...if there was one.";
+             4: "Maybe you could stop her when she escorts you to your
+             seat.";
+             5: "There's no way to warn the stewardess.";
+            }
+        ];
+
+HintOption   -> -> -> "How do I warn the pilot?"
+ with   getHints [ n;
+            switch (n) {
+             0: return 5;
+             1: "The pilot never leaves the cockpit.";
+             2: "You need to get in there to warn him.";
+             3: "Did you try knocking?";
+             4: "Did you try kicking the door down?";
+             5: "You can't warn the pilot.";
+            }
+        ];
+
+HintOption   -> -> -> "I don't want to die in a crash!"
+ with   getHints [ n;
+            switch (n) {
+             0: return 4;
+             1: "You can't seem to warn anyone about the crash.";
+             2: "You can't prevent the crash...";
+             3: "...because it happened in the past.";
+             4: "The best you can do is WAKE UP.";
+            }
+        ];
+
+Menu    -> -> "The Train";
+
+Menu    -> -> -> "The Prologue";
+
+HintOption   -> -> -> -> "I got kicked off the train!"
+ with   getHints [ n;
+            switch (n) {
+             0: return 3;
+             1: "They take stowaways seriously on this rail line.";
+             2: "You need to prove that you belong on that train.";
+             3: "GIVE THE TICKET TO THE CONDUCTOR.";
+            }
+        ];
+
+HintOption   -> -> -> -> "What a mess! How do I clean my jacket?"
+ with   getHints [ n;
+            switch (n) {
+             0: return 7;
+             1: "You need water to do the job properly.";
+             2: "Water can be found in the lavatory.";
+             3: "But you also need light.";
+             4: "Trains are like planes, they conserve electricity.";
+             5: "The light will only go on when there is someone in
+                the lavatory.";
+             6: "The only way the lavatory ~knows~ it is occupied is
+                if the door is locked.";
+             7: "LOCK THE DOOR.";
+            }
+        ];
+
+HintOption   -> -> -> -> "What's going on in the corridor?"
+ with   getHints [ n;
+            switch (n) {
+             0: return 3;
+             1: "A group of Georgian terrorists have decided to throw
+                President Williams a surprise party.";
+             2: "All the passengers are being herded into the end of
+                the train.";
+             3: "They are searching the train for anyone missing...";
+            }
+        ];
+
+HintOption   -> -> -> -> "How can I avoid being shot?"
+ with   getHints [ n;
+            switch (n) {
+             0: return 9;
+             1: "You need to convince two people that you're not
+                there: Sergei and the terrorist leader.";
+             2: "Sergei's easy to fool. He takes everything at face
+                value.";
+             3: "If the door says the lavatory is unoccupied, he
+                believes it.";
+             4: "UNLOCK THE DOOR.";
+             5: "His boss, however, is going to open the door.";
+             6: "You need to be out of there. But there's only one way
+                out...";
+             7: "...or IS there?";
+             8: "OPEN THE WINDOW. LOOK OUT THE WINDOW.";
+             9: "Also make sure the water is turned off and the door
+                is still unlocked.";
+            }
+        ];
+
+Menu    -> -> -> "After the Attack";
+
+HintOption   -> -> -> -> "The ominous shadows... should I be worried?"
+ with   getHints [ n;
+            switch (n) {
+             0: return 7;
+             1: "Yes, the terrorists have taken up residence in that
+                car.";
+             2: "You need to get around them. There are three ways.";
+             3: "If you knock on the door, they will walk up and down
+                the length of the train.";
+             4: "You can hide in the darkroom or lavatory as they
+                march past.";
+             5: "Or you can kill them.";
+             6: "The tools for the elimination of the terrorists can
+                be found in the darkroom.";
+             7: "The third way is to figure out the puzzle of the
+                junctions.";
+            }
+        ];
+
+HintOption   -> -> -> -> "The terrorists found me! How can I escape?"
+ with   getHints [ n;
+            switch (n) {
+             0: return 4;
+             1: "You could run...";
+             2: "You could attack...";
+             3: "You could throw Wolfie at them...";
+             4: "But nothing will work. If the terrorists catch you,
+                the game is over. The extra turn is there to give you
+                false hope.";
+            }
+        ];
+
+HintOption   -> -> -> -> "What can I do in the junction?"
+ with   getHints [ n;
+            switch (n) {
+             0: return 8;
+             1: "Obviously, you can go into either of the cars.";
+             2: "Have you read the description carefully?";
+             3: "That metal railing looks interesting.";
+             4: "CLIMB ON THE METAL RAILING.";
+             5: "There's something disturbing about the floor, too.";
+             6: "EXAMINE FLOOR.";
+             7: "Note also that there are doors that keep the wind out
+                of the cars.";
+             8: "You can knock on the doors, but be ready to run...";
+            }
+        ];
+
+HintOption   -> -> -> -> "What can I do in the darkroom?"
+ with   getHints [ n;
+            switch (n) {
+             0: return 8;
+             1: "It has a sink, if you need water.";
+             2: "It has a shelf of stuff.";
+             3: "SEARCH SHELF.";
+             4: "The large bench is interesting too.";
+             5: "LOOK UNDER BENCH.";
+             6: "Have you closed the door?";
+             7: "It's a darkroom, silly. Open the door, then pull the
+                light cord.";
+             8: "Oh, and be sure to read the containers of any
+                chemicals you find... nasty accidents might happen
+                otherwise.";
+            }
+        ];
+
+HintOption   -> -> -> -> "What can I do with the chemicals?"
+ with   getHints [ n;
+            switch (n) {
+             0: return 5;
+             1: "The acid and developer bottles are quite useful.";
+             2: "When the chemicals are mixed, they produce deadly
+                vapors.";
+             3: "So be sure to mix them where there is a lot of
+                ventilation.";
+             4: "Speaking of ventilation, have you found the air vents
+                yet?";
+             5: "You might want to delay mixing the acid and developer
+                until you have found where else you may need the
+                acid.";
+            }
+        ];
+
+HintOption   -> -> -> -> "What can I do with the passengers?"
+ with   getHints [ n;
+            switch (n) {
+             0: return 6;
+             1: "Most of the time, they will ignore you.";
+             2: "You can ask them questions.";
+             3: "If you want to get to the engine, ASK PASSENGERS
+                ABOUT CONDUCTOR.";
+             4: "While you're there, check out the tool chest";
+             5: "But ultimately, you need to rescue them.";
+             6: "You can win even if you accidentally kill them, but
+                you won't get maximum points";
+            }
+        ];
+
+Menu    -> -> -> "Under the Train";
+
+HintOption   -> -> -> -> "A lever! I want to pull it!"
+ with   getHints [ n;
+            switch (n) {
+             0: return 4;
+             1: "But you can't.";
+             2: "Until you lubricate it.";
+             3: "SQUIRT OIL ON LEVER.";
+             4: "Now you can pull it. But beware the consequences...";
+            }
+        ];
+
+HintOption   -> -> -> -> "The terrorists killed the passengers!"
+ with   getHints [ n;
+            switch (n) {
+             0: return 4;
+             1: "Sore losers. Dumb, though. Why kill hostages?";
+             2: "You need to remove the terrorists from the fifth car.";
+             3: "One method is temporary, the other permanent.";
+             4: "You may need to solve other puzzles to be able to
+                release the car safely.";
+            }
+        ];
+
+HintOption   -> -> -> -> "The car exploded after it was released!"
+ with   getHints [ n;
+            switch (n) {
+             0: return 6;
+             1: "Obviously somebody booby-trapped the car to prevent a
+                rescue just like yours.";
+             2: "You'll need to disarm the explosive.";
+             3: "But where is it?";
+             4: "In the car?";
+             5: "Under the car?";
+             6: "SEARCH THE UNDERCARRIAGE.";
+            }
+        ];
+
+HintOption   -> -> -> -> "The black and white boxes, what do they do?"
+ with   getHints [ n;
+            switch (n) {
+             0: return 5;
+             1: "They form a circuit.";
+             2: "They prevent you from releasing the car safely.";
+             3: "Break the red wire, and the white box explodes.";
+             4: "PULL THE WIRE if you want the box to explode.";
+             5: "Be forewarned: the car in which the explosive is will
+                be destroyed, as well as the cars behind it.";
+            }
+        ];
+
+Menu    -> -> -> "On Top of The Train";
+
+HintOption   -> -> -> -> "What can I do up here?"
+ with   getHints [ n;
+            switch (n) {
+             0: return 8;
+             1: "You can move along the length of the train freely.";
+             2: "That is, you can bypass the terrorists.";
+             3: "You can get to the mail car.";
+             4: "If you've done certain tasks, you can also get to the
+                engine.";
+             5: "Best of all, you can kill the terrorists.";
+             6: "Examine the air vents.";
+             7: "They draw air (or other gasses) into the cars.";
+             8: "You need some things from the darkroom.";
+            }
+        ];
+
+Menu    -> -> -> "The Mail Car";
+
+HintOption   -> -> -> -> "How do I open the glass-fronted box?"
+ with   getHints [ n;
+            switch (n) {
+             0: return 7;
+             1: "You need to get rid of the sealant or the glass.";
+             2: "The sealant is nigh indestructible-- you can't cut
+                it, tear it, or dissolve it.";
+             3: "That leaves the glass.";
+             4: "You can't pull it off, or break it.";
+             5: "You need to cut it.";
+             6: "What cuts glass?";
+             7: "CUT THE PANE WITH THE DIAMOND RING.";
+            }
+        ];
+
+HintOption   -> -> -> -> "The powder burst into flame!"
+ with   getHints [ n;
+            switch (n) {
+             0: return 17;
+             1: "The conductor may offer some insight on the white
+                powder and the silicone caulking.";
+             2: "Read carefully. You heard a hiss before detonation...";
+             3: "...as if gas were escaping...";
+             4: "...or going IN!";
+             5: "The box has a vacuum inside. The white powder is
+                sensitive to air.";
+             6: "You need to prevent air from getting to the powder.";
+             7: "If you drench it in lubricant, the powder will not
+                ignite.";
+             8: "But to drench it, you need to open the box! A real
+                chicken-and-egg problem...";
+             9: "What you need to do is get the lubricant to the
+                powder without breaking the seal.";
+            10: "EXAMINE THE CAN OF LUBRICANT.";
+            11: "~...with a long pointy tube...~";
+            12: "...which can easily poke through the sealant.";
+            13: "INSERT LUBRICANT TUBE INTO SEALANT. SQUIRT LUBRICANT
+                ON WHITE POWDER.";
+            14: "But the lubricant won't last forever.";
+            15: "If you add enough, you can get the sphere out before
+                it ignites.";
+            16: "But it's probably easier to remove the dish.";
+            17: "Just don't carry it on your person...";
+            }
+        ];
+
+HintOption   -> -> -> -> "The glass tube cracked!"
+ with   getHints [ n;
+            switch (n) {
+             0: return 11;
+             1: "Well, it's not sensitive to air, if you tried coating
+                it.";
+             2: "It has to be sensitive to something else.";
+             3: "If you read carefully, you'll notice that sunlight
+                from the hatch falls onto the metal box.";
+             4: "But turning on the light and closing the hatch
+                doesn't help.";
+             5: "Examine the pane. Ever wonder why it's red?";
+             6: "Perhaps the tube is sensitive to non-red light.";
+             7: "Unfortunately, the hatch and the bulb only produce
+                white light.";
+             8: "Where can you find a source of non-white light?";
+             9: "Ever take a photography class?";
+            10: "You can find a red bulb in the darkroom.";
+            11: "UNSCREW WHITE BULB. SCREW RED BULB INTO SOCKET.";
+            }
+        ];
+
+HintOption   -> -> -> -> "The Plexiglas box is locked, and I don't have a key!"
+ with   getHints [ n;
+            switch (n) {
+             0: return 15;
+             1: "The ~key~ is the beakers.";
+             2: "The hint is that they're attached to a scale.";
+             3: "You need to balance them.";
+             4: "Did you read the labels? If you know a little
+                chemistry (try reading the children's magazine and
+                the bottles in the darkroom) that may offer a
+                clue...";
+             5: "One is an acid, the other a base.";
+             6: "You need to balance weight AND acidity.";
+             7: "You need to use the litmus powder.";
+             8: "It's hidden in the darkroom, if you haven't found it.";
+             9: "The litmus changes color depending on the acidity.";
+            10: "Add small amounts of the window cleaner (a base) to
+                the beaker with hydrochloric acid until it turns
+                purple.";
+            11: "Add small amounts of the acid to the beaker with
+                sodium hydroxide until it turns purple as well.";
+            12: "Of course, that now unbalances the scale in terms
+                of weight: 200ml in the left beaker, 350ml in the
+                right.";
+            13: "Get some water from the lavatory and pour 150ml of
+                it into the left beaker.";
+            14: "Or, if you're clever, just pour 75ml from the right
+                beaker into the left one.";
+            15: "Don't mix the neutral solution with the acid or
+                cleaner! That will unbalance the acidity again.";
+            }
+        ];
+
+HintOption   -> -> -> -> "What's with the black sphere?"
+ with   getHints [ n;
+            switch (n) {
+             0: return 4;
+             1: "It's the bomb core.";
+             2: "It contains a lot of explosive and a significant
+                amount of plutonium.";
+             3: "Damaging it in any way is instantaneously lethal.";
+             4: "In other words, don't throw it off the train or
+                allow it to get shot.";
+            }
+        ];
+
+HintOption   -> -> -> -> "Who is in the photograph?"
+ with   getHints [ n;
+            switch (n) {
+             0: return 6;
+             1: "One of the photographers in the caboose can give
+                you a hint.";
+             2: "You can check the photograph against people by
+                examining them (or their corpses), and then the
+                photograph.";
+             3: "It's not any of the passengers...";
+             4: "Or any of the terrorists...";
+             5: "The conductor is the bomber.";
+             6: "After discovering that the conductor built the
+                bomb, confront him by either showing him the
+                photograph or asking him about the bomb.";
+            }
+        ];
+
+Menu    -> -> -> "The Engine";
+
+HintOption   -> -> -> -> "How do I get there?"
+ with   getHints [ n;
+            switch (n) {
+             0: return 3;
+             1: "If you rescue the passengers and get the black
+                sphere off the train safely, the way to the engine
+                will be revealed to you.";
+             2: "If you want to get there beforehand, ask the
+                passengers questions.";
+             3: "Specifically, ask them about the conductor.";
+            }
+        ];
+
+HintOption   -> -> -> -> "How can I stop the train?"
+ with   getHints [ n;
+            switch (n) {
+             0: return 6;
+             1: "If you can't get to the controls, read the next
+                section.";
+             2: "If you pull the brake, you'll slow down the train
+                without stopping it.";
+             3: "You need to do something more drastic.";
+             4: "Like derailing the train.";
+             5: "Speed up the train by opening the throttle...";
+             6: "...THEN pull the brake.";
+            }
+        ];
+
+HintOption   -> -> -> -> "How do I get to the train controls?"
+ with   getHints [ n;
+            switch (n) {
+             0: return 11;
+             1: "The conductor won't let you near them.";
+             2: "You need to distract him.";
+             3: "You need to put him under pressure.";
+             4: "If you haven't found the photograph, stop reading.";
+             5: "Once you've found out who is in the photograph,
+                show it to the conductor.";
+             6: "Listen carefully to what he says.";
+             7: "One name sounds important.";
+             8: "If you need another clue, show him the ring.";
+             9: "ASK CONDUCTOR ABOUT LILY.";
+            10: "You can also prey on his arachnophobia.";
+            11: "SHOW WOLFIE TO THE CONDUCTOR.";
+            }
+        ];
+
+Menu    -> -> -> "The Endgame";
+
+HintOption   -> -> -> -> "Was it all a dream then?"
+ with   getHints [ n;
+            switch (n) {
+             0: return 2;
+             1: "In other words, is this the hallucination of a
+                victim of and airline crash, dying in a
+                wreckage-strewn field?";
+             2: "That question will be answered in a turn or two.";
+            }
+        ];
+
+HintOption   -> -> -> -> "I'm going to die, right?"
+ with   getHints [ n;
+            switch (n) {
+             0: return 4;
+             1: "Not if somebody rescues you first.";
+             2: "Provided they find you before you go into shock...";
+             3: "...or are strangled to death.";
+             4: "Relax. Help is on the way.";
+            }
+        ];
+
+HintOption   -> -> "Have you tried...?"
+ has    concealed
+ with   getHints [ n;
+            switch (n) {
+             0: return 11;
+             1: "...giving the ring to the conductor in the beginning?";
+             2: "...singing? On the plane? On the train?";
+             3: "...throwing Wolfie at various people?";
+             4: "...yelling at various times?";
+             5: "...doing anything with the bodies? (this one's for
+                you, Chris)";
+             6: "...drinking the soda?";
+             7: "...leaving the soda inside when you pushed the
+                chest off the train?";
+             8: "...pushing the ice chest down the maintenance
+                access hatch, then praying?";
+             9: "...being in TECHNICAL mode when the train crashes?";
+            10: "...going up or down from the crash site?";
+            11: "...checking your score at the crash site?";
+            }
+        ];

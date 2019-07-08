@@ -199,8 +199,8 @@ Include "Parser";
 !           give AmusingHints ~concealed;
 !           new_line; Amusing(); jump RRQPL;
         }
-!    'help', 'hint', 'hints', 'info', 'credits':
-!       new_line; HelpSub(); jump RRQPL;
+     'help', 'hint', 'hints', 'info', 'credits':
+        new_line; HelpSub(); jump RRQPL;
 
 #IFV5;
      UNDO1__WD, UNDO2__WD, UNDO3__WD:
@@ -2046,15 +2046,19 @@ Ifdef MainMenu;
 Constant HINT_DISABLED =
   "(Hints have been disabled for the remainder of the game.)";
 
-[ HelpSub; if (HintMenu has concealed) print_ret (string) HINT_DISABLED;
-  HintMenu.Select(); ];
-[ HelpOffSub; give HintMenu concealed; print_ret (string) HINT_DISABLED; ];
+[   HelpSub;
+    ShowMenu(HintMenu);
+];
+[   HelpOffSub;
+    give HintMenu locked concealed;
+    print_ret (string) HINT_DISABLED;
+];
 
-! Verb meta 'help' 'hint' 'hints'
-!     *                                   -> Help
-!     * 'off'/'disable'                   -> HelpOff;
+Verb meta 'help' 'hint' 'hints'
+    *                                   -> Help
+    * 'off'/'disable'                   -> HelpOff;
 
-[ InfoSub; MainMenu.select(); ];
+[ InfoSub; ShowMenu(MainMenu); ];
 
 Verb meta 'info' 'credits'
     *                                   -> Info;
